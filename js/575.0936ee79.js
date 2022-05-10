@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunknfd_admin_vue3"]=self["webpackChunknfd_admin_vue3"]||[]).push([[575],{2575:function(n,u,e){e.r(u),e.d(u,{default:function(){return i}});var r=e(6252);function t(n,u){return(0,r.wg)(),(0,r.iD)("div",null,"Страница списка заказов")}var a=e(3744);const d={},f=(0,a.Z)(d,[["render",t]]);var i=f}}]);
+//# sourceMappingURL=575.0936ee79.js.map
