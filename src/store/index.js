@@ -1,8 +1,12 @@
 import { createStore } from "vuex";
+import { authModule } from "./modules/authModule.js"
 
 export default createStore({
-  state: {},
-  mutations: {},
-  actions: {},
-  modules: {},
+
+  modules: {
+    authModule: {
+      namespaced: true,
+      ...authModule,
+    },
+  },
 });
