@@ -8,14 +8,14 @@
       <div class="form-wrp">
         <p class="form-header">Вход</p>
         <form class="form" @submit.prevent="onSubmit">
-          <Vinput
-            v-model:inputValue="userName"
+          <v-input
+            v-model:inputValue="login"
             label="Почта"
             type="text"
             name="login"
           />
-          <Vinput
-            v-model:inputValue="userPassword"
+          <v-input
+            v-model:inputValue="password"
             label="Пароль"
             type="password"
             name="password"
@@ -28,11 +28,6 @@
               :to="{ name: 'order-list' }"
               >Запросить доступ</router-link
             >
-            <!-- <router-link class="link" :to="{ name: 'order-list' }">
-              <button @click="onSubmit" class="form-footer__button form-footer__button-text">
-                Войти
-              </button>
-            </router-link> -->
             <button type="submit" name="button" class="form-footer__button form-footer__button-text">
               Войти
             </button>
@@ -47,48 +42,52 @@
 import { useStore } from "vuex";
 import { useRouter } from 'vue-router';
 import { ref } from "vue";
-import Vinput from "../components/v-input.vue";
+import VInput from "../components/v-input.vue";
 
 export default {
   name: "login",
   components: {
-    Vinput,
+    VInput,
   },
   setup() {
     const store = useStore();
     const router = useRouter();
 
-    const userName = ref("");
-    const userPassword = ref("");
+    const login = ref("");
+    const password = ref("");
     const isError = ref(false);
 
     const onSubmit = async () => {
       try {
         //вызов action с POST запросом
         await store.dispatch('authModule/onLogin', {
-          username: userName.value,
-          password: userPassword.value,
+          username: login.value,
+          password: password.value,
         })
         //сброс к начальному состоянию
-        userName.value = "";
-        userPassword.value = "";
+        resetInputs();
         isError.value = false;
         //редирект на страницу
-        await router.push({ name: 'order-list'})
+        router.push({ name: 'order-list'})
       } catch (error) {
         //сброс введенных данных
-        userName.value = "";
-        userPassword.value = "";
+        resetInputs();
         //в случае получения ошибки от сервера
-        return isError.value = true;
+        isError.value = true;
       }
     }
 
+    const resetInputs = () => {
+      login.value = "";
+      password.value = "";
+    }
+
     return {
-      userName,
-      userPassword,
+      login,
+      password,
       isError,
       onSubmit,
+      resetInputs,
     };
   },
 };
