@@ -1,5 +1,14 @@
 @import "./variables.scss";
 
+@font-face { 
+  font-family: 'Roboto'; 
+  src: url('@/assets/fonts/roboto-regular-webfont.woff2') format('woff2'), 
+       url('@/assets/fonts/roboto-regular-webfont.ttf')  format('truetype'),
+       url('@/assets/fonts/roboto-regular-webfont.woff') format('woff'); 
+  font-weight: 400; 
+  font-style: normal;
+}
+
 #app {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -7,4 +16,14 @@
 
 body {
     margin: 0;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+a {
+  text-decoration: none;
 }

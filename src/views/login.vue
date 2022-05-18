@@ -21,14 +21,20 @@
             name="password"
             title="Пароль должен содержать цифры и буквы латинского алфавита разного регистра"
           />
-          <p v-show="isError" class="error-msg">Логин и/или пароль не найдены</p>
+          <p v-show="isError" class="error-msg">
+            Логин и/или пароль не найдены
+          </p>
           <div class="form-footer">
             <router-link
               class="form-footer__link link"
-              :to="{ name: 'order-list' }"
+              :to="{ name: 'admin-panel' }"
               >Запросить доступ</router-link
             >
-            <button type="submit" name="button" class="form-footer__button form-footer__button-text">
+            <button
+              type="submit"
+              name="button"
+              class="form-footer__button form-footer__button-text"
+            >
               Войти
             </button>
           </div>
@@ -40,9 +46,9 @@
 
 <script>
 import { useStore } from "vuex";
-import { useRouter } from 'vue-router';
+import { useRouter } from "vue-router";
 import { ref } from "vue";
-import VInput from "../components/v-input.vue";
+import VInput from "../components/VInput.vue";
 
 export default {
   name: "login",
@@ -60,27 +66,27 @@ export default {
     const onSubmit = async () => {
       try {
         //вызов action с POST запросом
-        await store.dispatch('authModule/onLogin', {
+        await store.dispatch("authModule/onLogin", {
           username: login.value,
           password: password.value,
-        })
+        });
         //сброс к начальному состоянию
         resetInputs();
         isError.value = false;
         //редирект на страницу
-        router.push({ name: 'order-list'})
+        router.push({ name: "admin-panel" });
       } catch (error) {
         //сброс введенных данных
         resetInputs();
         //в случае получения ошибки от сервера
         isError.value = true;
       }
-    }
+    };
 
     const resetInputs = () => {
       login.value = "";
       password.value = "";
-    }
+    };
 
     return {
       login,

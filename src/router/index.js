@@ -1,5 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Login from "../views/login.vue";
+import Login from "../views/Login.vue";
+import ListOrders from "../views/ListOrders.vue";
+import ListCars from "../views/ListCars.vue";
+import CardCar from "../views/CardCar.vue";
 
 const routes = [
   {
@@ -8,10 +11,15 @@ const routes = [
     component: Login,
   },
   {
-    path: "/order-list",
-    name: "order-list",
-    component: () => import('@/views/order-list.vue'),
-    meta: { needAuth: true }
+    path: "/admin-panel",
+    name: "admin-panel",
+    component: () => import("@/views/AdminPanel.vue"),
+    meta: { needAuth: true },
+    children: [
+      { path: "orders", component: ListOrders },
+      { path: "cars", component: ListCars },
+      { path: "card-car", component: CardCar },
+    ],
   },
 ];
 
@@ -21,12 +29,12 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const isLoggedIn = localStorage.getItem('user');
-  if (to.matched.some(record => record.meta.needAuth) && !isLoggedIn) {
-    next('/');
+  const isLoggedIn = localStorage.getItem("user");
+  if (to.matched.some((record) => record.meta.needAuth) && !isLoggedIn) {
+    next("/");
   } else {
     next();
   }
-})
+});
 
 export default router;
