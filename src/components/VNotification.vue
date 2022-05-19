@@ -34,6 +34,10 @@ export default {
   position: relative;
   padding: 21px 25px;
   box-shadow: 0.5px 0px 0px #cacedb, -0.5px 0px 0px #cacedb;
+
+  @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
+    padding: 13px 25px;
+  }
 }
 
 .notification__bell {
@@ -57,5 +61,9 @@ export default {
   line-height: 14px;
   color: $color-white;
   text-align: center;
+
+  @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
+    top: 25px;
+  }
 }
 </style>

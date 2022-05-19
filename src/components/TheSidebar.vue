@@ -19,7 +19,7 @@
 import VIcon from "../components/VIcon.vue";
 
 export default {
-  name: "TheSideBar",
+  name: "TheSidebar",
   components: {
     VIcon,
   },
@@ -51,6 +51,10 @@ export default {
   box-shadow: 0px 1px 75px rgba(90, 97, 105, 0.11),
     0px 2px 4px rgba(90, 97, 105, 0.12), 0px 7.5px 11px rgba(90, 97, 105, 0.1),
     0px 3.5px 17.5px rgba(165, 182, 201, 0.1);
+
+  @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
+    width: 100vw;
+  }
 }
 
 .logo_sidebar {

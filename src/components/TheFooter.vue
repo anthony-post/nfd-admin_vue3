@@ -24,6 +24,9 @@ export default {
   align-items: center;
   box-shadow: 0px -0.5px 0px #d7dae3;
   padding: 25px;
+  @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
+    padding: 15px;
+  }
 }
 
 .footer__link {
@@ -37,6 +40,12 @@ export default {
 
 .footer__link:first-child {
   margin: 0 16px 0 0;
+}
+
+.footer__link:last-child {
+  @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
+    display: none;
+  }
 }
 
 .footer__copyright {

@@ -51,7 +51,7 @@ import { ref } from "vue";
 import VInput from "../components/VInput.vue";
 
 export default {
-  name: "login",
+  name: "Login",
   components: {
     VInput,
   },

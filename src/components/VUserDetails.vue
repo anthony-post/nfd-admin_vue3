@@ -35,6 +35,12 @@ export default {
   justify-content: space-between;
   align-items: center;
   padding: 0 25px;
+
+  @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
+    padding: 0 15px;
+    width: 65%;
+    justify-content: flex-end;
+  }
 }
 
 .user-container {
@@ -54,11 +60,11 @@ export default {
 }
 
 .dropdown-icon {
-    width: 0; 
-    height: 0;
-    border-left: 4px solid transparent;
-    border-right: 4px solid transparent;
-    border-top: 4px solid $color-dropdown-icon;
-    margin: 1px 0 0 0;
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 4px solid $color-dropdown-icon;
+  margin: 1px 0 0 0;
 }
 </style>

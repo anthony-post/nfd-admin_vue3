@@ -1,6 +1,8 @@
 <template>
   <div class="panel-wrp">
-    <the-sidebar></the-sidebar>
+    <div class="panel-sidebar">
+      <the-sidebar></the-sidebar>
+    </div>
     <div class="panel-content">
       <the-header></the-header>
       <div class="section-content">
@@ -35,10 +37,20 @@ export default {
   justify-content: space-between;
 }
 
+.panel-sidebar {
+  @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
+    display: none;
+  }
+}
+
 .panel-content {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+
+  @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
+    height: calc(100vh - 80px);
+  }
 }
 
 .section-content {

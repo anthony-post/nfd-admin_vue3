@@ -23,4 +23,13 @@
 	<symbol id="icon-edit" viewBox="0 0 12 11" xmlns="http://www.w3.org/2000/svg">
 		<path fill-rule="evenodd" clip-rule="evenodd" d="M6.32677 4C6.84715 4 7.27292 3.55 7.27292 3C7.27292 2.45 6.84715 2 6.32677 2C5.80638 2 5.38062 2.45 5.38062 3C5.38062 3.55 5.80638 4 6.32677 4ZM6.32677 5C5.80638 5 5.38062 5.45 5.38062 6C5.38062 6.55 5.80638 7 6.32677 7C6.84715 7 7.27292 6.55 7.27292 6C7.27292 5.45 6.84715 5 6.32677 5ZM5.38062 9C5.38062 8.45 5.80638 8 6.32677 8C6.84715 8 7.27292 8.45 7.27292 9C7.27292 9.55 6.84715 10 6.32677 10C5.80638 10 5.38062 9.55 5.38062 9Z" fill="#818EA3"/>
 	</symbol>
+	<symbol id="icon-bars" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+		<path d="M5.56689 16H24.5669" stroke="#999999" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+		<path d="M5.56689 8H24.5669" stroke="#999999" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+		<path d="M5.56689 24H24.5669" stroke="#999999" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+	</symbol>
+	<symbol id="icon-x" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+		<path d="M24 8L8 24" stroke="#999999" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+		<path d="M8 8L24 24" stroke="#999999" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+	</symbol>
 </svg>

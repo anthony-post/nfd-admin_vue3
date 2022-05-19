@@ -4,32 +4,32 @@
     <section class="orders-container">
       <div class="orders__header">
         <div class="dropdown__container">
-          <v-dropdown 
+          <v-dropdown
             :itemList="listItems"
             :selectedItem="chosenItem"
             name="period"
-            placeholder="За неделю" 
+            placeholder="За неделю"
             @on-item-selected="setSelectedItem"
             class="orders__header-dropdown"
           ></v-dropdown>
-          <v-dropdown 
+          <v-dropdown
             :itemList="listItems"
             name="car"
-            placeholder="Elantra" 
+            placeholder="Elantra"
             class="orders__header-dropdown"
-            ></v-dropdown>
-          <v-dropdown 
+          ></v-dropdown>
+          <v-dropdown
             :itemList="listItems"
             name="city"
-            placeholder="Ульяновск" 
+            placeholder="Ульяновск"
             class="orders__header-dropdown"
-            ></v-dropdown>
-          <v-dropdown 
+          ></v-dropdown>
+          <v-dropdown
             :itemList="listItems"
             name="status"
-            placeholder="В процессе" 
+            placeholder="В процессе"
             class="orders__header-dropdown"
-            ></v-dropdown>
+          ></v-dropdown>
         </div>
         <button class="orders__header-btn">Применить</button>
       </div>
@@ -37,7 +37,7 @@
         <ul class="orders__list">
           <li class="orders__item">
             <div class="orders__car">
-              <img :src="order.pic" :alt="order.name">
+              <img :src="order.pic" :alt="order.name" />
             </div>
             <div class="orders__data">
               <div class="data-wrp">
@@ -66,7 +66,7 @@
                   width="12"
                   height="11"
                   class="orders__button-icon_approve"
-                ></v-icon>  
+                ></v-icon>
                 Готово
               </button>
               <button class="orders__button orders__button_middle">
@@ -117,7 +117,7 @@ export default {
     const listItems = [
       { id: 1, name: "xxx" },
       { id: 2, name: "yyy" },
-      { id: 3, name: "zzz" }
+      { id: 3, name: "zzz" },
     ];
 
     const order = {
@@ -137,15 +137,15 @@ export default {
 
     const chosenItem = ref({});
 
-    const setSelectedItem = chosenItem => chosenItem.value = chosenItem;
+    const setSelectedItem = (chosenItem) => (chosenItem.value = chosenItem);
 
     return {
       listItems,
       order,
       chosenItem,
       setSelectedItem,
-    }
-  }
+    };
+  },
 };
 </script>
 
@@ -168,6 +168,11 @@ export default {
   letter-spacing: -0.725px;
   color: $color-text;
   padding: 25px;
+
+  @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
+    padding: 10px 25px;
+    font-size: 19px;
+  }
 }
 
 .orders-container {
@@ -177,6 +182,10 @@ export default {
     0px 7px 70px rgba(90, 97, 105, 0.1);
   border-radius: 9px;
   margin: 0 25px;
+
+  @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
+    margin: 0 5px;
+  }
 }
 
 .orders__header {
@@ -187,16 +196,27 @@ export default {
   flex-basis: 40%;
   box-shadow: 0px -0.5px 0px #e0e2e8, 0px 0.5px 0px #e0e2e8;
   padding: 15px 20px;
+
+  @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 15px 15px 5px 15px;;
+  }
 }
 
 .dropdown__container {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 .orders__header-dropdown {
   margin: 0 15px 0 0;
+
+  @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
+    margin: 5px;
+  }
 }
 
 .orders__header-btn {
@@ -219,6 +239,10 @@ export default {
 
 .orders__content {
   padding: 13px 20px 180px 20px;
+
+  @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
+    padding: 10px;
+  }
 }
 
 .orders__item {
@@ -226,12 +250,17 @@ export default {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .orders__data {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+
+  @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
+    padding: 10px 0;
+  }
 }
 
 .data-wrp {
@@ -262,6 +291,12 @@ export default {
   padding: 0 3px 0 0;
 }
 
+.orders__additional {
+  @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
+    padding: 10px 0;
+  }
+}
+
 .orders__price {
   font-family: $ff;
   font-style: normal;
@@ -286,9 +321,9 @@ export default {
   line-height: 13px;
   text-align: center;
   letter-spacing: -0.345714px;
-  color: #5A6169;
+  color: #5a6169;
   box-sizing: border-box;
-  border: 0.5px solid #BECAD6;
+  border: 0.5px solid #becad6;
   display: flex;
 }
 
@@ -313,7 +348,7 @@ export default {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  box-shadow: 0px -0.5px 0px #E0E2E8, 0px 0.5px 0px #E0E2E8;
+  box-shadow: 0px -0.5px 0px #e0e2e8, 0px 0.5px 0px #e0e2e8;
   padding: 20px 0;
 }
 </style>

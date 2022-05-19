@@ -55,6 +55,7 @@ export default {
   color: $color-search-input;
   border: none;
   padding: 0 0 0 30px;
+  width: 60%;
 
   &:focus {
     outline: none;
@@ -65,5 +66,10 @@ export default {
   position: absolute;
   left: 5px;
   top: 3px;
+
+  @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
+    left: 15px;
+    top: 13px;
+  }
 }
 </style>

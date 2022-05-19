@@ -1,18 +1,15 @@
 <template>
   <label class="checkbox-item">
     <slot></slot>
-    <input
-      class="checkbox__input"
-      type="checkbox"
-    />
+    <input class="checkbox__input" type="checkbox" />
     <span class="checkmark-box"></span>
   </label>
 </template>
 
 <script>
 export default {
-    name: "VCheckbox",
-}
+  name: "VCheckbox",
+};
 </script>
 
 <style lang="scss">
@@ -32,7 +29,6 @@ export default {
   color: $color-grey;
 }
 
-
 .checkbox__input {
   position: absolute;
   opacity: 0;
@@ -46,7 +42,7 @@ export default {
   left: 0;
   height: 13px;
   width: 13px;
-  border: 0.5px solid #BECAD6;
+  border: 0.5px solid #becad6;
   border-radius: 1px;
 }
 .checkbox-item:hover input ~ .checkmark-box {
