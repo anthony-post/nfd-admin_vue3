@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Login from "../views/Login.vue";
+import Login from "../views/login.vue";
 import ListOrders from "../views/ListOrders.vue";
 import ListCars from "../views/ListCars.vue";
 import CardCar from "../views/CardCar.vue";

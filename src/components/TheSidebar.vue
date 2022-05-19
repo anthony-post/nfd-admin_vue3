@@ -5,10 +5,23 @@
       <p class="logo-text logo-text_sidebar">Need for Drive</p>
     </div>
     <ul class="sidebar__list">
-      <li v-for="item in menuList" :key="item.id" class="sidebar__item">
+      <li
+        v-for="item in menuList"
+        :key="item.id"
+        :class="{ sidebar__item_active: isActiveTab === item.id }"
+        class="sidebar__item"
+        @click="closeMobileSideBar(item)"
+      >
         <router-link :to="item.path" class="item__link">
-          <v-icon :icon-id="item.id" width="15" height="15"></v-icon>
-          <span class="item__title">{{ item.name }}</span>
+          <div>
+            <v-icon :icon-id="item.id" width="15" height="15"></v-icon>
+            <span
+              :class="{ item__title_active: isActiveTab === item.id }"
+              class="item__title"
+            >
+              {{ item.name }}
+            </span>
+          </div>
         </router-link>
       </li>
     </ul>
@@ -16,6 +29,7 @@
 </template>
 
 <script>
+import { ref } from "vue";
 import VIcon from "../components/VIcon.vue";
 
 export default {
@@ -23,7 +37,7 @@ export default {
   components: {
     VIcon,
   },
-  setup() {
+  setup(_, context) {
     const menuList = [
       {
         id: "icon-autocard",
@@ -34,8 +48,17 @@ export default {
       { id: "icon-orderslist", name: "Заказы", path: "/admin-panel/orders" },
     ];
 
+    const isActiveTab = ref(null);
+
+    const closeMobileSideBar = (item) => {
+      isActiveTab.value = item.id;
+      context.emit("close-mobile-sidebar");
+    };
+
     return {
       menuList,
+      isActiveTab,
+      closeMobileSideBar,
     };
   },
 };
@@ -80,6 +103,35 @@ export default {
 }
 
 .sidebar__item {
+  background: $color-white;
+  box-shadow: inset 0px -1px 0px #e1e5eb;
+
+  &:hover {
+    background: $color-bg-hover;
+    box-shadow: inset 0px -1px 0px #e1e5eb, inset 4px 0px 0px #007bff;
+  }
+  &:active {
+    background: $color-bg-hover;
+    box-shadow: inset 0px -1px 0px #e1e5eb, inset 4px 0px 0px #007bff;
+  }
+}
+
+.sidebar__item_active {
+  background: $color-bg-hover;
+  box-shadow: inset 0px -1px 0px #e1e5eb, inset 4px 0px 0px #007bff;
+}
+
+.sidebar__item:hover .icon {
+  fill: $color-blue;
+}
+
+.item__link {
+  text-decoration: none;
+  display: block;
+  padding: 20px 25px;
+}
+
+.item__title {
   font-family: $ff;
   font-style: normal;
   font-weight: 400;
@@ -87,39 +139,10 @@ export default {
   line-height: 17px;
   letter-spacing: -0.234375px;
   color: $color-text;
-  background: $color-white;
-  box-shadow: inset 0px -1px 0px #e1e5eb;
-  padding: 20px 25px;
-
-  &:hover {
-    color: $color-blue;
-    background: $color-bg-hover;
-    box-shadow: inset 0px -1px 0px #e1e5eb, inset 4px 0px 0px #007bff;
-  }
-  &:active {
-    color: $color-blue;
-    background: $color-bg-hover;
-    box-shadow: inset 0px -1px 0px #e1e5eb, inset 4px 0px 0px #007bff;
-  }
-}
-
-.sidebar__item:hover .icon {
-  fill: $color-blue;
-}
-
-.sidebar__item:active .icon {
-  fill: $color-blue;
-}
-
-.item__link {
-  text-decoration: none;
-
-  &:active {
-    color: $color-blue;
-  }
-}
-
-.item__title {
   padding: 0 0 0 11px;
+}
+
+.item__title_active {
+  color: $color-blue;
 }
 </style>

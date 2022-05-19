@@ -200,7 +200,7 @@ export default {
   @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
     flex-wrap: wrap;
     justify-content: center;
-    padding: 15px 15px 5px 15px;;
+    padding: 15px 15px 5px 15px;
   }
 }
 

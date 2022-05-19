@@ -9,7 +9,7 @@
           <v-icon icon-id="icon-x" width="32" height="32" @click="toggleNav" />
         </div>
         <div class="menu-wrp">
-          <the-sidebar></the-sidebar>
+          <the-sidebar @close-mobile-sidebar="toggleNav"></the-sidebar>
         </div>
       </div>
     </transition>
