@@ -29,18 +29,11 @@ export default {
 @import "@/assets/variables.scss";
 
 .user-details-wrp {
-  width: 20%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   padding: 0 25px;
-
-  @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
-    padding: 0 15px;
-    width: 65%;
-    justify-content: flex-end;
-  }
 }
 
 .user-container {

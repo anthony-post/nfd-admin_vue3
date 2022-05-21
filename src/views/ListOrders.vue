@@ -3,35 +3,44 @@
     <h2 class="orders__title">Заказы</h2>
     <section class="orders-container">
       <div class="orders__header">
-        <div class="dropdown__container">
+        <div class="header-dropdown__container">
           <v-dropdown
+            id="dropdown1"
             :itemList="listItems"
-            :selectedItem="chosenItem"
             name="period"
             placeholder="За неделю"
-            @on-item-selected="setSelectedItem"
             class="orders__header-dropdown"
+            @on-item-selected="setSelectedItem"
           ></v-dropdown>
           <v-dropdown
+            id="dropdown2"
             :itemList="listItems"
             name="car"
             placeholder="Elantra"
             class="orders__header-dropdown"
+            @on-item-selected="setSelectedItem"
           ></v-dropdown>
           <v-dropdown
+            id="dropdown3"
             :itemList="listItems"
             name="city"
             placeholder="Ульяновск"
             class="orders__header-dropdown"
+            @on-item-selected="setSelectedItem"
           ></v-dropdown>
           <v-dropdown
+            id="dropdown4"
             :itemList="listItems"
             name="status"
             placeholder="В процессе"
             class="orders__header-dropdown"
+            @on-item-selected="setSelectedItem"
           ></v-dropdown>
         </div>
-        <button class="orders__header-btn">Применить</button>
+        <div class="header-btn__container">
+          <button type="reset" class="orders__header-btn orders__header-btn_reset">Сбросить</button>
+          <button type="submit" class="orders__header-btn orders__header-btn_submit">Применить</button>
+        </div>
       </div>
       <div class="orders__content">
         <ul class="orders__list">
@@ -78,7 +87,7 @@
                 ></v-icon>
                 Отмена
               </button>
-              <button class="orders__button orders__button_right">
+              <button type="button" class="orders__button orders__button_right">
                 <v-icon
                   icon-id="icon-edit"
                   width="12"
@@ -137,7 +146,9 @@ export default {
 
     const chosenItem = ref({});
 
-    const setSelectedItem = (chosenItem) => (chosenItem.value = chosenItem);
+    const setSelectedItem = (chosenItem) => {
+      chosenItem.value = chosenItem
+    };
 
     return {
       listItems,
@@ -193,7 +204,6 @@ export default {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  flex-basis: 40%;
   box-shadow: 0px -0.5px 0px #e0e2e8, 0px 0.5px 0px #e0e2e8;
   padding: 15px 20px;
 
@@ -204,19 +214,25 @@ export default {
   }
 }
 
-.dropdown__container {
+.header-dropdown__container {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
   flex-wrap: wrap;
+
+  @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
+    justify-content: center;
+  }
 }
 
 .orders__header-dropdown {
-  margin: 0 15px 0 0;
+  margin: 5px;
+}
 
-  @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
-    margin: 5px;
-  }
+.header-btn__container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
 .orders__header-btn {
@@ -229,12 +245,22 @@ export default {
   letter-spacing: -0.345714px;
   color: $color-white;
 
-  background: $color-blue;
-  border: 0.5px solid $color-blue;
   border-radius: 4px;
   box-sizing: border-box;
 
-  padding: 8px 15px;
+  width: 95px;
+  margin: 5px;
+  padding: 8px 0;
+}
+
+.orders__header-btn_submit {
+  background: $color-blue;
+  border: 0.5px solid $color-blue;
+}
+
+.orders__header-btn_reset {
+  background: $color-red;
+  border: 0.5px solid $color-red;
 }
 
 .orders__content {
@@ -251,6 +277,14 @@ export default {
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
+}
+
+.orders__car,
+.orders__data,
+.orders__additional,
+.orders__price,
+.orders__buttons-container {
+  margin: 5px;
 }
 
 .orders__data {

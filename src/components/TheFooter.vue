@@ -1,11 +1,15 @@
 <template>
-  <div class="footer-wrp">
-    <div>
-      <router-link to="/" class="footer__link">Главная страница</router-link>
-      <router-link to="/" class="footer__link">Ссылка</router-link>
-    </div>
+  <footer class="footer-wrp">
+    <ul class="footer-list">
+      <li>
+        <router-link to="/" class="footer__link">Главная страница</router-link>
+      </li>
+      <li>
+        <router-link to="/" class="footer__link">Ссылка</router-link>
+      </li>
+    </ul>
     <p class="footer__copyright">Copyright © 2020 Simbirsoft</p>
-  </div>
+  </footer>
 </template>
 
 <script>
@@ -27,6 +31,11 @@ export default {
   @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
     padding: 15px;
   }
+}
+
+.footer-list {
+  display: flex;
+  flex-direction: row;
 }
 
 .footer__link {
