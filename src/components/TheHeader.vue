@@ -6,8 +6,10 @@
       placeholder="Поиск ..."
       class="header__search"
     ></v-search>
-    <v-notification></v-notification>
-    <v-user-details></v-user-details>
+    <div class="header__container">
+      <v-notification></v-notification>
+      <v-user-details></v-user-details>
+    </div>
   </header>
 </template>
 
@@ -35,6 +37,7 @@ export default {
   width: calc(100vw - 285px);
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   align-items: center;
   box-shadow: 0px 2.5px 9.5px rgba(90, 97, 105, 0.12);
 
@@ -53,6 +56,16 @@ export default {
     margin: 0;
     padding: 10px;
     border-bottom: 1px solid $color-grey-light;
+  }
+}
+
+.header__container {
+  display: flex;
+  flex-direction: row;
+
+  @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
+    justify-content: space-between;
+    width: 100%;
   }
 }
 </style>

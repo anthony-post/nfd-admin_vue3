@@ -1,21 +1,16 @@
 <template>
   <div class="dropdown-wrp">
     <label :for="name" class="dropdown__label"></label>
-    <!-- Dropdown Input -->
     <input
       v-model.trim="inputValue"
+      :id="id"
       :name="name"
       :placeholder="placeholder"
       type="text"
       autocomplete="off"
       class="dropdown__input"
-      @focus="isDropDownVisible = true"
+      @focus="showDropDown"
     />
-    <div class="dropdown__icon-wrp" @click="isDropDownVisible = true">
-      <div class="dropdown__icon dropdown__icon_up"></div>
-      <div class="dropdown__icon dropdown__icon_down"></div>
-    </div>
-    <!-- Dropdown List -->
     <ul class="dropdown-list" v-show="isDropDownVisible">
       <li
         class="dropdown-item"
@@ -31,7 +26,7 @@
 
 <script>
 import { ref, computed } from "vue";
-// import { ref, computed, onMounted, watch, toRef } from "vue";
+import { onMounted, onBeforeUnmount } from "vue";
 
 export default {
   name: "VDropdown",
@@ -56,39 +51,21 @@ export default {
       type: String,
       required: true,
     },
+    id: {
+      type: String
+    }
   },
   setup(props, context) {
-    //TO DO подставляет в инпут выбранное значение из store, если оно было выбрано и происходило переключение по вкладкам
-    // onMounted(() => {
-    //   if (Object.keys(props.selectedItem).length !== 0) {
-    //     inputValue.value = props.selectedItem.name;
-    //   } else {
-    //     inputValue.value = "";
-    //   }
-    // });
-
-    //TO DO отслеживает пустой объект в store.
-    //если объект пустой, то значение инпута сбрасывается.
-    //необходимо для того, чтобы в случае сброса города, пункт выдачи тоже сбрасывался
-    // watch(
-    //   toRef(props, "selectedItem"),
-    //   () => {
-    //     if (Object.keys(props.selectedItem).length === 0) {
-    //       inputValue.value = "";
-    //     }
-    //   },
-    //   { deep: true }
-    // );
 
     const inputValue = ref("");
     const isDropDownVisible = ref(null);
 
     const filteredList = computed(() => {
-      let currentInput = inputValue.value.toLowerCase();
+      const currentInput = inputValue.value.toLowerCase();
       if (currentInput) {
         return props.itemList.filter((item) => {
           if (item?.name) {
-            let currentName = item.name.toLowerCase();
+            const currentName = item.name.toLowerCase();
             return currentName.startsWith(currentInput);
           }
         });
@@ -103,8 +80,8 @@ export default {
       } else {
         inputValue.value = "";
       }
-      isDropDownVisible.value = false;
       context.emit("on-item-selected", chosenItem);
+      isDropDownVisible.value = false;
     };
 
     const resetSelection = () => {
@@ -112,12 +89,50 @@ export default {
       context.emit("on-item-reset");
     };
 
+    const showDropDown = () => {
+      isDropDownVisible.value = true;
+    }
+    //TO DO закрытие ранее открытого dropdown и открытие dropdown, по которому кликнули
+    // const swithDropDown = event => {
+    //   const elementsDropdown = document.querySelectorAll('.dropdown__input');
+    //   for(let i = 0; i < elementsDropdown.length; i++) {
+    //     if(event.target.id !== elementsDropdown[i].id) {
+    //       isDropDownVisible.value = false;
+    //     }
+    //   }
+    //   console.log(event);
+    // };
+
+    const hideDropDown = event => {
+      if(isDropDownVisible.value && event.target.className !== 'dropdown__input') {
+        isDropDownVisible.value = false;
+      }
+    };
+    
+    onMounted(() => {
+      document.addEventListener('click', hideDropDown);
+
+      //TO DO повесить слушатель на dropdown
+      // const elemDropdown1 = document.querySelector('#dropdown1');
+      // elemDropdown1.addEventListener('click', swithDropDown);
+
+      // const elemDropdown2 = document.querySelector('#dropdown2');
+      // elemDropdown2.addEventListener('click', swithDropDown);
+    });
+
+    onBeforeUnmount(() => {
+      document.removeEventListener('click', hideDropDown);
+
+      // document.removeEventListener('click', swithDropDown);
+    });
+
     return {
       inputValue,
       isDropDownVisible,
       filteredList,
       selectItem,
       resetSelection,
+      showDropDown,
     };
   },
 };
@@ -125,10 +140,6 @@ export default {
 
 <style lang="scss">
 @import "@/assets/variables.scss";
-
-.dropdown-wrp {
-  position: relative;
-}
 
 .dropdown__input {
   width: 110px;
@@ -146,32 +157,14 @@ export default {
 
   padding: 8px 0 8px 14px;
 
+  background-image: url("../assets/icon_dropdown.svg");
+  background-repeat: no-repeat no-repeat;
+  background-position: 95%;
+  background-size: 8px 11px;
+
   &:focus {
     outline: none;
   }
-}
-
-.dropdown__icon-wrp {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-}
-
-.dropdown__icon {
-  width: 0;
-  height: 0;
-  border-left: 4px solid transparent;
-  border-right: 4px solid transparent;
-}
-
-.dropdown__icon_up {
-  border-bottom: 4px solid #24375b;
-  margin: 0 0 1px 0;
-}
-
-.dropdown__icon_down {
-  border-top: 4px solid #24375b;
-  margin: 1px 0 0 0;
 }
 
 .dropdown-list {
