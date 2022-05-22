@@ -141,6 +141,10 @@ export default {
 <style lang="scss">
 @import "@/assets/variables.scss";
 
+.dropdown-wrp {
+  position: relative;
+}
+
 .dropdown__input {
   width: 110px;
   background: $color-white;
