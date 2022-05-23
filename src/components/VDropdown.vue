@@ -9,7 +9,7 @@
       type="text"
       autocomplete="off"
       class="dropdown__input"
-      @focus="showDropDown"
+      @focus="isDropDownVisible = true"
     />
     <ul class="dropdown-list" v-show="isDropDownVisible">
       <li
@@ -74,7 +74,7 @@ export default {
       }
     });
 
-    const selectItem = (chosenItem) => {
+    const selectItem = chosenItem => {
       if (chosenItem) {
         inputValue.value = chosenItem.name;
       } else {
@@ -89,19 +89,32 @@ export default {
       context.emit("on-item-reset");
     };
 
-    const showDropDown = () => {
-      isDropDownVisible.value = true;
-    }
     //TO DO закрытие ранее открытого dropdown и открытие dropdown, по которому кликнули
-    // const swithDropDown = event => {
+    // const showDropDown = event => {
+    //   console.log(event);
+    //   isDropDownVisible.value = true;
+    // };
+
+    // const showDropDown = event => {
+    //   console.log(event);
     //   const elementsDropdown = document.querySelectorAll('.dropdown__input');
     //   for(let i = 0; i < elementsDropdown.length; i++) {
-    //     if(event.target.id !== elementsDropdown[i].id) {
+    //     if(isDropDownVisible.value && event.target.id !== elementsDropdown[i].id) {
     //       isDropDownVisible.value = false;
     //     }
     //   }
-    //   console.log(event);
     // };
+
+    // const chosenEl = ref("");
+    // const closeDropDown = () => {
+    //   if (chosenEl.value) {
+    //     inputValue.value = chosenEl.value;
+    //   } else {
+    //     inputValue.value = "";
+    //   }
+    //   isDropDownVisible.value = false;
+    // };
+
 
     const hideDropDown = event => {
       if(isDropDownVisible.value && event.target.className !== 'dropdown__input') {
@@ -114,16 +127,14 @@ export default {
 
       //TO DO повесить слушатель на dropdown
       // const elemDropdown1 = document.querySelector('#dropdown1');
-      // elemDropdown1.addEventListener('click', swithDropDown);
+      // elemDropdown1.addEventListener('blur', closeDropDown);
 
       // const elemDropdown2 = document.querySelector('#dropdown2');
-      // elemDropdown2.addEventListener('click', swithDropDown);
+      // elemDropdown2.addEventListener('blur', closeDropDown);
     });
 
     onBeforeUnmount(() => {
       document.removeEventListener('click', hideDropDown);
-
-      // document.removeEventListener('click', swithDropDown);
     });
 
     return {
@@ -132,7 +143,8 @@ export default {
       filteredList,
       selectItem,
       resetSelection,
-      showDropDown,
+      // chosenEl,
+      // closeDropDown,
     };
   },
 };
