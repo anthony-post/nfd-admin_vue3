@@ -69,7 +69,7 @@
             </div>
             <div class="orders__price">{{ order.price }} &#8381;</div>
             <div class="orders__buttons-container">
-              <button class="orders__button orders__button_left">
+              <button type="button" class="orders__button orders__button_left">
                 <v-icon
                   icon-id="icon-approve"
                   width="12"
@@ -78,7 +78,7 @@
                 ></v-icon>
                 Готово
               </button>
-              <button class="orders__button orders__button_middle">
+              <button type="button" class="orders__button orders__button_middle">
                 <v-icon
                   icon-id="icon-reject"
                   width="12"
