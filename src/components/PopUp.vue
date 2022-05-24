@@ -33,6 +33,17 @@
               <dt class="title__text">Описание:</dt>
               <dd class="title__value">{{ car.description }}</dd>
             </dl>
+            <div class="popup__title">
+              <button type="button" class="title__item-btn">
+                <v-icon
+                  icon-id="icon-edit"
+                  width="12"
+                  height="11"
+                  class="orders__button-icon_edit"
+                ></v-icon>
+                <span>Изменить</span>
+              </button>
+            </div>
           </div>
         </div>
     </div>
@@ -84,8 +95,9 @@ export default {
 .popup-container {
   position: relative;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
+  align-items: center;
   height: 100%;
   transition: all 0.3s ease;
 }
@@ -94,14 +106,6 @@ export default {
   position: absolute;
   top: 10px;
   right: 10px;
-}
-
-.popup-body {
-  margin: 15px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 }
 
 .popup__title {
@@ -127,6 +131,26 @@ export default {
   line-height: 15px;
   color: $color-black;
   margin: 0 5px;
+}
+
+.title__item-btn {
+  background: $color-white;
+  border: 0.5px solid #BECAD6;
+  border-radius: 4px;
+  box-sizing: border-box;
+
+  font-family: $ff;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 13px;
+  color: $color-grey;
+  
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding: 5px;
+  width: 100%;
 }
 
 .modal-enter {

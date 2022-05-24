@@ -44,8 +44,10 @@ export default {
         name: "Карточка автомобиля",
         path: "/admin-panel/card-car",
       },
-      { id: "icon-autolist", name: "Список авто", path: "/admin-panel/cars" },
       { id: "icon-orderslist", name: "Заказы", path: "/admin-panel/orders" },
+      { id: "icon-autolist", name: "Список авто", path: "/admin-panel/cars" },
+      { id: "icon-citieslist", name: "Список городов", path: "/admin-panel/cities" },
+      { id: "icon-pickuppointslist", name: "Пункты выдачи", path: "/admin-panel/pickUpPoints" },
     ];
 
     const isActiveTab = ref(null);

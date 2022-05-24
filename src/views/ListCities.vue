@@ -1,40 +1,40 @@
 <template>
-  <div class="card-wrp">
-    <h2 class="card__title">Автомобили</h2>
-    <section class="card-container">
-      <div class="card__header">
+  <div class="entity-wrp">
+    <h2 class="entity__title">Города</h2>
+    <section class="entity-container">
+      <div class="entity__header">
         <div class="header-dropdown__container">
           <v-dropdown
             :itemList="listItems"
             name="period"
             placeholder="Field"
-            class="card__header-dropdown"
+            class="entity__header-dropdown"
           ></v-dropdown>
           <v-dropdown
             :itemList="listItems"
             name="car"
             placeholder="Field"
-            class="card__header-dropdown"
+            class="entity__header-dropdown"
           ></v-dropdown>
           <v-dropdown
             :itemList="listItems"
             name="city"
             placeholder="Field"
-            class="card__header-dropdown"
+            class="entity__header-dropdown"
           ></v-dropdown>
           <v-dropdown
             :itemList="listItems"
             name="status"
             placeholder="Field"
-            class="card__header-dropdown"
+            class="entity__header-dropdown"
           ></v-dropdown>
         </div>
         <div class="header-btn__container">
-          <button type="reset" class="card__header-btn card__header-btn_reset">Сбросить</button>
-          <button type="submit" class="card__header-btn card__header-btn_submit">Применить</button>
+          <button type="reset" class="entity__header-btn entity__header-btn_reset">Сбросить</button>
+          <button type="submit" class="entity__header-btn entity__header-btn_submit">Применить</button>
         </div>
       </div>
-       <div class="card__content">
+       <div class="entity__content">
          <ul class="field-list">
            <li 
             v-for="field in listFieldsTable"
@@ -44,28 +44,28 @@
             {{ field }}
            </li>
          </ul>
-         <ul class="car-list">
+         <ul class="entity-list">
            <li 
-            v-for="car in listCars"
-            :key="car.id"
-            class="car__item"
+            v-for="city in listCities"
+            :key="city.id"
+            class="entity__item"
           >
-            <div class="car__item-data">{{ car.name }}</div>
-            <div class="car__item-data">{{ car.category }}</div>
-            <div class="car__item-data">{{ car.color }}</div>
-            <div class="car__item-data">{{ car.priceMin }} - {{ car.priceMax }}</div>
-            <div class="car__item-data">
-              <button type="button" class="car__item-btn" @click="showPopUp">...</button>
+            <div class="entity__item-data">{{ city.name }}</div>
+            <div class="entity__item-data">
+              <button type="button" class="entity__item-btn">
+                  <v-icon
+                  icon-id="icon-edit"
+                  width="12"
+                  height="11"
+                  class="orders__button-icon_edit"
+                ></v-icon>
+                <span>Изменить</span>
+              </button>
             </div>
-            <pop-up 
-              v-if="popUpIsActive" 
-              class="car__item-popup"
-              @close-popup="closePopUp"
-            ></pop-up>
            </li>
          </ul>
        </div>
-      <div class="card__pagination">
+      <div class="entity__pagination">
         <v-pagination>1...4</v-pagination>
       </div>
     </section>
@@ -73,54 +73,36 @@
 </template>
 
 <script>
-import { ref } from "vue";
 import VDropdown from "../components/VDropdown.vue";
 import VPagination from "../components/VPagination.vue";
-import PopUp from "../components/PopUp.vue";
+import VIcon from "../components/VIcon.vue";
 
 export default {
-  name: "ListCars",
+  name: "ListCities",
   components: {
     VDropdown,
     VPagination,
-    PopUp,
+    VIcon,
   },
   setup() {
-
     const listItems = [
       { id: 1, name: "xxx" },
       { id: 2, name: "yyy" },
       { id: 3, name: "zzz" },
     ];
 
-    const listFieldsTable = ["Модель", "Категория", "Цвет", "Цена", "Подробнее" ];
+    const listFieldsTable = ["Наименование"];
 
-    const listCars = [
-      { id: 1, name: "ELANTRA", number: "x123yz", category: "Бизнес", color: "Черный", priceMin: 5000, priceMax: 10000, pic: `${require("../assets/img/car_image.jpg")}`, description: "Отличный автомобиль" },
-      { id: 2, name: "ELANTRA", number: "x123yz", category: "Бизнес", color: "Черный", priceMin: 5000, priceMax: 10000, pic: `${require("../assets/img/car_image.jpg")}`, description: "Отличный автомобиль" },
-      { id: 3, name: "ELANTRA", number: "x123yz", category: "Бизнес", color: "Черный", priceMin: 5000, priceMax: 10000, pic: `${require("../assets/img/car_image.jpg")}`, description: "Отличный автомобиль" },
+    const listCities = [
+      { id: 1, name: "Ульяновск" },
+      { id: 2, name: "Воронеж" },
+      { id: 3, name: "Казань" },
     ];
-
-    //pop-up
-    const popUpIsActive = ref(false);
-    // const togglePopUp = () => {
-    //   popUpIsActive.value = !popUpIsActive.value;
-    // };
-    const showPopUp = () => {
-      popUpIsActive.value = !popUpIsActive.value;
-    };
-    const closePopUp = () => {
-      popUpIsActive.value = !popUpIsActive.value;
-    };
 
     return {
       listItems,
       listFieldsTable,
-      listCars,
-      popUpIsActive,
-      // togglePopUp,
-      showPopUp,
-      closePopUp,
+      listCities,
     }
   }
 };
@@ -129,13 +111,13 @@ export default {
 <style lang="scss">
 @import "@/assets/variables.scss";
 
-.card-wrp {
+.entity-wrp {
   width: 100%;
   height: 100%;
   background-color: $color-background;
 }
 
-.card__title {
+.entity__title {
   margin: 0;
   font-family: $ff;
   font-style: normal;
@@ -152,7 +134,7 @@ export default {
   }
 }
 
-.card-container {
+.entity-container {
   position: relative;
 
   background: $color-white;
@@ -167,7 +149,7 @@ export default {
   }
 }
 
-.card__header {
+.entity__header {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -192,7 +174,7 @@ export default {
   }
 }
 
-.card__header-dropdown {
+.entity__header-dropdown {
   margin: 5px;
 }
 
@@ -203,7 +185,7 @@ export default {
   justify-content: flex-end;
 }
 
-.card__header-btn {
+.entity__header-btn {
   font-family: $ff;
   font-style: normal;
   font-weight: 400;
@@ -221,17 +203,17 @@ export default {
   padding: 8px 0;
 }
 
-.card__header-btn_submit {
+.entity__header-btn_submit {
   background: $color-blue;
   border: 0.5px solid $color-blue;
 }
 
-.card__header-btn_reset {
+.entity__header-btn_reset {
   background: $color-red;
   border: 0.5px solid $color-red;
 }
 
-.card__content {
+.entity__content {
   padding: 15px 20px 20px;
 
   @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
@@ -255,12 +237,12 @@ export default {
   letter-spacing: -0.377143px;
   color: $color-text;
   margin: 5px;
-  width: 20%;
 }
 
-.car__item {
+.entity__item {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   align-items: center;
   margin: 15px 0;
 
@@ -273,41 +255,31 @@ export default {
   color: $color-text;
 }
 
-.car__item-data {
+.entity__item-data {
   margin: 0 5px;
-  width: 20%;
 }
 
-.car__pic {
-  max-width: 100%;
-}
+.entity__item-btn {
+  background: $color-white;
+  border: 0.5px solid #BECAD6;
+  border-radius: 4px;
+  box-sizing: border-box;
 
-.car__item-btn {
   font-family: $ff;
   font-style: normal;
   font-weight: 400;
   font-size: 11px;
   line-height: 13px;
   color: $color-grey;
-
-  background: $color-white;
-  border: 0.5px solid #BECAD6;
-  border-radius: 4px;
-  box-sizing: border-box;
-
-  width: 50px;
+  
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding: 5px 5px 5px 0;
+  width: 100px;
 }
 
-.car__item-popup {
-  position: absolute;
-  z-index: 9998;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.card__pagination {
+.entity__pagination {
   display: flex;
   flex-direction: row;
   justify-content: center;

@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from "vue-router";
 import Login from "../views/login.vue";
 import ListOrders from "../views/ListOrders.vue";
 import ListCars from "../views/ListCars.vue";
+import ListCities from "../views/ListCities.vue";
+import ListPickUpPoints from "../views/ListPickUpPoints.vue";
 import CardCar from "../views/CardCar.vue";
 
 const routes = [
@@ -16,9 +18,11 @@ const routes = [
     component: () => import("@/views/AdminPanel.vue"),
     meta: { needAuth: true },
     children: [
+      { path: "card-car", component: CardCar },
       { path: "orders", component: ListOrders },
       { path: "cars", component: ListCars },
-      { path: "card-car", component: CardCar },
+      { path: "cities", component: ListCities },
+      { path: "pickUpPoints", component: ListPickUpPoints },
     ],
   },
 ];
