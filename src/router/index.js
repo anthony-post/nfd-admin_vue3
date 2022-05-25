@@ -4,6 +4,10 @@ import ListOrders from "../views/ListOrders.vue";
 import ListCars from "../views/ListCars.vue";
 import ListCities from "../views/ListCities.vue";
 import ListPickUpPoints from "../views/ListPickUpPoints.vue";
+import ListRates from "../views/ListRates.vue";
+import ListTypeRates from "../views/ListTypeRates.vue";
+import ListCategories from "../views/ListCategories.vue";
+import ListOrderStatus from "../views/ListOrderStatus.vue";
 import CardCar from "../views/CardCar.vue";
 
 const routes = [
@@ -23,6 +27,10 @@ const routes = [
       { path: "cars", component: ListCars },
       { path: "cities", component: ListCities },
       { path: "pickUpPoints", component: ListPickUpPoints },
+      { path: "ListRates", component: ListRates },
+      { path: "ListTypeRates", component: ListTypeRates },
+      { path: "ListCategories", component: ListCategories },
+      { path: "ListOrderStatus", component: ListOrderStatus },
     ],
   },
 ];

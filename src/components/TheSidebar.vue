@@ -44,10 +44,34 @@ export default {
         name: "Карточка автомобиля",
         path: "/admin-panel/card-car",
       },
-      { id: "icon-orderslist", name: "Заказы", path: "/admin-panel/orders" },
-      { id: "icon-autolist", name: "Список авто", path: "/admin-panel/cars" },
-      { id: "icon-citieslist", name: "Список городов", path: "/admin-panel/cities" },
-      { id: "icon-pickuppointslist", name: "Пункты выдачи", path: "/admin-panel/pickUpPoints" },
+      { id: "icon-orders", name: "Заказы", path: "/admin-panel/orders" },
+      { id: "icon-cars", name: "Список авто", path: "/admin-panel/cars" },
+      {
+        id: "icon-categories",
+        name: "Категории авто",
+        path: "/admin-panel/ListCategories",
+      },
+      {
+        id: "icon-cities",
+        name: "Список городов",
+        path: "/admin-panel/cities",
+      },
+      {
+        id: "icon-pickuppoints",
+        name: "Пункты выдачи",
+        path: "/admin-panel/pickUpPoints",
+      },
+      { id: "icon-rates", name: "Тарифы", path: "/admin-panel/ListRates" },
+      {
+        id: "icon-typerates",
+        name: "Типы тарифов",
+        path: "/admin-panel/ListTypeRates",
+      },
+      {
+        id: "icon-orderstatus",
+        name: "Статусы заказов",
+        path: "/admin-panel/ListOrderStatus",
+      },
     ];
 
     const isActiveTab = ref(null);

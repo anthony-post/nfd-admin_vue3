@@ -1,18 +1,12 @@
 <template>
   <div class="entity-wrp">
-    <h2 class="entity__title">Пункты выдачи</h2>
+    <h2 class="entity__title">Статусы заказов</h2>
     <section class="entity-container">
       <div class="entity__header">
         <div class="header-dropdown__container">
           <v-dropdown
             :itemList="listItems"
             name="period"
-            placeholder="Field"
-            class="entity__header-dropdown"
-          ></v-dropdown>
-          <v-dropdown
-            :itemList="listItems"
-            name="car"
             placeholder="Field"
             class="entity__header-dropdown"
           ></v-dropdown>
@@ -37,27 +31,21 @@
           <li
             v-for="item in listTableHeaders"
             :key="item"
-            class="field__item field__item_pickuppoint"
+            class="field__item field__item_orderstatus"
           >
             {{ item }}
           </li>
         </ul>
         <ul class="entity-list">
           <li
-            v-for="point in listPickUpPoints"
-            :key="point.id"
+            v-for="status in listOrderStatus"
+            :key="status.id"
             class="entity__item"
           >
-            <div class="entity__item-data entity__item-data_pickuppoint">
-              {{ point.name }}
+            <div class="entity__item-data entity__item-data_orderstatus">
+              {{ status.name }}
             </div>
-            <div class="entity__item-data entity__item-data_pickuppoint">
-              {{ point.city }}
-            </div>
-            <div class="entity__item-data entity__item-data_pickuppoint">
-              {{ point.address }}
-            </div>
-            <div class="entity__item-data entity__item-data_pickuppoint">
+            <div class="entity__item-data entity__item-data_orderstatus">
               <button type="button" class="entity__item-btn">
                 <v-icon
                   icon-id="icon-edit"
@@ -93,7 +81,7 @@ import VPagination from "../components/VPagination.vue";
 import VIcon from "../components/VIcon.vue";
 
 export default {
-  name: "ListPickUpPoints",
+  name: "ListOrderStatus",
   components: {
     VDropdown,
     VPagination,
@@ -106,33 +94,18 @@ export default {
       { id: 3, name: "zzz" },
     ];
 
-    const listTableHeaders = ["Название", "Город", "Адрес", "Действия"];
+    const listTableHeaders = ["Название", "Действия"];
 
-    const listPickUpPoints = [
-      {
-        id: 1,
-        name: "Tорговый центр",
-        city: "Ульяновск",
-        address: "улица Уличная, 1",
-      },
-      {
-        id: 2,
-        name: "Tорговый центр",
-        city: "Воронеж",
-        address: "улица Уличная, 2",
-      },
-      {
-        id: 3,
-        name: "Tорговый центр",
-        city: "Казань",
-        address: "улица Уличная, 3",
-      },
+    const listOrderStatus = [
+      { id: 1, name: "Новый" },
+      { id: 2, name: "Подтвержденный" },
+      { id: 3, name: "Отмененный" },
     ];
 
     return {
       listItems,
       listTableHeaders,
-      listPickUpPoints,
+      listOrderStatus,
     };
   },
 };
@@ -141,43 +114,11 @@ export default {
 <style lang="scss">
 @import "@/assets/variables.scss";
 
-.field__item_pickuppoint {
-  width: 25%;
+.field__item_orderstatus {
+  width: 50%;
 }
 
-.entity__item-data_pickuppoint {
-  width: 25%;
-}
-
-.entity__item-btn {
-  background: $color-white;
-  border: 0.5px solid #becad6;
-  border-radius: 4px;
-  box-sizing: border-box;
-
-  font-family: $ff;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 11px;
-  line-height: 13px;
-  color: $color-grey;
-
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  padding: 3px 5px 3px 0;
-  margin: 3px;
-  width: 80px;
-
-  @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
-    padding: 3px 0px 3px 0;
-    width: 40px;
-  }
-}
-
-.entity__item-btn-title {
-  @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
-    display: none;
-  }
+.entity__item-data_orderstatus {
+  width: 50%;
 }
 </style>

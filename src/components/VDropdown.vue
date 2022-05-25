@@ -52,11 +52,10 @@ export default {
       required: true,
     },
     id: {
-      type: String
-    }
+      type: String,
+    },
   },
   setup(props, context) {
-
     const inputValue = ref("");
     const isDropDownVisible = ref(null);
 
@@ -74,7 +73,7 @@ export default {
       }
     });
 
-    const selectItem = chosenItem => {
+    const selectItem = (chosenItem) => {
       if (chosenItem) {
         inputValue.value = chosenItem.name;
       } else {
@@ -115,15 +114,17 @@ export default {
     //   isDropDownVisible.value = false;
     // };
 
-
-    const hideDropDown = event => {
-      if(isDropDownVisible.value && event.target.className !== 'dropdown__input') {
+    const hideDropDown = (event) => {
+      if (
+        isDropDownVisible.value &&
+        event.target.className !== "dropdown__input"
+      ) {
         isDropDownVisible.value = false;
       }
     };
-    
+
     onMounted(() => {
-      document.addEventListener('click', hideDropDown);
+      document.addEventListener("click", hideDropDown);
 
       //TO DO повесить слушатель на dropdown
       // const elemDropdown1 = document.querySelector('#dropdown1');
@@ -134,7 +135,7 @@ export default {
     });
 
     onBeforeUnmount(() => {
-      document.removeEventListener('click', hideDropDown);
+      document.removeEventListener("click", hideDropDown);
     });
 
     return {
@@ -179,7 +180,7 @@ export default {
   background-size: 8px 11px;
 
   &:focus {
-    outline: none;
+    outline: 0.5px ridge $color-blue;
   }
 }
 

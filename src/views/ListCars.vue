@@ -30,41 +30,48 @@
           ></v-dropdown>
         </div>
         <div class="header-btn__container">
-          <button type="reset" class="card__header-btn card__header-btn_reset">Сбросить</button>
-          <button type="submit" class="card__header-btn card__header-btn_submit">Применить</button>
+          <button type="reset" class="card__header-btn card__header-btn_reset">
+            Сбросить
+          </button>
+          <button
+            type="submit"
+            class="card__header-btn card__header-btn_submit"
+          >
+            Применить
+          </button>
         </div>
       </div>
-       <div class="card__content">
-         <ul class="field-list">
-           <li 
-            v-for="field in listFieldsTable"
-            :key="field.id"
-            class="field__item"
+      <div class="card__content">
+        <ul class="field-list">
+          <li
+            v-for="item in listTableHeaders"
+            :key="item"
+            class="field__item field__item_car"
           >
-            {{ field }}
-           </li>
-         </ul>
-         <ul class="car-list">
-           <li 
-            v-for="car in listCars"
-            :key="car.id"
-            class="car__item"
-          >
+            {{ item }}
+          </li>
+        </ul>
+        <ul class="car-list">
+          <li v-for="car in listCars" :key="car.id" class="car__item">
             <div class="car__item-data">{{ car.name }}</div>
             <div class="car__item-data">{{ car.category }}</div>
             <div class="car__item-data">{{ car.color }}</div>
-            <div class="car__item-data">{{ car.priceMin }} - {{ car.priceMax }}</div>
             <div class="car__item-data">
-              <button type="button" class="car__item-btn" @click="showPopUp">...</button>
+              {{ car.priceMin }} - {{ car.priceMax }}
             </div>
-            <pop-up 
-              v-if="popUpIsActive" 
+            <div class="car__item-data">
+              <button type="button" class="car__item-btn" @click="togglePopUp">
+                ...
+              </button>
+            </div>
+            <pop-up
+              v-if="popUpIsActive"
               class="car__item-popup"
-              @close-popup="closePopUp"
+              @close-popup="togglePopUp"
             ></pop-up>
-           </li>
-         </ul>
-       </div>
+          </li>
+        </ul>
+      </div>
       <div class="card__pagination">
         <v-pagination>1...4</v-pagination>
       </div>
@@ -86,43 +93,69 @@ export default {
     PopUp,
   },
   setup() {
-
     const listItems = [
       { id: 1, name: "xxx" },
       { id: 2, name: "yyy" },
       { id: 3, name: "zzz" },
     ];
 
-    const listFieldsTable = ["Модель", "Категория", "Цвет", "Цена", "Подробнее" ];
-
-    const listCars = [
-      { id: 1, name: "ELANTRA", number: "x123yz", category: "Бизнес", color: "Черный", priceMin: 5000, priceMax: 10000, pic: `${require("../assets/img/car_image.jpg")}`, description: "Отличный автомобиль" },
-      { id: 2, name: "ELANTRA", number: "x123yz", category: "Бизнес", color: "Черный", priceMin: 5000, priceMax: 10000, pic: `${require("../assets/img/car_image.jpg")}`, description: "Отличный автомобиль" },
-      { id: 3, name: "ELANTRA", number: "x123yz", category: "Бизнес", color: "Черный", priceMin: 5000, priceMax: 10000, pic: `${require("../assets/img/car_image.jpg")}`, description: "Отличный автомобиль" },
+    const listTableHeaders = [
+      "Модель",
+      "Категория",
+      "Цвет",
+      "Цена",
+      "Подробнее",
     ];
 
-    //pop-up
+    const listCars = [
+      {
+        id: 1,
+        name: "ELANTRA",
+        number: "x123yz",
+        category: "Бизнес",
+        color: "Черный",
+        priceMin: 5000,
+        priceMax: 10000,
+        pic: `${require("../assets/img/car_image.jpg")}`,
+        description: "Отличный автомобиль",
+      },
+      {
+        id: 2,
+        name: "ELANTRA",
+        number: "x123yz",
+        category: "Бизнес",
+        color: "Черный",
+        priceMin: 5000,
+        priceMax: 10000,
+        pic: `${require("../assets/img/car_image.jpg")}`,
+        description: "Отличный автомобиль",
+      },
+      {
+        id: 3,
+        name: "ELANTRA",
+        number: "x123yz",
+        category: "Бизнес",
+        color: "Черный",
+        priceMin: 5000,
+        priceMax: 10000,
+        pic: `${require("../assets/img/car_image.jpg")}`,
+        description: "Отличный автомобиль",
+      },
+    ];
+
     const popUpIsActive = ref(false);
-    // const togglePopUp = () => {
-    //   popUpIsActive.value = !popUpIsActive.value;
-    // };
-    const showPopUp = () => {
-      popUpIsActive.value = !popUpIsActive.value;
-    };
-    const closePopUp = () => {
+    const togglePopUp = () => {
       popUpIsActive.value = !popUpIsActive.value;
     };
 
     return {
       listItems,
-      listFieldsTable,
+      listTableHeaders,
       listCars,
       popUpIsActive,
-      // togglePopUp,
-      showPopUp,
-      closePopUp,
-    }
-  }
+      togglePopUp,
+    };
+  },
 };
 </script>
 
@@ -255,6 +288,9 @@ export default {
   letter-spacing: -0.377143px;
   color: $color-text;
   margin: 5px;
+}
+
+.field__item_car {
   width: 20%;
 }
 
@@ -291,7 +327,7 @@ export default {
   color: $color-grey;
 
   background: $color-white;
-  border: 0.5px solid #BECAD6;
+  border: 0.5px solid #becad6;
   border-radius: 4px;
   box-sizing: border-box;
 

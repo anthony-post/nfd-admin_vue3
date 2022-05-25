@@ -38,8 +38,18 @@
           ></v-dropdown>
         </div>
         <div class="header-btn__container">
-          <button type="reset" class="orders__header-btn orders__header-btn_reset">Сбросить</button>
-          <button type="submit" class="orders__header-btn orders__header-btn_submit">Применить</button>
+          <button
+            type="reset"
+            class="orders__header-btn orders__header-btn_reset"
+          >
+            Сбросить
+          </button>
+          <button
+            type="submit"
+            class="orders__header-btn orders__header-btn_submit"
+          >
+            Применить
+          </button>
         </div>
       </div>
       <div class="orders__content">
@@ -78,7 +88,10 @@
                 ></v-icon>
                 Готово
               </button>
-              <button type="button" class="orders__button orders__button_middle">
+              <button
+                type="button"
+                class="orders__button orders__button_middle"
+              >
                 <v-icon
                   icon-id="icon-reject"
                   width="12"
@@ -147,7 +160,7 @@ export default {
     const chosenItem = ref({});
 
     const setSelectedItem = (chosenItem) => {
-      chosenItem.value = chosenItem
+      chosenItem.value = chosenItem;
     };
 
     return {

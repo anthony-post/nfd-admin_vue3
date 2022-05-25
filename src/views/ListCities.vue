@@ -10,61 +10,60 @@
             placeholder="Field"
             class="entity__header-dropdown"
           ></v-dropdown>
-          <v-dropdown
-            :itemList="listItems"
-            name="car"
-            placeholder="Field"
-            class="entity__header-dropdown"
-          ></v-dropdown>
-          <v-dropdown
-            :itemList="listItems"
-            name="city"
-            placeholder="Field"
-            class="entity__header-dropdown"
-          ></v-dropdown>
-          <v-dropdown
-            :itemList="listItems"
-            name="status"
-            placeholder="Field"
-            class="entity__header-dropdown"
-          ></v-dropdown>
         </div>
         <div class="header-btn__container">
-          <button type="reset" class="entity__header-btn entity__header-btn_reset">Сбросить</button>
-          <button type="submit" class="entity__header-btn entity__header-btn_submit">Применить</button>
+          <button
+            type="reset"
+            class="entity__header-btn entity__header-btn_reset"
+          >
+            Сбросить
+          </button>
+          <button
+            type="submit"
+            class="entity__header-btn entity__header-btn_submit"
+          >
+            Применить
+          </button>
         </div>
       </div>
-       <div class="entity__content">
-         <ul class="field-list">
-           <li 
-            v-for="field in listFieldsTable"
-            :key="field.id"
-            class="field__item"
+      <div class="entity__content">
+        <ul class="field-list">
+          <li
+            v-for="item in listTableHeaders"
+            :key="item"
+            class="field__item field__item_cities"
           >
-            {{ field }}
-           </li>
-         </ul>
-         <ul class="entity-list">
-           <li 
-            v-for="city in listCities"
-            :key="city.id"
-            class="entity__item"
-          >
-            <div class="entity__item-data">{{ city.name }}</div>
-            <div class="entity__item-data">
+            {{ item }}
+          </li>
+        </ul>
+        <ul class="entity-list">
+          <li v-for="city in listCities" :key="city.id" class="entity__item">
+            <div class="entity__item-data entity__item-data_cities">
+              {{ city.name }}
+            </div>
+            <div class="entity__item-data entity__item-data_cities">
               <button type="button" class="entity__item-btn">
-                  <v-icon
+                <v-icon
                   icon-id="icon-edit"
                   width="12"
                   height="11"
                   class="orders__button-icon_edit"
                 ></v-icon>
-                <span>Изменить</span>
+                <span class="entity__item-btn-title">Изменить</span>
+              </button>
+              <button type="button" class="entity__item-btn">
+                <v-icon
+                  icon-id="icon-reject"
+                  width="12"
+                  height="11"
+                  class="orders__button-icon_reject"
+                ></v-icon>
+                <span class="entity__item-btn-title">Удалить</span>
               </button>
             </div>
-           </li>
-         </ul>
-       </div>
+          </li>
+        </ul>
+      </div>
       <div class="entity__pagination">
         <v-pagination>1...4</v-pagination>
       </div>
@@ -91,7 +90,7 @@ export default {
       { id: 3, name: "zzz" },
     ];
 
-    const listFieldsTable = ["Наименование"];
+    const listTableHeaders = ["Наименование", "Действия"];
 
     const listCities = [
       { id: 1, name: "Ульяновск" },
@@ -101,10 +100,10 @@ export default {
 
     return {
       listItems,
-      listFieldsTable,
+      listTableHeaders,
       listCities,
-    }
-  }
+    };
+  },
 };
 </script>
 
@@ -217,8 +216,8 @@ export default {
   padding: 15px 20px 20px;
 
   @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
-    padding: 10px;
-    overflow-x: scroll;
+    // padding: 10px;
+    // overflow-x: scroll;
   }
 }
 
@@ -239,10 +238,13 @@ export default {
   margin: 5px;
 }
 
+.field__item_cities {
+  width: 50%;
+}
+
 .entity__item {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
   align-items: center;
   margin: 15px 0;
 
@@ -257,11 +259,18 @@ export default {
 
 .entity__item-data {
   margin: 0 5px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.entity__item-data_cities {
+  width: 50%;
 }
 
 .entity__item-btn {
   background: $color-white;
-  border: 0.5px solid #BECAD6;
+  border: 0.5px solid #becad6;
   border-radius: 4px;
   box-sizing: border-box;
 
@@ -271,12 +280,24 @@ export default {
   font-size: 11px;
   line-height: 13px;
   color: $color-grey;
-  
+
   display: flex;
   flex-direction: row;
   justify-content: center;
-  padding: 5px 5px 5px 0;
-  width: 100px;
+  padding: 3px 5px 3px 0;
+  margin: 3px;
+  width: 80px;
+
+  @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
+    padding: 3px 0px 3px 0;
+    width: 40px;
+  }
+}
+
+.entity__item-btn-title {
+  @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
+    display: none;
+  }
 }
 
 .entity__pagination {
