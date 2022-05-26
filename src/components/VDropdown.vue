@@ -9,7 +9,8 @@
       type="text"
       autocomplete="off"
       class="dropdown__input"
-      @focus="isDropDownVisible = true"
+      @click.self="toggleDropDown"
+      ref="inputRef"
     />
     <ul class="dropdown-list" v-show="isDropDownVisible">
       <li
@@ -57,7 +58,8 @@ export default {
   },
   setup(props, context) {
     const inputValue = ref("");
-    const isDropDownVisible = ref(null);
+    const isDropDownVisible = ref(false);
+    const inputRef = ref(null);
 
     const filteredList = computed(() => {
       const currentInput = inputValue.value.toLowerCase();
@@ -88,50 +90,18 @@ export default {
       context.emit("on-item-reset");
     };
 
-    //TO DO закрытие ранее открытого dropdown и открытие dropdown, по которому кликнули
-    // const showDropDown = event => {
-    //   console.log(event);
-    //   isDropDownVisible.value = true;
-    // };
-
-    // const showDropDown = event => {
-    //   console.log(event);
-    //   const elementsDropdown = document.querySelectorAll('.dropdown__input');
-    //   for(let i = 0; i < elementsDropdown.length; i++) {
-    //     if(isDropDownVisible.value && event.target.id !== elementsDropdown[i].id) {
-    //       isDropDownVisible.value = false;
-    //     }
-    //   }
-    // };
-
-    // const chosenEl = ref("");
-    // const closeDropDown = () => {
-    //   if (chosenEl.value) {
-    //     inputValue.value = chosenEl.value;
-    //   } else {
-    //     inputValue.value = "";
-    //   }
-    //   isDropDownVisible.value = false;
-    // };
+    const toggleDropDown = () => {
+      isDropDownVisible.value = !isDropDownVisible.value;
+    };
 
     const hideDropDown = (event) => {
-      if (
-        isDropDownVisible.value &&
-        event.target.className !== "dropdown__input"
-      ) {
+      if (isDropDownVisible.value && event.target.id !== inputRef.value.id) {
         isDropDownVisible.value = false;
       }
     };
 
     onMounted(() => {
       document.addEventListener("click", hideDropDown);
-
-      //TO DO повесить слушатель на dropdown
-      // const elemDropdown1 = document.querySelector('#dropdown1');
-      // elemDropdown1.addEventListener('blur', closeDropDown);
-
-      // const elemDropdown2 = document.querySelector('#dropdown2');
-      // elemDropdown2.addEventListener('blur', closeDropDown);
     });
 
     onBeforeUnmount(() => {
@@ -141,11 +111,11 @@ export default {
     return {
       inputValue,
       isDropDownVisible,
+      inputRef,
       filteredList,
       selectItem,
       resetSelection,
-      // chosenEl,
-      // closeDropDown,
+      toggleDropDown,
     };
   },
 };
