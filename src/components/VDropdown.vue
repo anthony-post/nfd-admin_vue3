@@ -9,7 +9,8 @@
       type="text"
       autocomplete="off"
       class="dropdown__input"
-      @focus="showDropDown"
+      @click.self="toggleDropDown"
+      ref="inputRef"
     />
     <ul class="dropdown-list" v-show="isDropDownVisible">
       <li
@@ -52,13 +53,13 @@ export default {
       required: true,
     },
     id: {
-      type: String
+      type: String,
     },
   },
   setup(props, context) {
-
     const inputValue = ref("");
     const isDropDownVisible = ref(false);
+    const inputRef = ref(null);
 
     const filteredList = computed(() => {
       const currentInput = inputValue.value.toLowerCase();
@@ -74,7 +75,7 @@ export default {
       }
     });
 
-    const selectItem = chosenItem => {
+    const selectItem = (chosenItem) => {
       if (chosenItem) {
         inputValue.value = chosenItem.name;
       } else {
@@ -89,34 +90,32 @@ export default {
       context.emit("on-item-reset");
     };
 
-    //TO DO закрытие ранее открытого dropdown и открытие dropdown, по которому кликнули
-    const showDropDown = event => {
-      console.log(event);
-      isDropDownVisible.value = true;
+    const toggleDropDown = () => {
+      isDropDownVisible.value = !isDropDownVisible.value;
     };
 
-
-    const hideDropDown = event => {
-      if(isDropDownVisible.value && event.target.className !== 'dropdown__input') {
+    const hideDropDown = (event) => {
+      if (isDropDownVisible.value && event.target.id !== inputRef.value.id) {
         isDropDownVisible.value = false;
       }
     };
-    
+
     onMounted(() => {
-      document.addEventListener('click', hideDropDown);
+      document.addEventListener("click", hideDropDown);
     });
 
     onBeforeUnmount(() => {
-      document.removeEventListener('click', hideDropDown);
+      document.removeEventListener("click", hideDropDown);
     });
 
     return {
       inputValue,
       isDropDownVisible,
+      inputRef,
       filteredList,
       selectItem,
       resetSelection,
-      showDropDown,
+      toggleDropDown,
     };
   },
 };
@@ -151,7 +150,7 @@ export default {
   background-size: 8px 11px;
 
   &:focus {
-    outline: none;
+    outline: 0.5px ridge $color-blue;
   }
 }
 
