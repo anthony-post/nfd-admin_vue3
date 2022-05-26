@@ -5,26 +5,30 @@
       <div class="card__header">
         <div class="header-dropdown__container">
           <v-dropdown
+            id="dropdown1"
             :itemList="listItems"
             name="period"
             placeholder="Field"
             class="card__header-dropdown"
           ></v-dropdown>
           <v-dropdown
+            id="dropdown2"
             :itemList="listItems"
-            name="car"
+            name="period"
             placeholder="Field"
             class="card__header-dropdown"
           ></v-dropdown>
           <v-dropdown
+            id="dropdown3"
             :itemList="listItems"
-            name="city"
+            name="period"
             placeholder="Field"
             class="card__header-dropdown"
           ></v-dropdown>
           <v-dropdown
+            id="dropdown4"
             :itemList="listItems"
-            name="status"
+            name="period"
             placeholder="Field"
             class="card__header-dropdown"
           ></v-dropdown>
