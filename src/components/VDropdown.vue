@@ -9,7 +9,8 @@
       type="text"
       autocomplete="off"
       class="dropdown__input"
-      @focus="isDropDownVisible = true"
+      @click.self="toggleDropDown"
+      ref="inputRef"
     />
     <ul class="dropdown-list" v-show="isDropDownVisible">
       <li
@@ -57,7 +58,8 @@ export default {
   },
   setup(props, context) {
     const inputValue = ref("");
-    const isDropDownVisible = ref(null);
+    const isDropDownVisible = ref(false);
+    const inputRef = ref(null);
 
     const filteredList = computed(() => {
       const currentInput = inputValue.value.toLowerCase();
@@ -114,10 +116,14 @@ export default {
     //   isDropDownVisible.value = false;
     // };
 
+    const toggleDropDown = () => {
+      isDropDownVisible.value = !isDropDownVisible.value;
+    };
+
     const hideDropDown = (event) => {
       if (
         isDropDownVisible.value &&
-        event.target.className !== "dropdown__input"
+        event.target.id !== inputRef.value.id
       ) {
         isDropDownVisible.value = false;
       }
@@ -141,9 +147,11 @@ export default {
     return {
       inputValue,
       isDropDownVisible,
+      inputRef,
       filteredList,
       selectItem,
       resetSelection,
+      toggleDropDown,
       // chosenEl,
       // closeDropDown,
     };
