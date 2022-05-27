@@ -2,7 +2,7 @@
   <div class="input-wrp">
     <label class="input__label" :for="name">{{ label }}</label>
     <input
-      class="input__field"
+      class="input__field input__text"
       autocomplete="off"
       :type="type"
       :name="name"
@@ -16,7 +16,7 @@
 
 <script>
 export default {
-  name: "v-input",
+  name: "VInput",
   props: {
     label: {
       type: String,
@@ -64,15 +64,28 @@ export default {
   line-height: 12px;
   letter-spacing: -0.18421px;
   color: $color-label;
-  margin: 0 0 8px 0;
+  margin: 0 0 5px 0;
 }
 
 .input__field {
   background: $color-white;
-  border: 0.5px solid #becad6;
+  border: 0.5px solid $color-border;
   box-sizing: border-box;
-  border-radius: 3px;
+  border-radius: 4px;
   padding: 8px 0 8px 11px;
   margin: 0 0 15px 0;
+
+  &:focus {
+    outline: 0.5px ridge $color-blue;
+  }
+}
+
+.input__text {
+  font-family: $ff;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 13px;
+  color: $color-black;
 }
 </style>
