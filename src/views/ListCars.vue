@@ -1,82 +1,72 @@
 <template>
-  <div class="card-wrp">
-    <h2 class="card__title">Автомобили</h2>
-    <section class="card-container">
-      <div class="card__header">
-        <div class="header-dropdown__container">
+  <div class="entity-wrp entity">
+    <h2 class="entity__title">Автомобили</h2>
+    <section class="entity-container">
+      <div class="entity__header">
+        <div class="header-dropdown">
           <v-dropdown
             id="dropdown1"
             :itemList="listItems"
             name="period"
             placeholder="Field"
-            class="card__header-dropdown"
+            class="header-dropdown__item"
           ></v-dropdown>
           <v-dropdown
             id="dropdown2"
             :itemList="listItems"
             name="period"
             placeholder="Field"
-            class="card__header-dropdown"
+            class="header-dropdown__item"
           ></v-dropdown>
           <v-dropdown
             id="dropdown3"
             :itemList="listItems"
             name="period"
             placeholder="Field"
-            class="card__header-dropdown"
+            class="header-dropdown__item"
           ></v-dropdown>
           <v-dropdown
             id="dropdown4"
             :itemList="listItems"
             name="period"
             placeholder="Field"
-            class="card__header-dropdown"
+            class="header-dropdown__item"
           ></v-dropdown>
         </div>
-        <div class="header-btn__container">
-          <button type="reset" class="card__header-btn card__header-btn_reset">
+        <div class="header-button">
+          <button type="reset" class="header-button__item header-button__item_reset">
             Сбросить
           </button>
           <button
             type="submit"
-            class="card__header-btn card__header-btn_submit"
+            class="header-button__item header-button__item_submit"
           >
             Применить
           </button>
         </div>
       </div>
-      <div class="card__content">
-        <ul class="field-list">
-          <li
-            v-for="item in listTableHeaders"
-            :key="item"
-            class="field__item field__item_car"
-          >
-            {{ item }}
-          </li>
-        </ul>
-        <ul class="car-list">
-          <li v-for="car in listCars" :key="car.id" class="car__item">
-            <div class="car__item-data">{{ car.name }}</div>
-            <div class="car__item-data">{{ car.category }}</div>
-            <div class="car__item-data">{{ car.color }}</div>
-            <div class="car__item-data">
-              {{ car.priceMin }} - {{ car.priceMax }}
-            </div>
-            <div class="car__item-data">
-              <button type="button" class="car__item-btn" @click="togglePopUp">
+      <table class="table-content table">
+        <tr class="table-header">
+          <th v-for="item in listTableHeaders" :key="item" class="table__header-item table__header-item_car">{{ item }}</th>
+        </tr>
+        <tr v-for="car in listCars" :key="car.id" class="table-data">
+          <td class="table__data-item">{{ car.name }}</td>
+          <td class="table__data-item">{{ car.category }}</td>
+          <td class="table__data-item">{{ car.color }}</td>
+          <td class="table__data-item">{{ car.priceMin }} - {{ car.priceMax }}</td>
+          <td class="table__data-item">
+            <button type="button" class="table__button-item_car" @click="togglePopUp">
                 ...
-              </button>
-            </div>
+            </button>
             <pop-up
               v-if="popUpIsActive"
-              class="car__item-popup"
+              class="table__item-popup"
               @close-popup="togglePopUp"
             ></pop-up>
-          </li>
-        </ul>
-      </div>
-      <div class="card__pagination">
+          </td>
+        </tr>
+      </table>
+      <div class="entity__pagination">
         <v-pagination>1...4</v-pagination>
       </div>
     </section>
@@ -105,7 +95,7 @@ export default {
 
     const listTableHeaders = [
       "Модель",
-      "Категория",
+      "Катег.",
       "Цвет",
       "Цена",
       "Подробнее",
@@ -166,30 +156,54 @@ export default {
 <style lang="scss">
 @import "@/assets/variables.scss";
 
-.card-wrp {
+.entity-wrp {
   width: 100%;
   height: 100%;
   background-color: $color-background;
 }
 
-.card__title {
-  margin: 0;
-  font-family: $ff;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 29px;
-  line-height: 33px;
-  letter-spacing: -0.725px;
-  color: $color-text;
-  padding: 25px;
+.entity {
+  &__title {
+    margin: 0;
+    font-family: $ff;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 29px;
+    line-height: 33px;
+    letter-spacing: -0.725px;
+    color: $color-text;
+    padding: 25px;
 
-  @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
-    padding: 10px 25px;
-    font-size: 19px;
+    @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
+      padding: 10px 25px;
+      font-size: 19px;
+    }
+  }
+  &__header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0px -0.5px 0px #e0e2e8, 0px 0.5px 0px #e0e2e8;
+    padding: 15px 20px;
+
+    @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 15px 15px 5px 15px;
+    }
+  }
+  &__pagination {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px -0.5px 0px #e0e2e8, 0px 0.5px 0px #e0e2e8;
+    padding: 20px 0;
   }
 }
 
-.card-container {
+.entity-container {
   position: relative;
 
   background: $color-white;
@@ -204,22 +218,7 @@ export default {
   }
 }
 
-.card__header {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0px -0.5px 0px #e0e2e8, 0px 0.5px 0px #e0e2e8;
-  padding: 15px 20px;
-
-  @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
-    flex-wrap: wrap;
-    justify-content: center;
-    padding: 15px 15px 5px 15px;
-  }
-}
-
-.header-dropdown__container {
+.header-dropdown {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -227,63 +226,96 @@ export default {
   @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
     justify-content: center;
   }
+
+  &__item {
+    margin: 5px;
+  }
 }
 
-.card__header-dropdown {
-  margin: 5px;
-}
-
-.header-btn__container {
+.header-button {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: flex-end;
+
+  &__item {
+    font-family: $ff;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 11px;
+    line-height: 13px;
+    text-align: center;
+    letter-spacing: -0.345714px;
+    color: $color-white;
+
+    border-radius: 4px;
+    box-sizing: border-box;
+
+    width: 95px;
+    margin: 5px;
+    padding: 8px 0;
+
+    &_submit {
+      background: $color-blue;
+      border: 0.5px solid $color-blue;
+    }
+
+    &_reset {
+      background: $color-red;
+      border: 0.5px solid $color-red;
+    }
+  }
+
 }
 
-.card__header-btn {
-  font-family: $ff;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 11px;
-  line-height: 13px;
-  text-align: center;
-  letter-spacing: -0.345714px;
-  color: $color-white;
-
-  border-radius: 4px;
-  box-sizing: border-box;
-
-  width: 95px;
-  margin: 5px;
-  padding: 8px 0;
-}
-
-.card__header-btn_submit {
-  background: $color-blue;
-  border: 0.5px solid $color-blue;
-}
-
-.card__header-btn_reset {
-  background: $color-red;
-  border: 0.5px solid $color-red;
-}
-
-.card__content {
+.table-content {
+  width: 100%;
   padding: 15px 20px 20px;
+  text-align: left;
 
   @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
     padding: 10px;
-    overflow-x: scroll;
   }
 }
 
-.field-list {
-  display: flex;
-  flex-direction: row;
-  margin: 0 0 15px 0;
+.table {
+  &__header-item {
+    padding: 0 0 15px 0;
+    &_car {
+      width: 20%;
+    }
+  }
+
+  &__data-item {
+    padding: 5px 0;
+  }
+
+  &__button-item_car {
+    font-family: $ff;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 11px;
+    line-height: 13px;
+    color: $color-grey;
+
+    background: $color-white;
+    border: 0.5px solid #becad6;
+    border-radius: 4px;
+    box-sizing: border-box; 
+    width: 50px;
+  }
+
+  &__item-popup {
+    position: absolute;
+    z-index: 9998;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
 }
 
-.field__item {
+.table-header {
   font-family: $ff;
   font-style: normal;
   font-weight: 700;
@@ -291,19 +323,9 @@ export default {
   line-height: 14px;
   letter-spacing: -0.377143px;
   color: $color-text;
-  margin: 5px;
 }
 
-.field__item_car {
-  width: 20%;
-}
-
-.car__item {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  margin: 15px 0;
-
+.table-data {
   font-family: $ff;
   font-style: normal;
   font-weight: 400;
@@ -311,48 +333,5 @@ export default {
   line-height: 14px;
   letter-spacing: -0.377143px;
   color: $color-text;
-}
-
-.car__item-data {
-  margin: 0 5px;
-  width: 20%;
-}
-
-.car__pic {
-  max-width: 100%;
-}
-
-.car__item-btn {
-  font-family: $ff;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 11px;
-  line-height: 13px;
-  color: $color-grey;
-
-  background: $color-white;
-  border: 0.5px solid #becad6;
-  border-radius: 4px;
-  box-sizing: border-box;
-
-  width: 50px;
-}
-
-.car__item-popup {
-  position: absolute;
-  z-index: 9998;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.card__pagination {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0px -0.5px 0px #e0e2e8, 0px 0.5px 0px #e0e2e8;
-  padding: 20px 0;
 }
 </style>
