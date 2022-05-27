@@ -1,47 +1,45 @@
 <template>
   <transition name="popup">
-    <div class="popup-mask">
+    <div class="popup popup-mask">
       <div class="popup-container">
         <div class="popup-button">
           <v-icon icon-id="icon-x" width="32" height="32" @click="closePopUp" />
         </div>
         <div class="popup-body">
-          <div class="popup__img">
-            <img :src="car.pic" :alt="car.name" />
-          </div>
+          <img :src="car.pic" :alt="car.name" class="popup__img" />
           <dl class="popup__title">
-            <dt class="title__text">Наименование:</dt>
-            <dd class="title__value">{{ car.name }}</dd>
+            <dt class="popup__title-text">Наименование:</dt>
+            <dd class="popup__title-value">{{ car.name }}</dd>
           </dl>
           <dl class="popup__title">
-            <dt class="title__text">Категория:</dt>
-            <dd class="title__value">{{ car.category }}</dd>
+            <dt class="popup__title-text">Категория:</dt>
+            <dd class="popup__title-value">{{ car.category }}</dd>
           </dl>
           <dl class="popup__title">
-            <dt class="title__text">Гос. номер:</dt>
-            <dd class="title__value">{{ car.number }}</dd>
+            <dt class="popup__title-text">Гос. номер:</dt>
+            <dd class="popup__title-value">{{ car.number }}</dd>
           </dl>
           <dl class="popup__title">
-            <dt class="title__text">Цвет:</dt>
-            <dd class="title__value">{{ car.color }}</dd>
+            <dt class="popup__title-text">Цвет:</dt>
+            <dd class="popup__title-value">{{ car.color }}</dd>
           </dl>
           <dl class="popup__title">
-            <dt class="title__text">Цена:</dt>
-            <dd class="title__value">
+            <dt class="popup__title-text">Цена:</dt>
+            <dd class="popup__title-value">
               {{ car.priceMin }} - {{ car.priceMax }}
             </dd>
           </dl>
           <dl class="popup__title">
-            <dt class="title__text">Описание:</dt>
-            <dd class="title__value">{{ car.description }}</dd>
+            <dt class="popup__title-text">Описание:</dt>
+            <dd class="popup__title-value">{{ car.description }}</dd>
           </dl>
           <div class="popup__title">
-            <button type="button" class="title__item-btn">
+            <button type="button" class="popup__title-btn">
               <v-icon
                 icon-id="icon-edit"
                 width="12"
                 height="11"
-                class="orders__button-icon_edit"
+                class="orders__button-icon_edit table__button-item_edit"
               ></v-icon>
               <span>Изменить</span>
             </button>
@@ -109,49 +107,55 @@ export default {
   right: 10px;
 }
 
-.popup__title {
-  display: flex;
-  flex-direction: row;
-}
+.popup {
+  &__img {
+    max-width: 100%;
+  }
 
-.title__text {
-  font-family: $font2;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 13px;
-  line-height: 15px;
-  color: $color-grey-middle;
-  margin: 0 5px;
-}
+  &__title {
+    display: flex;
+    flex-direction: row;
+  }
 
-.title__value {
-  font-family: $font2;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 15px;
-  line-height: 15px;
-  color: $color-black;
-  margin: 0 5px;
-}
+  &__title-text {
+    font-family: $font2;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 15px;
+    color: $color-grey-middle;
+    margin: 0 5px;
+  }
 
-.title__item-btn {
-  background: $color-white;
-  border: 0.5px solid #becad6;
-  border-radius: 4px;
-  box-sizing: border-box;
+  &__title-value {
+    font-family: $font2;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 15px;
+    color: $color-black;
+    margin: 0 5px;
+  }
 
-  font-family: $ff;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 11px;
-  line-height: 13px;
-  color: $color-grey;
+  &__title-btn {
+    background: $color-white;
+    border: 0.5px solid #becad6;
+    border-radius: 4px;
+    box-sizing: border-box;
 
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  padding: 5px;
-  width: 100%;
+    font-family: $ff;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 11px;
+    line-height: 13px;
+    color: $color-grey;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding: 5px;
+    width: 100%;
+  }
 }
 
 .modal-enter {

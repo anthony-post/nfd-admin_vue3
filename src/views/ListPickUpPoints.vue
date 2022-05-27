@@ -1,87 +1,69 @@
 <template>
-  <div class="entity-wrp">
+  <div class="entity-wrp entity">
     <h2 class="entity__title">Пункты выдачи</h2>
     <section class="entity-container">
       <div class="entity__header">
-        <div class="header-dropdown__container">
+        <div class="header-dropdown">
           <v-dropdown
             id="dropdown1"
             :itemList="listItems"
             name="period"
             placeholder="Field"
-            class="card__header-dropdown"
+            class="header-dropdown__item"
           ></v-dropdown>
           <v-dropdown
             id="dropdown2"
             :itemList="listItems"
             name="period"
             placeholder="Field"
-            class="card__header-dropdown"
+            class="header-dropdown__item"
           ></v-dropdown>
         </div>
-        <div class="header-btn__container">
+        <div class="header-button">
           <button
             type="reset"
-            class="entity__header-btn entity__header-btn_reset"
+            class="header-button__item header-button__item_reset"
           >
             Сбросить
           </button>
           <button
             type="submit"
-            class="entity__header-btn entity__header-btn_submit"
+            class="header-button__item header-button__item_submit"
           >
             Применить
           </button>
         </div>
       </div>
-      <div class="entity__content">
-        <ul class="field-list">
-          <li
-            v-for="item in listTableHeaders"
-            :key="item"
-            class="field__item field__item_pickuppoint"
-          >
-            {{ item }}
-          </li>
-        </ul>
-        <ul class="entity-list">
-          <li
-            v-for="point in listPickUpPoints"
-            :key="point.id"
-            class="entity__item"
-          >
-            <div class="entity__item-data entity__item-data_pickuppoint">
-              {{ point.name }}
-            </div>
-            <div class="entity__item-data entity__item-data_pickuppoint">
-              {{ point.city }}
-            </div>
-            <div class="entity__item-data entity__item-data_pickuppoint">
-              {{ point.address }}
-            </div>
-            <div class="entity__item-data entity__item-data_pickuppoint">
-              <button type="button" class="entity__item-btn">
+      <table class="table-content table">
+        <tr class="table-header">
+          <th v-for="item in listTableHeaders" :key="item" class="table__header-item table__header-item_pickuppoint">{{ item }}</th>
+        </tr>
+        <tr v-for="point in listPickUpPoints" :key="point.id" class="table-data">
+          <td class="table__data-item">{{ point.name }}</td>
+          <td class="table__data-item">{{ point.city }}</td>
+          <td class="table__data-item">{{ point.address }}</td>
+          <td class="table__data-item table__button-container">
+            <button type="button" class="table__button-item">
                 <v-icon
                   icon-id="icon-edit"
                   width="12"
                   height="11"
-                  class="orders__button-icon_edit"
+                  class="table__button-item_edit"
                 ></v-icon>
-                <span class="entity__item-btn-title">Изменить</span>
+                <span class="table__button-item-title">Изменить</span>
               </button>
-              <button type="button" class="entity__item-btn">
+              <button type="button" class="table__button-item">
                 <v-icon
                   icon-id="icon-reject"
                   width="12"
                   height="11"
-                  class="orders__button-icon_reject"
+                  class="table__button-item_reject"
                 ></v-icon>
-                <span class="entity__item-btn-title">Удалить</span>
+                <span class="table__button-item-title">Удалить</span>
               </button>
-            </div>
-          </li>
-        </ul>
-      </div>
+          </td>
+        </tr>
+      </table>
       <div class="entity__pagination">
         <v-pagination>1...4</v-pagination>
       </div>
@@ -143,43 +125,9 @@ export default {
 <style lang="scss">
 @import "@/assets/variables.scss";
 
-.field__item_pickuppoint {
-  width: 25%;
-}
-
-.entity__item-data_pickuppoint {
-  width: 25%;
-}
-
-.entity__item-btn {
-  background: $color-white;
-  border: 0.5px solid #becad6;
-  border-radius: 4px;
-  box-sizing: border-box;
-
-  font-family: $ff;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 11px;
-  line-height: 13px;
-  color: $color-grey;
-
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  padding: 3px 5px 3px 0;
-  margin: 3px;
-  width: 80px;
-
-  @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
-    padding: 3px 0px 3px 0;
-    width: 40px;
-  }
-}
-
-.entity__item-btn-title {
-  @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
-    display: none;
+.table {
+  &__header-item_pickuppoint {
+    width: 25%;
   }
 }
 </style>
