@@ -64,5 +64,9 @@ export default {
 .section-content {
   width: 100%;
   height: 100%;
+
+  @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
+    overflow-x: scroll;
+  }
 }
 </style>

@@ -50,6 +50,42 @@
               class="input input__car-category"
             ></v-input>
           </div>
+          <div class="card-car__details-description">
+            <v-text-area
+              v-model:inputValue="carDescription"
+              label="Описание автомобиля"
+              name="description-car"
+              id="description-car"
+              placeholder="Введите описание автомобиля"
+              class="input__car-description"
+            ></v-text-area>
+          </div>
+          <div class="card-car__details-additional">
+            <v-input
+              v-model:inputValue="carNumber"
+              label="Гос. номер"
+              name="number-car"
+              class="input input__car-additional"
+            ></v-input>
+            <v-input
+              v-model:inputValue="carTank"
+              label="Топливо"
+              name="tank-car"
+              class="input input__car-additional"
+            ></v-input>
+            <v-input
+              v-model:inputValue="carPriceMin"
+              label="Мин. цена"
+              name="minprice-car"
+              class="input input__car-additional"
+            ></v-input>
+            <v-input
+              v-model:inputValue="carPriceMax"
+              label="Макс. цена"
+              name="maxprice-car"
+              class="input input__car-additional"
+            ></v-input>
+          </div>
           <div class="card-car__details-color">
             <div class="card-car__details-color-wrp">
               <v-input
@@ -71,13 +107,13 @@
           </div>
         </div>
         <div class="card-car__button-bar">
-          <div>
-            <v-button type="button" theme="confirm">Сохранить</v-button>
+          <div class="card-car__button">
+            <v-button type="button" theme="confirm" class="card-car__button-item">Сохранить</v-button>
             <v-button type="button" theme="cancel" class="card-car__button-item"
               >Отменить</v-button
             >
           </div>
-          <v-button type="button" theme="delete">Удалить</v-button>
+          <v-button type="button" theme="delete" class="card-car__button-item">Удалить</v-button>
         </div>
       </section>
     </div>
@@ -90,6 +126,7 @@ import VUploadFile from "../components/VUploadFile.vue";
 import VInput from "../components/VInput.vue";
 import VCheckboxBlue from "../components/VCheckboxBlue.vue";
 import VButton from "../components/VButton.vue";
+import VTextArea from "../components/VTextArea.vue";
 
 export default {
   name: "CardCar",
@@ -98,16 +135,27 @@ export default {
     VInput,
     VCheckboxBlue,
     VButton,
+    VTextArea,
   },
   setup() {
     const carModel = ref("");
     const carCategory = ref("");
+    const carDescription = ref("");
     const carColor = ref("");
+    const carTank = ref("");
+    const carNumber = ref("");
+    const carPriceMin = ref("");
+    const carPriceMax = ref("");
 
     return {
       carModel,
       carCategory,
+      carDescription,
       carColor,
+      carPriceMax,
+      carPriceMin,
+      carNumber,
+      carTank,
     };
   },
 };
@@ -132,6 +180,11 @@ export default {
     color: $color-text;
     padding: 25px;
 
+    @media #{$media} and (min-width: $tablet-min) and (max-width: $tablet-max) {
+      padding: 10px 25px;
+      font-size: 24px;
+    }
+
     @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
       padding: 10px 25px;
       font-size: 19px;
@@ -142,12 +195,10 @@ export default {
 .card-car {
   display: flex;
   flex-direction: row;
-  // justify-content: space-between;
-  // padding: 0 25px;
 
   @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
-    // margin: 0 5px;
-  }
+      flex-direction: column;
+    }
 
   &__img {
     width: 30%;
@@ -155,6 +206,12 @@ export default {
     box-shadow: 0px 2px 4px rgba(90, 97, 105, 0.12);
     border-radius: 9px;
     margin: 0 10px 0 20px;
+
+    @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
+      width: 100%;
+      border-radius: 0;
+      margin: 0;
+    }
   }
 
   &__img-wrp {
@@ -263,6 +320,13 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+
+    @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
+      width: 100%;
+      border-radius: 0;
+      margin: 0;
+      padding: 0;
+    }
   }
 
   &__details-title {
@@ -273,6 +337,17 @@ export default {
     line-height: 21px;
     color: $color-text;
     margin: 0 0 20px 0;
+
+    @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
+      padding: 0 10px;
+      margin: 20px 0;
+    }
+  }
+
+  &__details-content {
+    @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
+      padding: 10px;
+    }
   }
 
   &__details-data {
@@ -281,8 +356,9 @@ export default {
     justify-content: space-between;
     margin: 0 -10px;
 
-    @media #{$media} and (min-width: $tablet-min) and (max-width: $tablet-max) {
-      flex-wrap: wrap;
+    @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
+      margin: 0;
+      flex-direction: column;
     }
   }
 
@@ -313,9 +389,22 @@ export default {
     }
   }
 
+  &__details-additional {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin: 0 -10px;
+  }
+
   &__details-color {
     width: 50%;
     margin: 0 -10px;
+
+    @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
+      width: 100%;
+      margin: 0;
+    }
   }
 
   &__details-color-wrp {
@@ -327,16 +416,37 @@ export default {
 
   &__color-list {
     padding: 0 10px;
+
+    @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
+      padding: 0;
+    }
   }
 
   &__button-bar {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+
+    @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
+      padding: 10px;
+      flex-direction: column;
+    }
+  }
+
+  &__button {
+    @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
+      display: flex;
+      flex-direction: column;
+    }
   }
 
   &__button-item {
     margin: 0 12px;
+
+    @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
+      margin: 5px 0;
+      width: 100%;
+    }
   }
 }
 
@@ -353,11 +463,20 @@ export default {
   &__car-category {
     width: 50%;
     padding: 20px 10px;
+
+    @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
+      width: 100%;
+      padding: 0;
+    }
   }
 
   &__car-color {
     width: 100%;
     padding: 0 10px;
+
+    @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
+      padding: 0 10px 0 0;
+    }
   }
 }
 </style>
