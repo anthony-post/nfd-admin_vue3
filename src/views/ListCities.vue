@@ -41,7 +41,7 @@
                   height="11"
                   class="table__button-item_edit"
                 ></v-icon>
-                <span class="table__button-item-title">Изменить</span>
+                <span class="visualy-hidden">Изменить</span>
               </button>
               <button type="button" class="table__button-item">
                 <v-icon
@@ -50,7 +50,7 @@
                   height="11"
                   class="table__button-item_reject"
                 ></v-icon>
-                <span class="table__button-item-title">Удалить</span>
+                <span class="visualy-hidden">Удалить</span>
               </button>
           </td>
         </tr>
@@ -138,9 +138,18 @@ export default {
     }
   }
 
-  &__button-item-title {
+  .visualy-hidden {
     @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
-      display: none;
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      border: 0;
+      padding: 0;
+      white-space: nowrap;
+      clip-path: inset(100%);
+      clip: rect(0 0 0 0);
+      overflow: hidden;
     }
   }
 }

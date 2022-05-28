@@ -42,7 +42,7 @@
                   height="11"
                   class="table__button-item_edit"
                 ></v-icon>
-                <span class="table__button-item-title">Изменить</span>
+                <span class="visualy-hidden">Изменить</span>
               </button>
               <button type="button" class="table__button-item">
                 <v-icon
@@ -51,7 +51,7 @@
                   height="11"
                   class="table__button-item_reject"
                 ></v-icon>
-                <span class="table__button-item-title">Удалить</span>
+                <span class="visualy-hidden">Удалить</span>
               </button>
           </td>
         </tr>
