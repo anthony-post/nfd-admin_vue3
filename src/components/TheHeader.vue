@@ -41,6 +41,11 @@ export default {
   align-items: center;
   box-shadow: 0px 2.5px 9.5px rgba(90, 97, 105, 0.12);
 
+  @media #{$media} and (min-width: $tablet-min) and (max-width: $tablet-max) {
+    width: 100vw;
+    flex-wrap: wrap;
+  }
+
   @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
     width: 100vw;
     flex-wrap: wrap;
@@ -50,6 +55,13 @@ export default {
 .header__search {
   width: 70%;
   margin: 0 0 0 25px;
+
+  @media #{$media} and (min-width: $tablet-min) and (max-width: $tablet-max) {
+    width: 100%;
+    margin: 0;
+    padding: 10px;
+    border-bottom: 1px solid $color-grey-light;
+  }
 
   @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
     width: 100%;
@@ -62,6 +74,11 @@ export default {
 .header__container {
   display: flex;
   flex-direction: row;
+
+  @media #{$media} and (min-width: $tablet-min) and (max-width: $tablet-max) {
+    justify-content: space-between;
+    width: 100%;
+  }
 
   @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
     justify-content: space-between;

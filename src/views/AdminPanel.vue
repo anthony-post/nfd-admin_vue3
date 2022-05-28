@@ -38,6 +38,10 @@ export default {
 }
 
 .panel-sidebar {
+  @media #{$media} and (min-width: $tablet-min) and (max-width: $tablet-max) {
+    display: none;
+  }
+
   @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
     display: none;
   }
@@ -47,6 +51,10 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+
+  @media #{$media} and (min-width: $tablet-min) and (max-width: $tablet-max) {
+    height: calc(100vh - 80px);
+  }
 
   @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
     height: calc(100vh - 80px);

@@ -9,7 +9,9 @@
     />
     <span v-if="fileName" class="upload-placeholder">{{ fileName }}</span>
     <span v-else class="upload-placeholder">Выберите файл ...</span>
-    <button class="upload-btn upload-btn__text" @click="onPickFile">Обзор</button>
+    <button class="upload-btn upload-btn__text" @click="onPickFile">
+      Обзор
+    </button>
   </div>
 </template>
 
@@ -19,16 +21,15 @@ import { ref } from "vue";
 export default {
   name: "VUploadFile",
   setup() {
-
     const image = ref(null);
     const fileInput = ref(null);
     const fileName = ref(null);
 
     const onPickFile = () => {
-      fileInput.value.click()
+      fileInput.value.click();
     };
 
-    const onFilePicked = event => {
+    const onFilePicked = (event) => {
       const files = event.target.files;
       fileName.value = files[0].name;
 
@@ -50,9 +51,9 @@ export default {
       fileName,
       onPickFile,
       onFilePicked,
-    }
-  }
-}
+    };
+  },
+};
 </script>
 
 <style lang="scss">
@@ -66,10 +67,14 @@ export default {
   align-items: center;
 
   background: $color-white;
-  border: 0.5px solid #BECAD6;
+  border: 0.5px solid #becad6;
   border-radius: 4px;
 
   margin: 4px 0 0 0;
+
+  @media #{$media} and (min-width: $mobile-min) and (max-width: $desktop-max) {
+    width: 100%;
+  }
 }
 
 .upload-input {
@@ -83,6 +88,10 @@ export default {
 
   &:hover {
     cursor: pointer;
+  }
+
+  @media #{$media} and (min-width: $tablet-min) and (max-width: $tablet-max) {
+    padding: 8px;
   }
 }
 

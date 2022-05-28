@@ -29,30 +29,40 @@
       </div>
       <table class="table-content table">
         <tr class="table-header">
-          <th v-for="item in listTableHeaders" :key="item" class="table__header-item table__header-item_category">{{ item }}</th>
+          <th
+            v-for="item in listTableHeaders"
+            :key="item"
+            class="table__header-item table__header-item_category"
+          >
+            {{ item }}
+          </th>
         </tr>
-        <tr v-for="category in listCategories" :key="category.id" class="table-data">
+        <tr
+          v-for="category in listCategories"
+          :key="category.id"
+          class="table-data"
+        >
           <td class="table__data-item">{{ category.name }}</td>
           <td class="table__data-item">{{ category.description }}</td>
           <td class="table__data-item table__button-container">
             <button type="button" class="table__button-item">
-                <v-icon
-                  icon-id="icon-edit"
-                  width="12"
-                  height="11"
-                  class="table__button-item_edit"
-                ></v-icon>
-                <span class="table__button-item-title">Изменить</span>
-              </button>
-              <button type="button" class="table__button-item">
-                <v-icon
-                  icon-id="icon-reject"
-                  width="12"
-                  height="11"
-                  class="table__button-item_reject"
-                ></v-icon>
-                <span class="table__button-item-title">Удалить</span>
-              </button>
+              <v-icon
+                icon-id="icon-edit"
+                width="12"
+                height="11"
+                class="table__button-item_edit"
+              ></v-icon>
+              <span class="table__button-item-title">Изменить</span>
+            </button>
+            <button type="button" class="table__button-item">
+              <v-icon
+                icon-id="icon-reject"
+                width="12"
+                height="11"
+                class="table__button-item_reject"
+              ></v-icon>
+              <span class="table__button-item-title">Удалить</span>
+            </button>
           </td>
         </tr>
       </table>
