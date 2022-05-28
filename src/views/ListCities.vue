@@ -29,35 +29,29 @@
       </div>
       <table class="table-content table">
         <tr class="table-header">
-          <th
-            v-for="item in listTableHeaders"
-            :key="item"
-            class="table__header-item table__header-item_city"
-          >
-            {{ item }}
-          </th>
+          <th v-for="item in listTableHeaders" :key="item" class="table__header-item table__header-item_city">{{ item }}</th>
         </tr>
         <tr v-for="city in listCities" :key="city.id" class="table-data">
           <td class="table__data-item">{{ city.name }}</td>
           <td class="table__data-item table__button-container">
             <button type="button" class="table__button-item">
-              <v-icon
-                icon-id="icon-edit"
-                width="12"
-                height="11"
-                class="table__button-item_edit"
-              ></v-icon>
-              <span class="visualy-hidden">Изменить</span>
-            </button>
-            <button type="button" class="table__button-item">
-              <v-icon
-                icon-id="icon-reject"
-                width="12"
-                height="11"
-                class="table__button-item_reject"
-              ></v-icon>
-              <span class="visualy-hidden">Удалить</span>
-            </button>
+                <v-icon
+                  icon-id="icon-edit"
+                  width="12"
+                  height="11"
+                  class="table__button-item_edit"
+                ></v-icon>
+                <span class="visualy-hidden">Изменить</span>
+              </button>
+              <button type="button" class="table__button-item">
+                <v-icon
+                  icon-id="icon-reject"
+                  width="12"
+                  height="11"
+                  class="table__button-item_reject"
+                ></v-icon>
+                <span class="visualy-hidden">Удалить</span>
+              </button>
           </td>
         </tr>
       </table>
@@ -143,20 +137,20 @@ export default {
       width: 40px;
     }
   }
-}
 
-.visualy-hidden {
-  @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    margin: -1px;
-    border: 0;
-    padding: 0;
-    white-space: nowrap;
-    clip-path: inset(100%);
-    clip: rect(0 0 0 0);
-    overflow: hidden;
+  .visualy-hidden {
+    @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      border: 0;
+      padding: 0;
+      white-space: nowrap;
+      clip-path: inset(100%);
+      clip: rect(0 0 0 0);
+      overflow: hidden;
+    }
   }
 }
 </style>

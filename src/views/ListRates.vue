@@ -36,36 +36,30 @@
       </div>
       <table class="table-content table">
         <tr class="table-header">
-          <th
-            v-for="item in listTableHeaders"
-            :key="item"
-            class="table__header-item table__header-item_rate"
-          >
-            {{ item }}
-          </th>
+          <th v-for="item in listTableHeaders" :key="item" class="table__header-item table__header-item_rate">{{ item }}</th>
         </tr>
         <tr v-for="rate in listRates" :key="rate.id" class="table-data">
           <td class="table__data-item">{{ rate.name }}</td>
           <td class="table__data-item">{{ rate.price }}</td>
           <td class="table__data-item table__button-container">
             <button type="button" class="table__button-item">
-              <v-icon
-                icon-id="icon-edit"
-                width="12"
-                height="11"
-                class="table__button-item_edit"
-              ></v-icon>
-              <span class="table__button-item-title">Изменить</span>
-            </button>
-            <button type="button" class="table__button-item">
-              <v-icon
-                icon-id="icon-reject"
-                width="12"
-                height="11"
-                class="table__button-item_reject"
-              ></v-icon>
-              <span class="table__button-item-title">Удалить</span>
-            </button>
+                <v-icon
+                  icon-id="icon-edit"
+                  width="12"
+                  height="11"
+                  class="table__button-item_edit"
+                ></v-icon>
+                <span class="visualy-hidden">Изменить</span>
+              </button>
+              <button type="button" class="table__button-item">
+                <v-icon
+                  icon-id="icon-reject"
+                  width="12"
+                  height="11"
+                  class="table__button-item_reject"
+                ></v-icon>
+                <span class="visualy-hidden">Удалить</span>
+              </button>
           </td>
         </tr>
       </table>
