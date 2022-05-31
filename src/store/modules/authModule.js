@@ -16,7 +16,7 @@ export const authModule = {
     async onLogin({ commit }, credentials) {
       try {
         const { data } = await authAPI.login(credentials);
-        commit("SET_USER_DATA", data.data);
+        commit("SET_USER_DATA", data);
       } catch (error) {
         throw new Error(error);
       }

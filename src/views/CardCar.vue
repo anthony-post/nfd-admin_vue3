@@ -108,12 +108,19 @@
         </div>
         <div class="card-car__button-bar">
           <div class="card-car__button">
-            <v-button type="button" theme="confirm" class="card-car__button-item">Сохранить</v-button>
+            <v-button
+              type="button"
+              theme="confirm"
+              class="card-car__button-item"
+              >Сохранить</v-button
+            >
             <v-button type="button" theme="cancel" class="card-car__button-item"
               >Отменить</v-button
             >
           </div>
-          <v-button type="button" theme="delete" class="card-car__button-item">Удалить</v-button>
+          <v-button type="button" theme="delete" class="card-car__button-item"
+            >Удалить</v-button
+          >
         </div>
       </section>
     </div>
@@ -197,8 +204,8 @@ export default {
   flex-direction: row;
 
   @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
-      flex-direction: column;
-    }
+    flex-direction: column;
+  }
 
   &__img {
     width: 30%;

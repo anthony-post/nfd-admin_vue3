@@ -29,29 +29,35 @@
       </div>
       <table class="table-content table">
         <tr class="table-header">
-          <th v-for="item in listTableHeaders" :key="item" class="table__header-item table__header-item_city">{{ item }}</th>
+          <th
+            v-for="item in listTableHeaders"
+            :key="item"
+            class="table__header-item table__header-item_city"
+          >
+            {{ item }}
+          </th>
         </tr>
         <tr v-for="city in listCities" :key="city.id" class="table-data">
           <td class="table__data-item">{{ city.name }}</td>
           <td class="table__data-item table__button-container">
             <button type="button" class="table__button-item">
-                <v-icon
-                  icon-id="icon-edit"
-                  width="12"
-                  height="11"
-                  class="table__button-item_edit"
-                ></v-icon>
-                <span class="visualy-hidden">Изменить</span>
-              </button>
-              <button type="button" class="table__button-item">
-                <v-icon
-                  icon-id="icon-reject"
-                  width="12"
-                  height="11"
-                  class="table__button-item_reject"
-                ></v-icon>
-                <span class="visualy-hidden">Удалить</span>
-              </button>
+              <v-icon
+                icon-id="icon-edit"
+                width="12"
+                height="11"
+                class="table__button-item_edit"
+              ></v-icon>
+              <span class="visualy-hidden">Изменить</span>
+            </button>
+            <button type="button" class="table__button-item">
+              <v-icon
+                icon-id="icon-reject"
+                width="12"
+                height="11"
+                class="table__button-item_reject"
+              ></v-icon>
+              <span class="visualy-hidden">Удалить</span>
+            </button>
           </td>
         </tr>
       </table>
@@ -63,6 +69,9 @@
 </template>
 
 <script>
+import { useStore } from "vuex";
+import { computed } from "vue";
+
 import VDropdown from "../components/VDropdown.vue";
 import VPagination from "../components/VPagination.vue";
 import VIcon from "../components/VIcon.vue";
@@ -75,13 +84,13 @@ export default {
     VIcon,
   },
   setup() {
+    const store = useStore();
+
     const listItems = [
       { id: 1, name: "xxx" },
       { id: 2, name: "yyy" },
       { id: 3, name: "zzz" },
     ];
-
-    const listTableHeaders = ["Наименование", "Действия"];
 
     const listCities = [
       { id: 1, name: "Ульяновск" },
@@ -89,10 +98,37 @@ export default {
       { id: 3, name: "Казань" },
     ];
 
+    const listTableHeaders = ["Наименование", "Действия"];
+
+    //computed
+    const filteredCityList = computed(() => store.state.entityModule.cities);
+    // const cityList = computed(() => store.state.entityModule.cityList);
+
+    //methods
+    const getFilteredCityListFromApi = chosenCityId => {
+      store.dispatch("entityModule/GET_FILTERED_CITYLIST_FROM_API", chosenCityId);
+    };
+    // const getCityListFromApi = () => {
+    //   store.dispatch("entityModule/GET_CITYLIST_FROM_API");
+    // };
+
+    //API call
+    // const paginateData = async () => {
+    //   await getFilteredCityListFromApi("no-filter");
+    // };
+    // paginateData();
+    getFilteredCityListFromApi("61585c3818f5c2264119b859");
+    // getCityListFromApi();
+
     return {
       listItems,
-      listTableHeaders,
       listCities,
+      listTableHeaders,
+      // cityList,
+      // getCityListFromApi,
+      getFilteredCityListFromApi,
+      // paginateData,
+      filteredCityList,
     };
   },
 };

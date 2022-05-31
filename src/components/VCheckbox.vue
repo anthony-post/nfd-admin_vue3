@@ -1,7 +1,7 @@
 <template>
   <label class="checkbox checkbox__item">
     <slot></slot>
-    <input class="checkbox__input" type="checkbox" checked />
+    <input class="checkbox__input" type="checkbox" :checked="isOption" />
     <span class="checkmark-box"></span>
   </label>
 </template>
@@ -9,6 +9,11 @@
 <script>
 export default {
   name: "VCheckbox",
+  props: {
+    isOption: {
+      type: Boolean,
+    }
+  }
 };
 </script>
 

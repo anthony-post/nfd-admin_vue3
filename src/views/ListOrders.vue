@@ -4,7 +4,7 @@
     <section class="orders-container">
       <div class="orders__header">
         <div class="header-dropdown__container">
-          <v-dropdown
+          <!-- <v-dropdown
             id="dropdown1"
             :itemList="listItems"
             name="period"
@@ -27,12 +27,12 @@
             placeholder="Ульяновск"
             class="orders__header-dropdown"
             @on-item-selected="setSelectedItem"
-          ></v-dropdown>
+          ></v-dropdown> -->
           <v-dropdown
             id="dropdown4"
-            :itemList="listItems"
+            :itemList="orderStatusList"
             name="status"
-            placeholder="В процессе"
+            placeholder="Статус"
             class="orders__header-dropdown"
             @on-item-selected="setSelectedItem"
           ></v-dropdown>
@@ -45,8 +45,9 @@
             Сбросить
           </button>
           <button
-            type="submit"
+            type="button"
             class="orders__header-btn orders__header-btn_submit"
+            @click="getFilteredOrderListFromApi(selectedItem.id)"
           >
             Применить
           </button>
@@ -54,15 +55,18 @@
       </div>
       <div class="orders__content">
         <ul class="orders__list">
-          <li class="orders__item">
+          <li 
+            v-for="order in filteredOrderList"
+            :key="order.id"
+            class="orders__item">
             <div class="orders__car">
-              <img :src="order.pic" :alt="order.name" />
+              <img :src="order.carId.thumbnail.path" :alt="order.carId.thumbnail.originalname" class="orders__car-img" />
             </div>
             <div class="orders__data">
               <div class="data-wrp">
-                <span class="data__item">{{ order.name }}</span>
-                <span class="data__item">в {{ order.city }},</span>
-                <span class="data__item">{{ order.point }}</span>
+                <span class="data__item">{{ order.carId.name }}</span>
+                <span class="data__item">в {{ order.cityId.name }},</span>
+                <span class="data__item">{{ order.pointId.address }}</span>
               </div>
               <div class="data-wrp">
                 <span class="data__period">{{ order.dateFrom }}</span>
@@ -73,9 +77,9 @@
               </div>
             </div>
             <div class="orders__additional">
-              <v-checkbox>Полный бак</v-checkbox>
-              <v-checkbox>Детское кресло</v-checkbox>
-              <v-checkbox>Правый руль</v-checkbox>
+              <v-checkbox :isOption="order.isFullTank">Полный бак</v-checkbox>
+              <v-checkbox :isOption="order.isNeedChildChair">Детское кресло</v-checkbox>
+              <v-checkbox :isOption="order.isRightWheel">Правый руль</v-checkbox>
             </div>
             <div class="orders__price">{{ order.price }} &#8381;</div>
             <div class="orders__buttons-container">
@@ -121,7 +125,8 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { useStore } from "vuex";
+import { ref, computed } from "vue";
 import VDropdown from "../components/VDropdown.vue";
 import VCheckbox from "../components/VCheckbox.vue";
 import VIcon from "../components/VIcon.vue";
@@ -136,6 +141,13 @@ export default {
     VIcon,
   },
   setup() {
+    const store = useStore();
+    //computed
+    const orderStatusList = computed(() => store.state.entityModule.orderStatusList);
+    const filteredOrderList = computed(() => store.state.entityModule.orders["no-filter"].value);
+    // const filteredOrderList = computed(() => store.getters.entityModule.FILTERED_ORDERS_BY_ORDERSTATUS("no-filter"));
+
+
     const listItems = [
       { id: 1, name: "xxx" },
       { id: 2, name: "yyy" },
@@ -157,17 +169,37 @@ export default {
       price: "4 300",
     };
 
-    const chosenItem = ref({});
+    const selectedItem = ref({});
 
-    const setSelectedItem = (chosenItem) => {
-      chosenItem.value = chosenItem;
+    const setSelectedItem = chosenItem => {
+      selectedItem.value = chosenItem;
     };
+
+    //methods
+    const getOrderStatusListFromApi = () =>
+      store.dispatch("entityModule/GET_ORDERSTATUSLIST_FROM_API");
+
+    const getFilteredOrderListFromApi = chosenId => {
+      store.dispatch("entityModule/GET_FILTERED_ORDERLIST_FROM_API", chosenId);
+    };
+
+    //API call
+    const getData = async () => {
+      await getOrderStatusListFromApi();
+    };
+    getData();
+
+    getFilteredOrderListFromApi("no-filter");
 
     return {
       listItems,
       order,
-      chosenItem,
+      selectedItem,
       setSelectedItem,
+      orderStatusList,
+      getFilteredOrderListFromApi,
+      filteredOrderList,
+      getData,
     };
   },
 };
@@ -264,6 +296,8 @@ export default {
   width: 95px;
   margin: 5px;
   padding: 8px 0;
+
+  cursor: pointer;
 }
 
 .orders__header-btn_submit {
@@ -298,6 +332,15 @@ export default {
 .orders__price,
 .orders__buttons-container {
   margin: 5px;
+}
+
+.orders__car {
+  width: 140px;
+  height: 70px;
+}
+
+.orders__car-img {
+  max-width: 100%;
 }
 
 .orders__data {

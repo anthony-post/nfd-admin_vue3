@@ -1,7 +1,7 @@
 <template>
   <label class="checkbox checkbox__item">
     <slot></slot>
-    <input class="checkbox__input" type="checkbox" checked />
+    <input class="checkbox__input" type="checkbox" />
     <span class="checkmark-box"></span>
   </label>
 </template>
