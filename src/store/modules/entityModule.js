@@ -1,6 +1,6 @@
 import { entityAPI } from "@/api/entityAPI";
 
-const limit = 5; //limit per page
+const limit = 5; //limit items per page
 
 export const entityModule = {
   namespaced: true,
@@ -11,6 +11,7 @@ export const entityModule = {
     // cityList: [],
     cities: {},
   },
+
   mutations: {
     SET_ORDERSTATUSLIST_TO_STATE: (state, statusList) => {
       state.orderStatusList = statusList;
@@ -27,15 +28,14 @@ export const entityModule = {
         }
       });
     },
-
-    SET_ORDERS_DATA: (state, { ordersData, id }) => {
-      if (!id) {
+    SET_ORDERS_DATA: (state, { ordersData, orderStatusId }) => {
+      if (!orderStatusId) {
         const ordersAll = state.orders["no-filter"];
-        ordersAll?.value.push(...ordersData.data.data);
+        ordersAll.value.push(...ordersData.data.data);
         ordersAll.page++;
       } else {
-        const ordersById = state.orders[id];
-        ordersById?.value.push(...ordersData.data.data);
+        const ordersById = state.orders[orderStatusId];
+        ordersById.value.push(...ordersData.data.data);
         ordersById.page++;
       }
     },
@@ -54,22 +54,23 @@ export const entityModule = {
     //   state.cityList = cities.data.data;
     // },
   },
+
   actions: {
     async GET_ORDERSTATUSLIST_FROM_API({ commit }) {
       const statusList = await entityAPI.getOrderStatusList();
       commit("SET_ORDERSTATUSLIST_TO_STATE", statusList.data.data);
     },
 
-    async GET_FILTERED_ORDERLIST_FROM_API({ commit, state }, id) {
+    async GET_FILTERED_ORDERLIST_FROM_API({ commit, state }, orderStatusId) {
       try {
-        if (id === "no-filter") {
+        if (orderStatusId === "no-filter") {
           const page = state.orders["no-filter"]?.page;
           const ordersData = await entityAPI.getOrders({ page, limit });
           commit("SET_ORDERS_DATA", { ordersData });
         } else {
-          const page = state.orders[id]?.page;
-          const ordersData = await entityAPI.getOrders({ id, page, limit });
-          commit("SET_ORDERS_DATA", { ordersData, id });
+          const page = state.orders[orderStatusId]?.page;
+          const ordersData = await entityAPI.getOrders({ orderStatusId, page, limit });
+          commit("SET_ORDERS_DATA", { ordersData, orderStatusId });
         }
       } catch (error) {
         throw new Error(error);
@@ -101,21 +102,22 @@ export const entityModule = {
     //   }
     // },
   },
+
   getters: {
-    FILTERED_ORDERS_BY_ORDERSTATUS: (state) => (id) => {
-      if (id === "no-filter") {
-        return state.orders["no-filter"].value;
+    FILTERED_ORDERS_BY_ORDERSTATUS: (state) => (orderStatusId) => {
+      if (orderStatusId === "no-filter") {
+        return state.orders["no-filter"]?.value;
       } else {
-        return state.orders[id].value;
+        return state.orders[orderStatusId]?.value;
       }
     },
 
-    FILTERED_CITIESDATA_BY_NAME: (state) => (id) => {
-      if (id === "no-filter") {
-        return state.cities["no-filter"].value;
-      } else {
-        return state.cities[id].value;
-      }
-    },
+    // FILTERED_CITIESDATA_BY_NAME: (state) => (id) => {
+    //   if (id === "no-filter") {
+    //     return state.cities["no-filter"].value;
+    //   } else {
+    //     return state.cities[id].value;
+    //   }
+    // },
   },
 };

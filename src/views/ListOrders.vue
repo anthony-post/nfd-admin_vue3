@@ -40,14 +40,17 @@
         <div class="header-btn__container">
           <button
             type="reset"
+            :disabled="!selectedItem"
             class="orders__header-btn orders__header-btn_reset"
+            @click="rejectFilter"
           >
             Сбросить
           </button>
           <button
             type="button"
+            :disabled="!selectedItem"
             class="orders__header-btn orders__header-btn_submit"
-            @click="getFilteredOrderListFromApi(selectedItem.id)"
+            @click="applyFilter"
           >
             Применить
           </button>
@@ -60,13 +63,13 @@
             :key="order.id"
             class="orders__item">
             <div class="orders__car">
-              <img :src="order.carId.thumbnail.path" :alt="order.carId.thumbnail.originalname" class="orders__car-img" />
+              <img :src="order.carId?.thumbnail?.path" :alt="order.carId?.thumbnail?.originalname" class="orders__car-img" />
             </div>
             <div class="orders__data">
               <div class="data-wrp">
-                <span class="data__item">{{ order.carId.name }}</span>
-                <span class="data__item">в {{ order.cityId.name }},</span>
-                <span class="data__item">{{ order.pointId.address }}</span>
+                <span class="data__item">{{ order.carId?.name }}</span>
+                <span class="data__item">в {{ order.cityId?.name }},</span>
+                <span class="data__item">{{ order.pointId?.address }}</span>
               </div>
               <div class="data-wrp">
                 <span class="data__period">{{ order.dateFrom }}</span>
@@ -125,6 +128,8 @@
 </template>
 
 <script>
+// import { mapGetters } from 'vuex'
+// import store from "@/store";
 import { useStore } from "vuex";
 import { ref, computed } from "vue";
 import VDropdown from "../components/VDropdown.vue";
@@ -142,40 +147,38 @@ export default {
   },
   setup() {
     const store = useStore();
+
     //computed
     const orderStatusList = computed(() => store.state.entityModule.orderStatusList);
-    const filteredOrderList = computed(() => store.state.entityModule.orders["no-filter"].value);
-    // const filteredOrderList = computed(() => store.getters.entityModule.FILTERED_ORDERS_BY_ORDERSTATUS("no-filter"));
 
+    // const filteredOrderList = computed(() => store.state.entityModule.orders["no-filter"]?.value);
+    // const filteredOrderList = computed(() => {
+    //   if (selectedItem.value === "no-filter") {
+    //     return store.state.entityModule.orders["no-filter"]?.value;
+    //   } else {
+    //     return store.state.entityModule.orders[selectedItem.value]?.value;
+    //   }
+    // });
+    const filteredOrderList = computed(() => {
+      if (filterId.value === "no-filter") {
+        return store.state.entityModule.orders["no-filter"]?.value;
+      } else {
+        return store.state.entityModule.orders[filterId.value]?.value;
+      }
+    });
 
-    const listItems = [
-      { id: 1, name: "xxx" },
-      { id: 2, name: "yyy" },
-      { id: 3, name: "zzz" },
-    ];
+    // const filteredOrderList = computed(...mapGetters({FILTERED_ORDERS_BY_ORDERSTATUS(selectedItem.value)}));
+    // const filteredOrderList = computed(() => store.getters.FILTERED_ORDERS_BY_ORDERSTATUS("no-filter"));
+    // const filteredOrderList = computed(() => store.getters.FILTERED_ORDERS_BY_ORDERSTATUS(selectedItem.value));
+    // const filteredOrderList = computed(() => store.getters['entityModule/FILTERED_ORDERS_BY_ORDERSTATUS']);
 
-    const order = {
-      id: 1,
-      name: "ELANTRA",
-      color: "Голубой",
-      pic: `${require("../assets/img/car_image.jpg")}`,
-      city: "Ульяновск",
-      point: "Нариманова 42",
-      dateFrom: "12.06.2019 12:00",
-      dateTo: "13.06.2019 12:00",
-      isNeedChair: true,
-      isFullTank: false,
-      isRightWeel: false,
-      price: "4 300",
-    };
-
-    const selectedItem = ref({});
+    const filterId = ref("no-filter");
+    const selectedItem = ref(null);
 
     const setSelectedItem = chosenItem => {
-      selectedItem.value = chosenItem;
+      selectedItem.value = chosenItem.id;
     };
 
-    //methods
     const getOrderStatusListFromApi = () =>
       store.dispatch("entityModule/GET_ORDERSTATUSLIST_FROM_API");
 
@@ -183,22 +186,32 @@ export default {
       store.dispatch("entityModule/GET_FILTERED_ORDERLIST_FROM_API", chosenId);
     };
 
+    const applyFilter = () => {
+      filterId.value = selectedItem.value;
+      getFilteredOrderListFromApi(filterId.value);
+    }
+
+    const rejectFilter = () => {
+      selectedItem.value = null;
+      filterId.value = "no-filter";
+    };
+
     //API call
     const getData = async () => {
       await getOrderStatusListFromApi();
+      await getFilteredOrderListFromApi(selectedItem.value);
     };
     getData();
 
-    getFilteredOrderListFromApi("no-filter");
-
     return {
-      listItems,
-      order,
       selectedItem,
-      setSelectedItem,
+      filterId,
       orderStatusList,
-      getFilteredOrderListFromApi,
       filteredOrderList,
+      setSelectedItem,
+      applyFilter,
+      rejectFilter,
+      getFilteredOrderListFromApi,
       getData,
     };
   },
@@ -311,7 +324,7 @@ export default {
 }
 
 .orders__content {
-  padding: 13px 20px 180px 20px;
+  padding: 13px 20px;
 
   @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
     padding: 10px;

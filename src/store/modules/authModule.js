@@ -10,6 +10,8 @@ export const authModule = {
     SET_USER_DATA(state, userData) {
       state.user = userData;
       localStorage.setItem("user", JSON.stringify(userData));
+      localStorage.setItem("access_token", JSON.stringify(userData.access_token));
+      localStorage.setItem("token_type", JSON.stringify(userData.token_type));
     },
   },
   actions: {
