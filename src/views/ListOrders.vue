@@ -148,28 +148,21 @@ export default {
   setup() {
     const store = useStore();
 
-    //computed
     const orderStatusList = computed(() => store.state.entityModule.orderStatusList);
 
-    // const filteredOrderList = computed(() => store.state.entityModule.orders["no-filter"]?.value);
+//вариант через state Vuex
     // const filteredOrderList = computed(() => {
-    //   if (selectedItem.value === "no-filter") {
+    //   if (filterId.value === "no-filter") {
     //     return store.state.entityModule.orders["no-filter"]?.value;
     //   } else {
-    //     return store.state.entityModule.orders[selectedItem.value]?.value;
+    //     return store.state.entityModule.orders[filterId.value]?.value;
     //   }
     // });
-    const filteredOrderList = computed(() => {
-      if (filterId.value === "no-filter") {
-        return store.state.entityModule.orders["no-filter"]?.value;
-      } else {
-        return store.state.entityModule.orders[filterId.value]?.value;
-      }
-    });
 
-    // const filteredOrderList = computed(...mapGetters({FILTERED_ORDERS_BY_ORDERSTATUS(selectedItem.value)}));
+//вариант через getters Vuex
+    // const filteredOrderList = computed(...mapGetters({FILTERED_ORDERS_BY_ORDERSTATUS(filterId.value)}));
     // const filteredOrderList = computed(() => store.getters.FILTERED_ORDERS_BY_ORDERSTATUS("no-filter"));
-    // const filteredOrderList = computed(() => store.getters.FILTERED_ORDERS_BY_ORDERSTATUS(selectedItem.value));
+    const filteredOrderList = computed(() => store.getters.FILTERED_ORDERS_BY_ORDERSTATUS(filterId.value));
     // const filteredOrderList = computed(() => store.getters['entityModule/FILTERED_ORDERS_BY_ORDERSTATUS']);
 
     const filterId = ref("no-filter");
