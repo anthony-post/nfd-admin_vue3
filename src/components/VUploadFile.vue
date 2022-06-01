@@ -3,8 +3,8 @@
     <input
       type="file"
       ref="fileInput"
-      accept="image/*"
       class="upload-input"
+      accept=".jpeg,.jpg,.png"
       @change="onFilePicked"
     />
     <span v-if="fileName" class="upload-placeholder">{{ fileName }}</span>
@@ -32,17 +32,6 @@ export default {
     const onFilePicked = (event) => {
       const files = event.target.files;
       fileName.value = files[0].name;
-
-      // let filename = files[0].name;
-      // console.log(filename);
-      // const fileReader = new FileReader();
-
-      // fileReader.addEventListener('load', () => {
-      //   this.imageUrl = fileReader.result
-      // });
-
-      // fileReader.readAsDataURL(files[0]);
-      // image.value = files[0];
     };
 
     return {

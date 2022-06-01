@@ -16,10 +16,10 @@
         <div class="card-car__progress-bar">
           <div class="card-car__progress-bar-wrp">
             <p class="card-car__progress-bar-title">Заполнено</p>
-            <p class="card-car__progress-bar-data">100%</p>
+            <p class="card-car__progress-bar-data">70%</p>
           </div>
           <!--TO DO PROGRESS BAR-->
-          <div class="progress-bar"></div>
+          <progress value="70" max="100" class="progress-bar"></progress>
         </div>
         <div class="card-car__description">
           <h4 class="card-car__description-title">Описание</h4>
@@ -459,10 +459,22 @@ export default {
 
 .progress-bar {
   width: 100%;
-  height: 5px;
+  height: 10px;
+}
+
+.progress-bar::-webkit-progress-bar {
   box-shadow: inset 0px 0.5px 4px rgba(0, 0, 0, 0.25);
   border-radius: 4px;
-  background: #007bff;
+}
+ 
+.progress-bar::-webkit-progress-value {
+  background: $color-blue;
+  border-radius: 4px;
+}
+ 
+.progress-bar::-moz-progress-bar {
+  background: $color-blue;
+  border-radius: 4px;
 }
 
 .input {
