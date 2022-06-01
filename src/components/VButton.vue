@@ -1,8 +1,8 @@
 <template>
   <button
     :type="type"
-    class="base-button"
-    :class="[getThemeButton]"
+    
+    :class="[baseButton, getThemeButton]"
     @click="$emit('click')"
   >
     <slot></slot>
@@ -26,9 +26,11 @@ export default {
     },
   },
   setup(props) {
+    const baseButton = "base-button";
     const getThemeButton = computed(() => `base-button_${props.theme}`);
 
     return {
+      baseButton,
       getThemeButton,
     };
   },

@@ -4,6 +4,7 @@
       type="file"
       ref="fileInput"
       class="upload-input"
+      accept=".jpeg,.jpg,.png"
       @change="onFilePicked"
     />
     <span v-if="fileName" class="upload-placeholder">{{ fileName }}</span>
