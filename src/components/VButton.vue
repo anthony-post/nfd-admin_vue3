@@ -1,8 +1,7 @@
 <template>
   <button
     :type="type"
-    
-    :class="[baseButton, getThemeButton]"
+    :class="['base-button', getThemeButton]"
     @click="$emit('click')"
   >
     <slot></slot>
@@ -11,6 +10,7 @@
 
 <script>
 import { computed } from "@vue/runtime-core";
+
 export default {
   name: "VButton",
   props: {
@@ -26,11 +26,9 @@ export default {
     },
   },
   setup(props) {
-    const baseButton = "base-button";
     const getThemeButton = computed(() => `base-button_${props.theme}`);
 
     return {
-      baseButton,
       getThemeButton,
     };
   },
