@@ -4,7 +4,7 @@
       type="file"
       ref="fileInput"
       class="upload-input"
-      :accept="valifFormats"
+      :accept="validFormats"
       @change="onFilePicked"
     />
     <span v-if="fileName" class="upload-placeholder">{{ fileName }}</span>
@@ -24,7 +24,7 @@ export default {
     const image = ref(null);
     const fileInput = ref(null);
     const fileName = ref(null);
-    const valifFormats = ".jpeg,.jpg,.png";
+    const validFormats = ".jpeg,.jpg,.png";
 
     const onPickFile = () => {
       fileInput.value.click();
@@ -39,7 +39,7 @@ export default {
       image,
       fileInput,
       fileName,
-      valifFormats,
+      validFormats,
       onPickFile,
       onFilePicked,
     };
