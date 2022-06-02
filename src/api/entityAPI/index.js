@@ -1,7 +1,7 @@
 import { entityAPIInstance } from "@/api";
 
 const url = {
-  CITY: "/db/city",
+  // CITY: "/db/city",
   //   POINT: "/db/point",
   //   CATEGORY: "/db/category",
   //   CAR: "/db/car",
@@ -14,11 +14,11 @@ export const entityAPI = {
   // getCities() {
   //   return entityAPIInstance.get(url.CITY);
   // },
-  getCities(params = {}) {
-    return entityAPIInstance.get(url.CITY, {
-      params,
-    });
-  },
+  // getCities(params = {}) {
+  //   return entityAPIInstance.get(url.CITY, {
+  //     params,
+  //   });
+  // },
   getOrderStatusList() {
     return entityAPIInstance.get(url.ORDERSTATUS);
   },
@@ -27,6 +27,9 @@ export const entityAPI = {
       params,
     });
   },
+  // getOrders(page, limit) {
+  //   return entityAPIInstance.get(url.ORDER + '?' + 'page=' + page + '&' + 'limit='+ limit);
+  // },
 };
 
 // export default {

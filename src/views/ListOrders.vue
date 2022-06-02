@@ -121,7 +121,13 @@
         </ul>
       </div>
       <div class="orders__pagination">
-        <v-pagination>1...4</v-pagination>
+        <v-pagination
+          :totalPages="totalPages"
+
+          :currentPage="currentPage"
+          @pagechanged="onPageChange"
+        ></v-pagination>
+        <!-- <v-pagination>1...4</v-pagination> -->
       </div>
     </section>
   </div>
@@ -148,7 +154,7 @@ export default {
   setup() {
     const store = useStore();
 
-    const orderStatusList = computed(() => store.state.entityModule.orderStatusList);
+    const orderStatusList = computed(() => store.state.ordersModule.orderStatusList);
 
 //вариант через state Vuex
     // const filteredOrderList = computed(() => {
@@ -159,10 +165,14 @@ export default {
     //   }
     // });
 
+    const filteredOrderList = computed(() => {
+      return store.state.ordersModule.orders.data;
+    });
+
 //вариант через getters Vuex
     // const filteredOrderList = computed(...mapGetters({FILTERED_ORDERS_BY_ORDERSTATUS(filterId.value)}));
     // const filteredOrderList = computed(() => store.getters.FILTERED_ORDERS_BY_ORDERSTATUS("no-filter"));
-    const filteredOrderList = computed(() => store.getters.FILTERED_ORDERS_BY_ORDERSTATUS(filterId.value));
+    // const filteredOrderList = computed(() => store.getters.FILTERED_ORDERS_BY_ORDERSTATUS(filterId.value));
     // const filteredOrderList = computed(() => store.getters['entityModule/FILTERED_ORDERS_BY_ORDERSTATUS']);
 
     const filterId = ref("no-filter");
@@ -173,28 +183,78 @@ export default {
     };
 
     const getOrderStatusListFromApi = () =>
-      store.dispatch("entityModule/GET_ORDERSTATUSLIST_FROM_API");
+      store.dispatch("ordersModule/GET_ORDERSTATUSLIST_FROM_API");
 
-    const getFilteredOrderListFromApi = chosenId => {
-      store.dispatch("entityModule/GET_FILTERED_ORDERLIST_FROM_API", chosenId);
+    // const getFilteredOrderListFromApi = chosenId => {
+    //   store.dispatch("entityModule/GET_FILTERED_ORDERLIST_FROM_API", chosenId);
+    // };
+
+    // const getPaginateOrderListFromApi = (chosenId, chosenPage) => {
+    //     store.dispatch("ordersModule/GET_ORDERLIST_FROM_API", {
+    //       orderStatusId: chosenId,
+    //       page: chosenPage
+    //     });
+    // };
+
+    // const getPaginateOrderListFromApi = (chosenId, chosenPage) => {
+    //     store.dispatch("ordersModule/GET_ORDERLIST_FROM_API", chosenId, chosenPage);
+    // };
+
+    const getPaginateOrderListFromApi = chosenId => {
+        store.dispatch("ordersModule/GET_ORDERLIST_FROM_API", chosenId);
     };
 
     const applyFilter = () => {
       filterId.value = selectedItem.value;
-      getFilteredOrderListFromApi(filterId.value);
+      const firstPage = 1;
+      store.commit("ordersModule/SET_SELECTEDPAGE_TO_STATE", firstPage);
+      // getFilteredOrderListFromApi(filterId.value);
+      getPaginateOrderListFromApi(filterId.value);
+      // getPaginateOrderListFromApi(filterId.value, currentPage.value);
     }
 
     const rejectFilter = () => {
       selectedItem.value = null;
       filterId.value = "no-filter";
+      const firstPage = 1;
+      store.commit("ordersModule/SET_SELECTEDPAGE_TO_STATE", firstPage);
+      getPaginateOrderListFromApi(filterId.value);
     };
 
     //API call
     const getData = async () => {
       await getOrderStatusListFromApi();
-      await getFilteredOrderListFromApi(selectedItem.value);
+      // await getFilteredOrderListFromApi(selectedItem.value);
+      // await getPaginateOrderListFromApi(filterId.value, currentPage.value);
+      await getPaginateOrderListFromApi(filterId.value);
     };
     getData();
+
+    //Pagination
+    const limitPerPage = 4;
+    const totalItems = computed(() => {
+      return store.state.ordersModule.orders.count;
+    });
+    // const totalItems = computed(() => {
+    //   if (filterId.value === "no-filter") {
+    //     return store.state.entityModule.orders["no-filter"]?.count;
+    //   } else {
+    //     return store.state.entityModule.orders[filterId.value]?.count;
+    //   }
+    // });
+    const totalPages = computed(() => Math.ceil(totalItems.value / limitPerPage));
+    // const currentPage = ref(1);
+    const currentPage = computed(() => store.state.ordersModule.selectedPage);
+    
+    const onPageChange = page => {
+      // console.log(page)
+      // currentPage.value = page;
+      store.commit("ordersModule/SET_SELECTEDPAGE_TO_STATE", page);
+
+      //TO DO API call на выбранную страницу 
+      getPaginateOrderListFromApi(filterId.value);
+      // getPaginateOrderListFromApi(filterId.value, currentPage.value);
+    };
 
     return {
       selectedItem,
@@ -204,8 +264,12 @@ export default {
       setSelectedItem,
       applyFilter,
       rejectFilter,
-      getFilteredOrderListFromApi,
+      // getFilteredOrderListFromApi,
       getData,
+      // limitPerPage,
+      totalPages,
+      currentPage,
+      onPageChange,
     };
   },
 };
