@@ -1,28 +1,26 @@
 <template>
-  <div class="input-wrp">
-    <label class="input__label" :for="name">{{ label }}</label>
-    <input
-      class="input__field input__text"
+  <div class="textarea-wrp">
+    <label class="textarea__label" :for="id">{{ label }}</label>
+    <textarea
       autocomplete="off"
-      :type="type"
       :name="name"
       :placeholder="placeholder"
-      :title="title"
       :value="inputValue"
+      class="textarea__field textarea__text"
       @input="$emit('update:inputValue', $event.target.value)"
-    />
+    ></textarea>
   </div>
 </template>
 
 <script>
 export default {
-  name: "VInput",
+  name: "VTextArea",
   props: {
     label: {
       type: String,
       default: "",
     },
-    type: {
+    id: {
       type: String,
       default: "",
     },
@@ -31,10 +29,6 @@ export default {
       default: "",
     },
     placeholder: {
-      type: String,
-      default: "",
-    },
-    title: {
       type: String,
       default: "",
     },
@@ -50,14 +44,13 @@ export default {
 @import "@/assets/variables.scss";
 @import "@/assets/styles.scss";
 
-.input-wrp {
+.textarea-wrp {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  padding: 0 10px;
 }
 
-.input__label {
+.textarea__label {
   font-family: $ff;
   font-style: normal;
   font-weight: 400;
@@ -68,7 +61,7 @@ export default {
   margin: 0 0 5px 0;
 }
 
-.input__field {
+.textarea__field {
   background: $color-white;
   border: 0.5px solid $color-border;
   box-sizing: border-box;
@@ -76,12 +69,14 @@ export default {
   padding: 8px 0 8px 11px;
   margin: 0 0 15px 0;
 
+  resize: none;
+
   &:focus {
     outline: 0.5px ridge $color-blue;
   }
 }
 
-.input__text {
+.textarea__text {
   font-family: $ff;
   font-style: normal;
   font-weight: 400;

@@ -34,7 +34,10 @@
           ></v-dropdown>
         </div>
         <div class="header-button">
-          <button type="reset" class="header-button__item header-button__item_reset">
+          <button
+            type="reset"
+            class="header-button__item header-button__item_reset"
+          >
             Сбросить
           </button>
           <button
@@ -47,16 +50,28 @@
       </div>
       <table class="table-content table">
         <tr class="table-header">
-          <th v-for="item in listTableHeaders" :key="item" class="table__header-item table__header-item_car">{{ item }}</th>
+          <th
+            v-for="item in listTableHeaders"
+            :key="item"
+            class="table__header-item table__header-item_car"
+          >
+            {{ item }}
+          </th>
         </tr>
         <tr v-for="car in listCars" :key="car.id" class="table-data">
           <td class="table__data-item">{{ car.name }}</td>
           <td class="table__data-item">{{ car.category }}</td>
           <td class="table__data-item">{{ car.color }}</td>
-          <td class="table__data-item">{{ car.priceMin }} - {{ car.priceMax }}</td>
           <td class="table__data-item">
-            <button type="button" class="table__button-item_car" @click="togglePopUp">
-                ...
+            {{ car.priceMin }} - {{ car.priceMax }}
+          </td>
+          <td class="table__data-item">
+            <button
+              type="button"
+              class="table__button-item_car"
+              @click="togglePopUp"
+            >
+              ...
             </button>
             <pop-up
               v-if="popUpIsActive"
@@ -93,13 +108,7 @@ export default {
       { id: 3, name: "zzz" },
     ];
 
-    const listTableHeaders = [
-      "Модель",
-      "Катег.",
-      "Цвет",
-      "Цена",
-      "Подробнее",
-    ];
+    const listTableHeaders = ["Модель", "Катег.", "Цвет", "Цена", "Подробнее"];
 
     const listCars = [
       {
@@ -265,7 +274,6 @@ export default {
       border: 0.5px solid $color-red;
     }
   }
-
 }
 
 .table-content {
@@ -301,7 +309,7 @@ export default {
     background: $color-white;
     border: 0.5px solid #becad6;
     border-radius: 4px;
-    box-sizing: border-box; 
+    box-sizing: border-box;
     width: 50px;
   }
 

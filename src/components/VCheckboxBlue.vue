@@ -8,7 +8,7 @@
 
 <script>
 export default {
-  name: "VCheckbox",
+  name: "VCheckboxBlue",
 };
 </script>
 
@@ -18,12 +18,13 @@ export default {
 .checkbox {
   display: block;
   position: relative;
-  font-family: $ff;
+
+  font-family: $font2;
   font-style: normal;
   font-weight: 400;
   font-size: 10px;
   line-height: 12px;
-  color: $color-grey;
+  color: $color-label;
 
   pointer-events: none; //block switching checkbox
 
@@ -46,14 +47,15 @@ export default {
   left: 0;
   height: 13px;
   width: 13px;
-  border: 0.5px solid #becad6;
-  border-radius: 1px;
+
+  background: $color-blue;
+  border-radius: 2px;
 }
 .checkbox:hover input ~ .checkmark-box {
-  border: 1px solid $color-green;
+  border: 1px solid $color-blue;
 }
 .checkbox__input:checked ~ .checkmark-box {
-  border: 1px solid $color-green;
+  border: 1px solid $color-blue;
 }
 .checkmark-box:after {
   content: "";
@@ -68,8 +70,10 @@ export default {
   top: -1px;
   width: 3px;
   height: 8px;
-  border: solid $color-black;
+
+  border: solid $color-white;
   border-width: 0 2px 2px 0;
+  border-radius: 1px;
   -webkit-transform: rotate(45deg);
   -ms-transform: rotate(45deg);
   transform: rotate(45deg);
