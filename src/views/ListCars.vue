@@ -165,12 +165,6 @@ export default {
 <style lang="scss">
 @import "@/assets/variables.scss";
 
-.entity-wrp {
-  width: 100%;
-  height: 100%;
-  background-color: $color-background;
-}
-
 .entity {
   &__title {
     margin: 0;

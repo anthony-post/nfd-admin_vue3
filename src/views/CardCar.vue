@@ -181,9 +181,9 @@ export default {
 @import "@/assets/variables.scss";
 
 .card {
-  width: 100%;
-  height: 100%;
-  background-color: $color-background;
+  // width: 100%;
+  // height: 100%;
+  // background-color: $color-background;
 
   &__title {
     margin: 0;

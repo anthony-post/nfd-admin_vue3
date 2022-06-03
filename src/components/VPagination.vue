@@ -46,7 +46,7 @@
       ...
     </li>
 
-    <li v-if="!isInLastPage" class="pagination-item">
+    <li class="pagination-item">
       <button
         type="button"
         :disabled="isInLastPage"

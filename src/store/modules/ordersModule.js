@@ -1,6 +1,6 @@
 import { entityAPI } from "@/api/entityAPI";
 
-const limit = 4; //limit items per page
+const limit = 5; //limit items per page
 
 export const ordersModule = {
   namespaced: true,

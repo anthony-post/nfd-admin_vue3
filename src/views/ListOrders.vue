@@ -184,17 +184,17 @@ export default {
     getData();
 
     //Pagination
-    const limitPerPage = 4;
+    const limitPerPage = 5;
 
     const totalItems = computed(() => store.state.ordersModule.orders.count);
 
-    const totalPages = computed(() => Math.ceil(totalItems.value / limitPerPage));
+    const totalPages = computed(() => Math.trunc(totalItems.value / limitPerPage));
 
     const currentPage = computed(() => store.state.ordersModule.selectedPage);
 
     const onPageChange = page => {
       store.commit("ordersModule/SET_SELECTEDPAGE_TO_STATE", page);
-      //API call на выбранную страницу 
+      //API call to the chosen page
       getPaginateOrderListFromApi(filterId.value);
     };
 
@@ -240,12 +240,6 @@ export default {
 
 <style lang="scss">
 @import "@/assets/variables.scss";
-
-.list-orders-wrp {
-  width: 100%;
-  height: 100%;
-  background-color: $color-background;
-}
 
 .orders__title {
   margin: 0;
@@ -334,9 +328,12 @@ export default {
 
 .orders__content {
   padding: 13px 20px;
+  height: 50vh;
+  overflow-x: scroll;
 
   @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
     padding: 10px;
+    height: 45vh;
   }
 }
 
@@ -364,7 +361,6 @@ export default {
 
 .orders__car-img {
   width: inherit;
-  height: fit-content;
 }
 
 .orders__data {
@@ -380,8 +376,6 @@ export default {
 }
 
 .data-wrp {
-  display: flex;
-  flex-direction: row;
   margin: 0 0 7px 0;
 }
 
@@ -421,6 +415,7 @@ export default {
   line-height: 28px;
   color: $color-black;
   width: 10%;
+  text-align: right;
 
   @media #{$media} and (min-width: $desktop-min) and (max-width: $desktop-max) {
     font-size: 18px;
@@ -439,6 +434,21 @@ export default {
 .orders__buttons-container {
   display: flex;
   flex-direction: row;
+
+  @media #{$media} and (min-width: $desktop-min) and (max-width: $desktop-max) {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  @media #{$media} and (min-width: $tablet-min) and (max-width: $tablet-max) {
+    width: 100%;
+    justify-content: center;
+  }
+
+  @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 .orders__button {
@@ -454,6 +464,7 @@ export default {
   box-sizing: border-box;
   border: 0.5px solid #becad6;
   display: flex;
+  margin: 0;
 }
 
 .orders__button_left {
