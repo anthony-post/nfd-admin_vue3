@@ -12,8 +12,8 @@ export default {
   props: {
     isOption: {
       type: Boolean,
-    }
-  }
+    },
+  },
 };
 </script>
 

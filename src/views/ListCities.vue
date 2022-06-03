@@ -105,8 +105,11 @@ export default {
     // const cityList = computed(() => store.state.entityModule.cityList);
 
     //methods
-    const getFilteredCityListFromApi = chosenCityId => {
-      store.dispatch("entityModule/GET_FILTERED_CITYLIST_FROM_API", chosenCityId);
+    const getFilteredCityListFromApi = (chosenCityId) => {
+      store.dispatch(
+        "entityModule/GET_FILTERED_CITYLIST_FROM_API",
+        chosenCityId
+      );
     };
     // const getCityListFromApi = () => {
     //   store.dispatch("entityModule/GET_CITYLIST_FROM_API");

@@ -4,33 +4,10 @@
     <section class="orders-container">
       <div class="orders__header">
         <div class="header-dropdown__container">
-          <!-- <v-dropdown
-            id="dropdown1"
-            :itemList="listItems"
-            name="period"
-            placeholder="За неделю"
-            class="orders__header-dropdown"
-            @on-item-selected="setSelectedItem"
-          ></v-dropdown>
-          <v-dropdown
-            id="dropdown2"
-            :itemList="listItems"
-            name="car"
-            placeholder="Elantra"
-            class="orders__header-dropdown"
-            @on-item-selected="setSelectedItem"
-          ></v-dropdown>
-          <v-dropdown
-            id="dropdown3"
-            :itemList="listItems"
-            name="city"
-            placeholder="Ульяновск"
-            class="orders__header-dropdown"
-            @on-item-selected="setSelectedItem"
-          ></v-dropdown> -->
           <v-dropdown
             id="dropdown4"
             :itemList="orderStatusList"
+            :selectedItem="selectedItem"
             name="status"
             placeholder="Статус"
             class="orders__header-dropdown"
@@ -38,32 +15,41 @@
           ></v-dropdown>
         </div>
         <div class="header-btn__container">
-          <button
-            type="reset"
+          <v-button
+            type="button"
+            theme="delete"
             :disabled="!selectedItem"
-            class="orders__header-btn orders__header-btn_reset"
+            :class="{ btn_disabled: !selectedItem }"
+            class="header-btn__item"
             @click="rejectFilter"
           >
             Сбросить
-          </button>
-          <button
+          </v-button>
+          <v-button
             type="button"
+            theme="confirm"
             :disabled="!selectedItem"
-            class="orders__header-btn orders__header-btn_submit"
+            :class="{ btn_disabled: !selectedItem }"
+            class="header-btn__item"
             @click="applyFilter"
           >
             Применить
-          </button>
+          </v-button>
         </div>
       </div>
       <div class="orders__content">
         <ul class="orders__list">
+          <VPreloader v-show="togglePreloader" />
           <li 
             v-for="order in filteredOrderList"
             :key="order.id"
             class="orders__item">
             <div class="orders__car">
-              <img :src="order.carId?.thumbnail?.path" :alt="order.carId?.thumbnail?.originalname" class="orders__car-img" />
+              <img 
+                :src="order.carId?.thumbnail?.path" 
+                :alt="order.carId?.thumbnail?.originalname" 
+                class="orders__car-img"
+              />
             </div>
             <div class="orders__data">
               <div class="data-wrp">
@@ -72,8 +58,8 @@
                 <span class="data__item">{{ order.pointId?.address }}</span>
               </div>
               <div class="data-wrp">
-                <span class="data__period">{{ order.dateFrom }}</span>
-                <span class="data__period">- {{ order.dateTo }}</span>
+                <span class="data__period">{{ convertToDate(order.dateFrom) }}</span>
+                <span class="data__period">- {{ convertToDate(order.dateTo) }}</span>
               </div>
               <div class="data__period">
                 Цвет:<span class="data__item">{{ order.color }}</span>
@@ -123,25 +109,23 @@
       <div class="orders__pagination">
         <v-pagination
           :totalPages="totalPages"
-
           :currentPage="currentPage"
           @pagechanged="onPageChange"
         ></v-pagination>
-        <!-- <v-pagination>1...4</v-pagination> -->
       </div>
     </section>
   </div>
 </template>
 
 <script>
-// import { mapGetters } from 'vuex'
-// import store from "@/store";
 import { useStore } from "vuex";
 import { ref, computed } from "vue";
 import VDropdown from "../components/VDropdown.vue";
 import VCheckbox from "../components/VCheckbox.vue";
 import VIcon from "../components/VIcon.vue";
 import VPagination from "../components/VPagination.vue";
+import VPreloader from "@/components/VPreloader.vue";
+import VButton from "../components/VButton.vue";
 
 export default {
   name: "ListOrders",
@@ -150,33 +134,21 @@ export default {
     VPagination,
     VCheckbox,
     VIcon,
+    VPreloader,
+    VButton,
   },
   setup() {
     const store = useStore();
+    const filterId = ref("no-filter");
+    const selectedItem = ref(null);
+
+    const togglePreloader = computed(() => filteredOrderList.value?.length === 0);
 
     const orderStatusList = computed(() => store.state.ordersModule.orderStatusList);
 
-//вариант через state Vuex
-    // const filteredOrderList = computed(() => {
-    //   if (filterId.value === "no-filter") {
-    //     return store.state.entityModule.orders["no-filter"]?.value;
-    //   } else {
-    //     return store.state.entityModule.orders[filterId.value]?.value;
-    //   }
-    // });
-
     const filteredOrderList = computed(() => {
-      return store.state.ordersModule.orders.data;
+      return store.state.ordersModule.orders.data || [];
     });
-
-//вариант через getters Vuex
-    // const filteredOrderList = computed(...mapGetters({FILTERED_ORDERS_BY_ORDERSTATUS(filterId.value)}));
-    // const filteredOrderList = computed(() => store.getters.FILTERED_ORDERS_BY_ORDERSTATUS("no-filter"));
-    // const filteredOrderList = computed(() => store.getters.FILTERED_ORDERS_BY_ORDERSTATUS(filterId.value));
-    // const filteredOrderList = computed(() => store.getters['entityModule/FILTERED_ORDERS_BY_ORDERSTATUS']);
-
-    const filterId = ref("no-filter");
-    const selectedItem = ref(null);
 
     const setSelectedItem = chosenItem => {
       selectedItem.value = chosenItem.id;
@@ -184,21 +156,6 @@ export default {
 
     const getOrderStatusListFromApi = () =>
       store.dispatch("ordersModule/GET_ORDERSTATUSLIST_FROM_API");
-
-    // const getFilteredOrderListFromApi = chosenId => {
-    //   store.dispatch("entityModule/GET_FILTERED_ORDERLIST_FROM_API", chosenId);
-    // };
-
-    // const getPaginateOrderListFromApi = (chosenId, chosenPage) => {
-    //     store.dispatch("ordersModule/GET_ORDERLIST_FROM_API", {
-    //       orderStatusId: chosenId,
-    //       page: chosenPage
-    //     });
-    // };
-
-    // const getPaginateOrderListFromApi = (chosenId, chosenPage) => {
-    //     store.dispatch("ordersModule/GET_ORDERLIST_FROM_API", chosenId, chosenPage);
-    // };
 
     const getPaginateOrderListFromApi = chosenId => {
         store.dispatch("ordersModule/GET_ORDERLIST_FROM_API", chosenId);
@@ -208,9 +165,7 @@ export default {
       filterId.value = selectedItem.value;
       const firstPage = 1;
       store.commit("ordersModule/SET_SELECTEDPAGE_TO_STATE", firstPage);
-      // getFilteredOrderListFromApi(filterId.value);
       getPaginateOrderListFromApi(filterId.value);
-      // getPaginateOrderListFromApi(filterId.value, currentPage.value);
     }
 
     const rejectFilter = () => {
@@ -224,36 +179,44 @@ export default {
     //API call
     const getData = async () => {
       await getOrderStatusListFromApi();
-      // await getFilteredOrderListFromApi(selectedItem.value);
-      // await getPaginateOrderListFromApi(filterId.value, currentPage.value);
       await getPaginateOrderListFromApi(filterId.value);
     };
     getData();
 
     //Pagination
     const limitPerPage = 4;
-    const totalItems = computed(() => {
-      return store.state.ordersModule.orders.count;
-    });
-    // const totalItems = computed(() => {
-    //   if (filterId.value === "no-filter") {
-    //     return store.state.entityModule.orders["no-filter"]?.count;
-    //   } else {
-    //     return store.state.entityModule.orders[filterId.value]?.count;
-    //   }
-    // });
-    const totalPages = computed(() => Math.ceil(totalItems.value / limitPerPage));
-    // const currentPage = ref(1);
-    const currentPage = computed(() => store.state.ordersModule.selectedPage);
-    
-    const onPageChange = page => {
-      // console.log(page)
-      // currentPage.value = page;
-      store.commit("ordersModule/SET_SELECTEDPAGE_TO_STATE", page);
 
-      //TO DO API call на выбранную страницу 
+    const totalItems = computed(() => store.state.ordersModule.orders.count);
+
+    const totalPages = computed(() => Math.ceil(totalItems.value / limitPerPage));
+
+    const currentPage = computed(() => store.state.ordersModule.selectedPage);
+
+    const onPageChange = page => {
+      store.commit("ordersModule/SET_SELECTEDPAGE_TO_STATE", page);
+      //API call на выбранную страницу 
       getPaginateOrderListFromApi(filterId.value);
-      // getPaginateOrderListFromApi(filterId.value, currentPage.value);
+    };
+
+    const convertToDate = mlsDate => {
+      const dateObj = new Date(mlsDate);
+
+      let dd = dateObj.getDate();
+      if (dd < 10) dd = "0" + dd;
+
+      let mm = dateObj.getMonth() + 1;
+      if (mm < 10) mm = "0" + mm;
+
+      let yy = dateObj.getFullYear();
+      if (yy < 10) yy = "0" + yy;
+
+      let hh = dateObj.getHours();
+      if (hh < 10) hh = "0" + hh;
+
+      let min = dateObj.getMinutes();
+      if (min < 10) min = "0" + min;
+
+      return dd + "." + mm + "." + yy + " " + hh + ":" + min;
     };
 
     return {
@@ -264,12 +227,12 @@ export default {
       setSelectedItem,
       applyFilter,
       rejectFilter,
-      // getFilteredOrderListFromApi,
       getData,
-      // limitPerPage,
       totalPages,
       currentPage,
       onPageChange,
+      convertToDate,
+      togglePreloader,
     };
   },
 };
@@ -350,34 +313,23 @@ export default {
   justify-content: flex-end;
 }
 
-.orders__header-btn {
-  font-family: $ff;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 11px;
-  line-height: 13px;
-  text-align: center;
-  letter-spacing: -0.345714px;
-  color: $color-white;
-
-  border-radius: 4px;
-  box-sizing: border-box;
-
-  width: 95px;
+.header-btn__item {
   margin: 5px;
-  padding: 8px 0;
-
-  cursor: pointer;
 }
 
-.orders__header-btn_submit {
-  background: $color-blue;
-  border: 0.5px solid $color-blue;
-}
+.btn_disabled {
+  color: $color-text;
+  background: $color-button-cancel;
+  border: 0.5px solid $color-button-cancel;
 
-.orders__header-btn_reset {
-  background: $color-red;
-  border: 0.5px solid $color-red;
+  &:hover {
+    background: $color-button-cancel;
+    cursor: auto;
+  }
+  &:active {
+    background: $color-button-cancel;
+    cursor: auto;
+  }
 }
 
 .orders__content {
@@ -394,6 +346,7 @@ export default {
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
+  padding: 10px 0;
 }
 
 .orders__car,
@@ -410,16 +363,19 @@ export default {
 }
 
 .orders__car-img {
-  max-width: 100%;
+  width: inherit;
+  height: fit-content;
 }
 
 .orders__data {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  width: 30%;
 
   @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
     padding: 10px 0;
+    width: 100%;
   }
 }
 
@@ -463,8 +419,21 @@ export default {
   font-weight: 400;
   font-size: 24px;
   line-height: 28px;
-  letter-spacing: -0.754286px;
   color: $color-black;
+  width: 10%;
+
+  @media #{$media} and (min-width: $desktop-min) and (max-width: $desktop-max) {
+    font-size: 18px;
+  }
+
+  @media #{$media} and (min-width: $tablet-min) and (max-width: $tablet-max) {
+    font-size: 18px;
+  }
+
+  @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
+    width: 30%;
+    font-size: 20px;
+  }
 }
 
 .orders__buttons-container {

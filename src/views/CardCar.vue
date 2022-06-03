@@ -112,15 +112,24 @@
               type="button"
               theme="confirm"
               class="card-car__button-item"
-              >Сохранить</v-button
             >
-            <v-button type="button" theme="cancel" class="card-car__button-item"
-              >Отменить</v-button
+              Сохранить
+            </v-button>
+            <v-button 
+              type="button" 
+              theme="cancel" 
+              class="card-car__button-item"
             >
+              Отменить
+            </v-button>
           </div>
-          <v-button type="button" theme="delete" class="card-car__button-item"
-            >Удалить</v-button
+          <v-button 
+            type="button" 
+            theme="delete" 
+            class="card-car__button-item"
           >
+            Удалить
+          </v-button>
         </div>
       </section>
     </div>
@@ -466,12 +475,12 @@ export default {
   box-shadow: inset 0px 0.5px 4px rgba(0, 0, 0, 0.25);
   border-radius: 4px;
 }
- 
+
 .progress-bar::-webkit-progress-value {
   background: $color-blue;
   border-radius: 4px;
 }
- 
+
 .progress-bar::-moz-progress-bar {
   background: $color-blue;
   border-radius: 4px;

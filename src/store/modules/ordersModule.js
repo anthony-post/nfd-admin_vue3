@@ -9,7 +9,6 @@ export const ordersModule = {
     orderStatusList: [],
     orders: [],
     selectedPage: 1,
-
   },
 
   mutations: {
@@ -30,24 +29,25 @@ export const ordersModule = {
     async GET_ORDERSTATUSLIST_FROM_API({ commit }) {
       const statusList = await entityAPI.getOrderStatusList();
       commit("SET_ORDERSTATUSLIST_TO_STATE", statusList.data.data);
-      },
-      
+    },
+
     async GET_ORDERLIST_FROM_API({ commit, state }, chosenId) {
       try {
         const orderStatusId = chosenId;
 
         if (orderStatusId === "no-filter") {
-
           const page = state.selectedPage;
 
           const ordersData = await entityAPI.getOrders({ page, limit });
           commit("SET_ORDERS_TO_STATE", ordersData);
-            
         } else {
-
           const page = state.selectedPage;
 
-          const ordersData = await entityAPI.getOrders({ orderStatusId, page, limit });
+          const ordersData = await entityAPI.getOrders({
+            orderStatusId,
+            page,
+            limit,
+          });
           commit("SET_ORDERS_TO_STATE", ordersData);
         }
       } catch (error) {

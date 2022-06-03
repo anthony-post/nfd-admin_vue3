@@ -28,6 +28,7 @@
 <script>
 import { ref, computed } from "vue";
 import { onMounted, onBeforeUnmount } from "vue";
+import { watch, toRef } from "vue";
 
 export default {
   name: "VDropdown",
@@ -37,7 +38,7 @@ export default {
       required: true,
     },
     selectedItem: {
-      type: Object,
+      type: String,
       required: false,
     },
     placeholder: {
@@ -108,6 +109,17 @@ export default {
       document.removeEventListener("click", hideDropDown);
     });
 
+    watch(
+      toRef(props, "selectedItem"),
+      () => {
+        // if (Object.keys(props.selectedItem).length === 0) {
+        if (!props.selectedItem) {
+          inputValue.value = "";
+        }
+      },
+      { deep: true }
+    );
+
     return {
       inputValue,
       isDropDownVisible,
@@ -139,7 +151,6 @@ export default {
   font-weight: 400;
   font-size: 11px;
   line-height: 13px;
-  letter-spacing: -0.345714px;
   color: $color-dropdown-placeholder;
 
   padding: 8px 0 8px 14px;
@@ -171,6 +182,13 @@ export default {
 .dropdown-item {
   display: flex;
   padding: 11px 16px;
+
+  font-family: $ff;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 13px;
+  color: $color-dropdown-placeholder;
 
   &:hover {
     background: #edf2f7;
