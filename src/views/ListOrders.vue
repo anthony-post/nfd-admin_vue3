@@ -5,21 +5,30 @@
       <div class="orders__header">
         <div class="header-dropdown__container">
           <v-dropdown
-            id="dropdown4"
+            id="dropdownCity"
+            :itemList="cityList"
+            :selectedItem="selectedCity"
+            name="city"
+            placeholder="Город"
+            class="orders__header-dropdown"
+            @on-item-selected="setSelectedCity"
+          ></v-dropdown>
+          <v-dropdown
+            id="dropdownStatus"
             :itemList="orderStatusList"
-            :selectedItem="selectedItem"
+            :selectedItem="selectedOrderStatus"
             name="status"
             placeholder="Статус"
             class="orders__header-dropdown"
-            @on-item-selected="setSelectedItem"
+            @on-item-selected="setSelectedOrderStatus"
           ></v-dropdown>
         </div>
         <div class="header-btn__container">
           <v-button
             type="button"
             theme="delete"
-            :disabled="!selectedItem"
-            :class="{ btn_disabled: !selectedItem }"
+            :disabled="noFilter"
+            :class="{ btn_disabled: noFilter }"
             class="header-btn__item"
             @click="rejectFilter"
           >
@@ -28,8 +37,8 @@
           <v-button
             type="button"
             theme="confirm"
-            :disabled="!selectedItem"
-            :class="{ btn_disabled: !selectedItem }"
+            :disabled="noFilter"
+            :class="{ btn_disabled: noFilter }"
             class="header-btn__item"
             @click="applyFilter"
           >
@@ -139,68 +148,59 @@ export default {
   },
   setup() {
     const store = useStore();
-    const filterId = ref("no-filter");
-    const selectedItem = ref(null);
+
+    const filterOrderStatusId = ref("no-filter");
+    const selectedOrderStatus = ref(null);
+    const selectedCity = ref(null);
+    const filterCityId = ref("no-filter");
+
+    const noFilter = computed(() => !selectedOrderStatus.value && !selectedCity.value);
 
     const togglePreloader = computed(() => filteredOrderList.value?.length === 0);
 
     const orderStatusList = computed(() => store.state.ordersModule.orderStatusList);
 
+    const cityList = computed(() => store.state.ordersModule.cityList);
+
     const filteredOrderList = computed(() => {
       return store.state.ordersModule.orders.data || [];
     });
 
-    const setSelectedItem = chosenItem => {
-      selectedItem.value = chosenItem.id;
+    const setSelectedOrderStatus = chosenOrderStatus => {
+      selectedOrderStatus.value = chosenOrderStatus.id;
+    };
+
+    const setSelectedCity = chosenCity => {
+      selectedCity.value = chosenCity.id;
     };
 
     const getOrderStatusListFromApi = () =>
       store.dispatch("ordersModule/GET_ORDERSTATUSLIST_FROM_API");
+    
+    const getCityListFromApi = () =>
+      store.dispatch("ordersModule/GET_CITYLIST_FROM_API");
 
-    const getPaginateOrderListFromApi = chosenId => {
-        store.dispatch("ordersModule/GET_ORDERLIST_FROM_API", chosenId);
+    const getPaginateOrderListFromApi = (chosenOrdersStatusId, chosenCityId) => {
+      const chosenPage = currentPage.value;
+        store.dispatch("ordersModule/GET_ORDERLIST_FROM_API", { chosenOrdersStatusId, chosenCityId, chosenPage, limitPerPage });
     };
 
     const applyFilter = () => {
       store.commit("ordersModule/RESET_ORDERS_TO_STATE");
-
-      filterId.value = selectedItem.value;
-      const firstPage = 1;
-      store.commit("ordersModule/SET_SELECTEDPAGE_TO_STATE", firstPage);
-      getPaginateOrderListFromApi(filterId.value);
+      filterOrderStatusId.value = selectedOrderStatus.value;
+      filterCityId.value = selectedCity.value;
+      currentPage.value = 1;
+      getPaginateOrderListFromApi(filterOrderStatusId.value, filterCityId.value);
     }
 
     const rejectFilter = () => {
       store.commit("ordersModule/RESET_ORDERS_TO_STATE");
-
-      selectedItem.value = null;
-      filterId.value = "no-filter";
-      const firstPage = 1;
-      store.commit("ordersModule/SET_SELECTEDPAGE_TO_STATE", firstPage);
-      getPaginateOrderListFromApi(filterId.value);
-    };
-
-    //API call
-    const getData = async () => {
-      await getOrderStatusListFromApi();
-      await getPaginateOrderListFromApi(filterId.value);
-    };
-    getData();
-
-    //Pagination
-    const limitPerPage = 5;
-
-    const totalItems = computed(() => store.state.ordersModule.orders.count);
-
-    const totalPages = computed(() => Math.round(totalItems.value / limitPerPage));
-
-    const currentPage = computed(() => store.state.ordersModule.selectedPage);
-
-    const onPageChange = page => {
-      store.commit("ordersModule/RESET_ORDERS_TO_STATE");
-      store.commit("ordersModule/SET_SELECTEDPAGE_TO_STATE", page);
-      //API call to the chosen page
-      getPaginateOrderListFromApi(filterId.value);
+      selectedOrderStatus.value = null;
+      filterOrderStatusId.value = "no-filter";
+      selectedCity.value = null;
+      filterCityId.value = "no-filter";
+      currentPage.value = 1;
+      getPaginateOrderListFromApi(filterOrderStatusId.value, filterCityId.value);
     };
 
     const convertToDate = mlsDate => {
@@ -224,12 +224,40 @@ export default {
       return dd + "." + mm + "." + yy + " " + hh + ":" + min;
     };
 
+    //API call
+    const getData = async () => {
+      await getOrderStatusListFromApi();
+      await getCityListFromApi();
+      await getPaginateOrderListFromApi(filterOrderStatusId.value, filterCityId.value);
+    };
+    getData();
+
+    //Pagination
+    const limitPerPage = 5;
+
+    const currentPage = ref(1);
+
+    const totalItems = computed(() => store.state.ordersModule.orders.count);
+
+    const totalPages = computed(() => Math.round(totalItems.value / limitPerPage));
+
+    const onPageChange = page => {
+      store.commit("ordersModule/RESET_ORDERS_TO_STATE");
+      currentPage.value = page;
+      getPaginateOrderListFromApi(filterOrderStatusId.value, filterCityId.value);
+    };
+
     return {
-      selectedItem,
-      filterId,
+      cityList,
+      selectedCity,
+      filterCityId,
+      setSelectedCity,
+      selectedOrderStatus,
+      filterOrderStatusId,
       orderStatusList,
       filteredOrderList,
-      setSelectedItem,
+      setSelectedOrderStatus,
+      noFilter,
       applyFilter,
       rejectFilter,
       getData,

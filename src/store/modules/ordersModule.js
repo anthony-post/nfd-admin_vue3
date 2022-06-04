@@ -1,19 +1,21 @@
 import { entityAPI } from "@/api/entityAPI";
 
-const limit = 5; //limit items per page
-
 export const ordersModule = {
   namespaced: true,
 
   state: {
     orderStatusList: [],
+    cityList: [],
     orders: [],
-    selectedPage: 1,
   },
 
   mutations: {
     SET_ORDERSTATUSLIST_TO_STATE: (state, statusList) => {
       state.orderStatusList = statusList;
+    },
+
+    SET_CITYLIST_TO_STATE: (state, cityList) => {
+      state.cityList = cityList;
     },
 
     SET_SELECTEDPAGE_TO_STATE: (state, chosenPage) => {
@@ -34,57 +36,36 @@ export const ordersModule = {
       commit("SET_ORDERSTATUSLIST_TO_STATE", statusList.data.data);
     },
 
-    async GET_ORDERLIST_FROM_API({ commit, state }, chosenId) {
+    async GET_CITYLIST_FROM_API({ commit }) {
+      const cityList = await entityAPI.getCityList();
+      commit("SET_CITYLIST_TO_STATE", cityList.data.data);
+    },
+
+    async GET_ORDERLIST_FROM_API({ commit }, { chosenOrdersStatusId, chosenCityId, chosenPage, limitPerPage }) {
       try {
-        const orderStatusId = chosenId;
 
-        if (orderStatusId === "no-filter") {
-          const page = state.selectedPage;
+        const cityId = chosenCityId;
+        const orderStatusId = chosenOrdersStatusId;
+        const page = chosenPage;
+        const limit = limitPerPage;
 
-          const ordersData = await entityAPI.getOrders({ page, limit });
+        if (orderStatusId !== "no-filter" && cityId !== "no-filter") {
+          const ordersData = await entityAPI.getOrders({ orderStatusId, cityId, page, limit });
+          commit("SET_ORDERS_TO_STATE", ordersData);
+        } else if (orderStatusId !== "no-filter") {
+          const ordersData = await entityAPI.getOrders({ orderStatusId, page, limit });
+          commit("SET_ORDERS_TO_STATE", ordersData);
+        } else if (cityId !== "no-filter") {
+          const ordersData = await entityAPI.getOrders({ cityId, page, limit });
           commit("SET_ORDERS_TO_STATE", ordersData);
         } else {
-          const page = state.selectedPage;
-
-          const ordersData = await entityAPI.getOrders({
-            orderStatusId,
-            page,
-            limit,
-          });
+          const ordersData = await entityAPI.getOrders({ page, limit });
           commit("SET_ORDERS_TO_STATE", ordersData);
         }
+
       } catch (error) {
         throw new Error(error);
       }
-    },
-
-    // async GET_ORDERLIST_FROM_API({ commit }, orderStatusId, currentPage) {
-    //   try {
-    //     if (orderStatusId === "no-filter") {
-
-    //       let page = currentPage;
-    //       // const limit = 4;
-
-    //       const ordersData = await entityAPI.getOrders({ page, limit });
-    //       commit("SET_ORDERS_TO_STATE", ordersData);
-    //     } else {
-
-    //       let page = currentPage;
-    //       // const limit = 4;
-
-    //       // const { count, data } = await entityAPI.getOrders({orderStatusId, page, limit});
-    //       const ordersData = await entityAPI.getOrders({ orderStatusId, page, limit });
-    //       commit("SET_ORDERS_TO_STATE", ordersData);
-    //     }
-    //   } catch (error) {
-    //     throw new Error(error);
-    //   }
-    // },
-  },
-
-  getters: {
-    ORDERS: (state) => {
-      return state.orders.data;
     },
   },
 };
