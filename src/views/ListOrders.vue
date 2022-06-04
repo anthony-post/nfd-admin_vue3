@@ -107,7 +107,7 @@
         </ul>
       </div>
       <div class="orders__pagination">
-        <v-pagination
+        <v-pagination v-if="!isNaN(totalPages)"
           :totalPages="totalPages"
           :currentPage="currentPage"
           @pagechanged="onPageChange"
@@ -162,6 +162,8 @@ export default {
     };
 
     const applyFilter = () => {
+      store.commit("ordersModule/RESET_ORDERS_TO_STATE");
+
       filterId.value = selectedItem.value;
       const firstPage = 1;
       store.commit("ordersModule/SET_SELECTEDPAGE_TO_STATE", firstPage);
@@ -169,6 +171,8 @@ export default {
     }
 
     const rejectFilter = () => {
+      store.commit("ordersModule/RESET_ORDERS_TO_STATE");
+
       selectedItem.value = null;
       filterId.value = "no-filter";
       const firstPage = 1;
@@ -188,11 +192,12 @@ export default {
 
     const totalItems = computed(() => store.state.ordersModule.orders.count);
 
-    const totalPages = computed(() => Math.trunc(totalItems.value / limitPerPage));
+    const totalPages = computed(() => Math.round(totalItems.value / limitPerPage));
 
     const currentPage = computed(() => store.state.ordersModule.selectedPage);
 
     const onPageChange = page => {
+      store.commit("ordersModule/RESET_ORDERS_TO_STATE");
       store.commit("ordersModule/SET_SELECTEDPAGE_TO_STATE", page);
       //API call to the chosen page
       getPaginateOrderListFromApi(filterId.value);

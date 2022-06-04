@@ -23,6 +23,9 @@ export const ordersModule = {
     SET_ORDERS_TO_STATE: (state, ordersData) => {
       state.orders = ordersData.data;
     },
+    RESET_ORDERS_TO_STATE: (state) => {
+      state.orders = [];
+    },
   },
 
   actions: {
