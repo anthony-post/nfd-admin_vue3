@@ -5,47 +5,36 @@
       <div class="entity__header">
         <div class="header-dropdown">
           <v-dropdown
-            id="dropdown1"
-            :itemList="listItems"
-            name="period"
-            placeholder="Field"
+            id="dropdownCategory"
+            :itemList="categoryList"
+            :selectedItem="selectedCarCategory"
+            name="category"
+            placeholder="Категория"
             class="header-dropdown__item"
-          ></v-dropdown>
-          <v-dropdown
-            id="dropdown2"
-            :itemList="listItems"
-            name="period"
-            placeholder="Field"
-            class="header-dropdown__item"
-          ></v-dropdown>
-          <v-dropdown
-            id="dropdown3"
-            :itemList="listItems"
-            name="period"
-            placeholder="Field"
-            class="header-dropdown__item"
-          ></v-dropdown>
-          <v-dropdown
-            id="dropdown4"
-            :itemList="listItems"
-            name="period"
-            placeholder="Field"
-            class="header-dropdown__item"
+            @on-item-selected="setSelectedCarCategory"
           ></v-dropdown>
         </div>
         <div class="header-button">
-          <button
-            type="reset"
-            class="header-button__item header-button__item_reset"
+          <v-button
+            type="button"
+            theme="delete"
+            :disabled="noFilter"
+            :class="{ btn_disabled: noFilter }"
+            class="header-btn__item"
+            @click="rejectFilter"
           >
             Сбросить
-          </button>
-          <button
-            type="submit"
-            class="header-button__item header-button__item_submit"
+          </v-button>
+          <v-button
+            type="button"
+            theme="confirm"
+            :disabled="noFilter"
+            :class="{ btn_disabled: noFilter }"
+            class="header-btn__item"
+            @click="applyFilter"
           >
             Применить
-          </button>
+          </v-button>
         </div>
       </div>
       <table class="table-content table">
@@ -58,105 +47,151 @@
             {{ item }}
           </th>
         </tr>
-        <tr v-for="car in listCars" :key="car.id" class="table-data">
-          <td class="table__data-item">{{ car.name }}</td>
-          <td class="table__data-item">{{ car.category }}</td>
-          <td class="table__data-item">{{ car.color }}</td>
+        <tr v-for="car in filteredCarList" :key="car.id" class="table-data">
+          <td class="table__data-item">{{ car?.name }}</td>
+          <td class="table__data-item">{{ car?.categoryId?.name }}</td>
           <td class="table__data-item">
-            {{ car.priceMin }} - {{ car.priceMax }}
+            <div v-for="(item, index) in car?.colors" :key="index">{{ item }}</div>
+          </td>
+          <td class="table__data-item">
+            {{ car?.priceMin }} - {{ car?.priceMax }}
           </td>
           <td class="table__data-item">
             <button
               type="button"
               class="table__button-item_car"
-              @click="togglePopUp"
+              @click="togglePopUp(car)"
             >
               ...
             </button>
-            <pop-up
-              v-if="popUpIsActive"
-              class="table__item-popup"
-              @close-popup="togglePopUp"
-            ></pop-up>
           </td>
         </tr>
+        <pop-up
+          v-if="popUpIsActive"
+          :carItem = carItem
+          class="table__item-popup"
+          @close-popup="togglePopUp()"
+        ></pop-up>
       </table>
       <div class="entity__pagination">
-        <v-pagination>1...4</v-pagination>
+        <v-pagination v-if="!isNaN(totalPages)"
+          :totalPages="totalPages"
+          :currentPage="currentPage"
+          @pagechanged="onPageChange"
+        ></v-pagination>
       </div>
     </section>
   </div>
 </template>
 
 <script>
-import { ref } from "vue";
+import { useStore } from "vuex";
+import { ref, computed } from "vue";
 import VDropdown from "../components/VDropdown.vue";
 import VPagination from "../components/VPagination.vue";
-import PopUp from "../components/PopUp.vue";
+import VButton from "../components/VButton.vue";
+import PopUp from "../views/PopUp.vue";
 
 export default {
   name: "ListCars",
   components: {
     VDropdown,
     VPagination,
+    VButton,
     PopUp,
   },
   setup() {
-    const listItems = [
-      { id: 1, name: "xxx" },
-      { id: 2, name: "yyy" },
-      { id: 3, name: "zzz" },
-    ];
+    const store = useStore();
+
+    const filterCarCategory = ref("no-filter");
+    const selectedCarCategory = ref(null);
 
     const listTableHeaders = ["Модель", "Катег.", "Цвет", "Цена", "Подробнее"];
 
-    const listCars = [
-      {
-        id: 1,
-        name: "ELANTRA",
-        number: "x123yz",
-        category: "Бизнес",
-        color: "Черный",
-        priceMin: 5000,
-        priceMax: 10000,
-        pic: `${require("../assets/img/car_image.jpg")}`,
-        description: "Отличный автомобиль",
-      },
-      {
-        id: 2,
-        name: "ELANTRA",
-        number: "x123yz",
-        category: "Бизнес",
-        color: "Черный",
-        priceMin: 5000,
-        priceMax: 10000,
-        pic: `${require("../assets/img/car_image.jpg")}`,
-        description: "Отличный автомобиль",
-      },
-      {
-        id: 3,
-        name: "ELANTRA",
-        number: "x123yz",
-        category: "Бизнес",
-        color: "Черный",
-        priceMin: 5000,
-        priceMax: 10000,
-        pic: `${require("../assets/img/car_image.jpg")}`,
-        description: "Отличный автомобиль",
-      },
-    ];
+    const categoryList = computed(() => store.state.carsModule.categoryList);
+
+    const noFilter = computed(() => !selectedCarCategory.value);
+
+    const setSelectedCarCategory = chosenCarCategory => {
+      selectedCarCategory.value = chosenCarCategory.id;
+    };
+
+    const applyFilter = () => {
+      store.commit("carsModule/RESET_CARS_TO_STATE");
+      filterCarCategory.value = selectedCarCategory.value;
+      currentPage.value = 1;
+      getPaginateCarListFromApi(filterCarCategory.value);
+    };
+
+    const rejectFilter = () => {
+      store.commit("carsModule/RESET_CARS_TO_STATE");
+      selectedCarCategory.value = null;
+      filterCarCategory.value = "no-filter";
+      currentPage.value = 1;
+      getPaginateCarListFromApi(filterCarCategory.value);
+    };
+
+    const filteredCarList = computed(() => {
+      return store.state.carsModule.cars.data || []
+    });
+
+    const carItem = ref(null);
 
     const popUpIsActive = ref(false);
-    const togglePopUp = () => {
+    const togglePopUp = (car) => {
+      carItem.value = car;
       popUpIsActive.value = !popUpIsActive.value;
     };
 
+    const getCategoryListFromApi = () =>
+      store.dispatch("carsModule/GET_CATEGORYLIST_FROM_API");
+
+    const getPaginateCarListFromApi = async (chosenCarCategoryId) => {
+      const selectedPage = currentPage.value;
+      const limitPage = limitPerPage.value;
+      await store.dispatch("carsModule/GET_CARLIST_FROM_API", { chosenCarCategoryId, selectedPage, limitPage });
+    };
+
+    //API call
+    const getData = async () => {
+      await getCategoryListFromApi();
+      getPaginateCarListFromApi(filterCarCategory.value);
+    };
+    getData();
+
+    //Pagination
+    const limitPerPage = ref(3);
+
+    const currentPage = ref(1);
+
+    const totalItems = computed(() => store.state.carsModule.cars.count);
+
+    const totalPages = computed(() => Math.round(totalItems.value / limitPerPage.value));
+
+    const onPageChange = page => {
+      store.commit("carsModule/RESET_CARS_TO_STATE");
+      currentPage.value = page;
+      getPaginateCarListFromApi(filterCarCategory.value);
+    };
+
     return {
-      listItems,
+      filterCarCategory,
+      selectedCarCategory,
+      categoryList,
+      setSelectedCarCategory,
+      applyFilter,
+      rejectFilter,
+      noFilter,
       listTableHeaders,
-      listCars,
       popUpIsActive,
       togglePopUp,
+      filteredCarList,
+      limitPerPage,
+      currentPage,
+      totalItems,
+      totalPages,
+      onPageChange,
+      carItem,
     };
   },
 };
@@ -271,12 +306,15 @@ export default {
 }
 
 .table-content {
+  height: 50vh;
+  overflow-x: scroll;
   width: 100%;
   padding: 15px 20px 20px;
   text-align: left;
 
   @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
     padding: 10px;
+    height: 40vh;
   }
 }
 

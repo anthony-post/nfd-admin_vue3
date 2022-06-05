@@ -1,6 +1,6 @@
 import { createStore } from "vuex";
 import { authModule } from "./modules/authModule.js";
-// import { entityModule } from "./modules/entityModule.js";
+import { carsModule } from "./modules/carsModule.js";
 import { ordersModule } from "./modules/ordersModule.js";
 
 export default createStore({
@@ -9,13 +9,13 @@ export default createStore({
       namespaced: true,
       ...authModule,
     },
-    // entityModule: {
-    //   namespaced: true,
-    //   ...entityModule,
-    // },
     ordersModule: {
       namespaced: true,
       ...ordersModule,
+    },
+    carsModule: {
+      namespaced: true,
+      ...carsModule,
     },
   },
 });
