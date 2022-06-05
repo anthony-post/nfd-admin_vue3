@@ -6,7 +6,7 @@ export const ordersModule = {
   state: {
     orderStatusList: [],
     cityList: [],
-    orders: [],
+    orders: {},
   },
 
   mutations: {
@@ -18,15 +18,11 @@ export const ordersModule = {
       state.cityList = cityList;
     },
 
-    SET_SELECTEDPAGE_TO_STATE: (state, chosenPage) => {
-      state.selectedPage = chosenPage;
-    },
-
     SET_ORDERS_TO_STATE: (state, ordersData) => {
       state.orders = ordersData.data;
     },
     RESET_ORDERS_TO_STATE: (state) => {
-      state.orders = [];
+      state.orders = {};
     },
   },
 

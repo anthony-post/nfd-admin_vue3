@@ -182,7 +182,7 @@ export default {
 
     const getPaginateOrderListFromApi = (chosenOrdersStatusId, chosenCityId) => {
       const chosenPage = currentPage.value;
-        store.dispatch("ordersModule/GET_ORDERLIST_FROM_API", { chosenOrdersStatusId, chosenCityId, chosenPage, limitPerPage });
+      store.dispatch("ordersModule/GET_ORDERLIST_FROM_API", { chosenOrdersStatusId, chosenCityId, chosenPage, limitPerPage });
     };
 
     const applyFilter = () => {
@@ -191,7 +191,7 @@ export default {
       filterCityId.value = selectedCity.value;
       currentPage.value = 1;
       getPaginateOrderListFromApi(filterOrderStatusId.value, filterCityId.value);
-    }
+    };
 
     const rejectFilter = () => {
       store.commit("ordersModule/RESET_ORDERS_TO_STATE");

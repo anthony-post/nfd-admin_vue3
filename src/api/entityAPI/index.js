@@ -1,10 +1,10 @@
 import { entityAPIInstance } from "@/api";
 
 const url = {
-  ORDER: "db/order",
   ORDERSTATUS: "db/orderStatus",
   CITY: "db/city",
   CATEGORY: "db/category",
+  ORDER: "db/order",
   CAR: "db/car",
 };
 
@@ -36,6 +36,18 @@ export const entityAPI = {
 
   deleteCarCreateItem(carId) {
     return entityAPIInstance.delete(url.CAR + '/' + carId);
+  },
+
+  getOrders(params = {}) {
+    return entityAPIInstance.get(url.ORDER, {
+      params,
+    });
+  },
+
+  getCars(params = {}) {
+    return entityAPIInstance.get(url.CAR, {
+      params,
+    });
   },
   
 };

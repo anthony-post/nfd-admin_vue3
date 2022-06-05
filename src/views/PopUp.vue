@@ -6,43 +6,49 @@
           <v-icon icon-id="icon-x" width="32" height="32" @click="closePopUp" />
         </div>
         <div class="popup-body">
-          <img :src="car.pic" :alt="car.name" class="popup__img" />
+          <img 
+            :src="carItem?.thumbnail?.path" 
+            :alt="carItem?.thumbnail?.originalname" 
+            class="popup__img"
+          />
           <dl class="popup__title">
             <dt class="popup__title-text">Наименование:</dt>
-            <dd class="popup__title-value">{{ car.name }}</dd>
+            <dd class="popup__title-value">{{ carItem?.name }}</dd>
           </dl>
           <dl class="popup__title">
             <dt class="popup__title-text">Категория:</dt>
-            <dd class="popup__title-value">{{ car.category }}</dd>
+            <dd class="popup__title-value">{{ carItem?.categoryId?.name }}</dd>
           </dl>
           <dl class="popup__title">
             <dt class="popup__title-text">Гос. номер:</dt>
-            <dd class="popup__title-value">{{ car.number }}</dd>
+            <dd class="popup__title-value">{{ carItem?.number }}</dd>
           </dl>
           <dl class="popup__title">
             <dt class="popup__title-text">Цвет:</dt>
-            <dd class="popup__title-value">{{ car.color }}</dd>
+            <dd class="popup__title-value">{{ carItem?.colors }}</dd>
           </dl>
           <dl class="popup__title">
             <dt class="popup__title-text">Цена:</dt>
             <dd class="popup__title-value">
-              {{ car.priceMin }} - {{ car.priceMax }}
+              {{ carItem?.priceMin }} - {{ carItem?.priceMax }}
             </dd>
           </dl>
           <dl class="popup__title">
             <dt class="popup__title-text">Описание:</dt>
-            <dd class="popup__title-value">{{ car.description }}</dd>
+            <dd class="popup__title-value">{{ carItem?.description }}</dd>
           </dl>
           <div class="popup__title">
-            <button type="button" class="popup__title-btn">
-              <v-icon
-                icon-id="icon-edit"
-                width="12"
-                height="11"
-                class="orders__button-icon_edit table__button-item_edit"
-              ></v-icon>
-              <span>Изменить</span>
-            </button>
+            <router-link to="/admin-panel/card-car" class="popup__title-link">
+              <button type="button" class="popup__title-btn">
+                <v-icon
+                  icon-id="icon-edit"
+                  width="12"
+                  height="11"
+                  class="orders__button-icon_edit table__button-item_edit"
+                ></v-icon>
+                <span>Изменить</span>
+              </button>
+            </router-link>
           </div>
         </div>
       </div>
@@ -58,25 +64,19 @@ export default {
   components: {
     VIcon,
   },
+  props: {
+    carItem: {
+      type: Object,
+      required: true,
+    },
+  },
   setup(_, context) {
-    const car = {
-      id: 1,
-      name: "ELANTRA",
-      number: "x123yz",
-      category: "Бизнес",
-      color: "Черный",
-      priceMin: 5000,
-      priceMax: 10000,
-      pic: `${require("../assets/img/car_image.jpg")}`,
-      description: "Отличный автомобиль",
-    };
 
     const closePopUp = () => {
       context.emit("close-popup");
     };
 
     return {
-      car,
       closePopUp,
     };
   },
@@ -87,7 +87,7 @@ export default {
 @import "@/assets/variables.scss";
 
 .popup-mask {
-  background-color: rgba(255, 255, 255, 0.6);
+  background-color: rgba(255, 255, 255, 0.9);
   transition: opacity 0.3s ease;
 }
 
@@ -109,7 +109,12 @@ export default {
 
 .popup {
   &__img {
-    max-width: 100%;
+    // max-width: 100%;
+    width: 300px;
+
+     @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
+      width: 200px;
+    }
   }
 
   &__title {
@@ -135,6 +140,10 @@ export default {
     line-height: 15px;
     color: $color-black;
     margin: 0 5px;
+  }
+
+  &__title-link {
+    width: 100%;
   }
 
   &__title-btn {
