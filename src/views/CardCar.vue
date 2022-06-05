@@ -5,29 +5,25 @@
       <section class="card-car__img">
         <div class="card-car__img-wrp">
           <img
-            src="https://imgholder.ru/600x300/eeeeee/adb9ca&text=Изображение"
-            alt="car"
+            :src="thumbnailPath"
+            :alt="thumbnailOriginalName"
             class="card-car__pic"
           />
-          <p class="card-car__model">Hyndai, i30 N</p>
-          <p class="card-car__category">Компакт-кар</p>
-          <v-upload-file name="carimg"></v-upload-file>
+          <p class="card-car__model">{{ carModel }}</p>
+          <p class="card-car__category">{{ carCategory?.name }}</p>
+          <v-upload-file name="carimg" @onload-file="onloadFile"></v-upload-file>
         </div>
         <div class="card-car__progress-bar">
           <div class="card-car__progress-bar-wrp">
             <p class="card-car__progress-bar-title">Заполнено</p>
-            <p class="card-car__progress-bar-data">70%</p>
+            <p class="card-car__progress-bar-data">{{ progressBar }}%</p>
           </div>
-          <!--TO DO PROGRESS BAR-->
-          <progress value="70" max="100" class="progress-bar"></progress>
+          <progress :value="progressBar" max="100" class="progress-bar"></progress>
         </div>
         <div class="card-car__description">
           <h4 class="card-car__description-title">Описание</h4>
           <p class="card-car__description-text">
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nobis
-            minima in, iusto error optio molestias quo alias perferendis! Earum
-            pariatur optio ipsa aliquam facere aspernatur ex magni cumque non
-            consectetur!
+            {{ carDescription }}
           </p>
         </div>
       </section>
@@ -42,13 +38,16 @@
               placeholder="Введите модель автомобиля"
               class="input input__car-model"
             ></v-input>
-            <v-input
-              v-model:inputValue="carCategory"
-              label="Тип автомобиля"
-              name="category-car"
-              placeholder="Введите категорию автомобиля"
+            <v-dropdown
+              id="dropdownCategory"
+              :itemList="categoryList"
+              :selectedItem="carCategory?.name"
+              label="Категория"
+              name="category"
+              placeholder="Выберите категорию"
               class="input input__car-category"
-            ></v-input>
+              @on-item-selected="setSelectedCategory"
+            ></v-dropdown>
           </div>
           <div class="card-car__details-description">
             <v-text-area
@@ -95,13 +94,19 @@
                 placeholder="Введите цвет автомобиля"
                 class="input input__car-color"
               ></v-input>
-              <button class="card-car__plus-button"></button>
+              <button 
+                class="card-car__plus-button"
+                @click="setCarColor"
+              ></button>
             </div>
             <ul class="card-car__color-list">
-              <li class="card-car__color-item">
-                <v-checkbox-blue>Желтый</v-checkbox-blue>
-                <v-checkbox-blue>Красный</v-checkbox-blue>
-                <v-checkbox-blue>Белый</v-checkbox-blue>
+              <li 
+                v-for="(color, index) in colorList"
+                :key="index"
+                class="card-car__color-item"
+                @click="resetCarColor(color)"
+              >
+                <v-checkbox-blue>{{ color }}</v-checkbox-blue>
               </li>
             </ul>
           </div>
@@ -111,14 +116,20 @@
             <v-button
               type="button"
               theme="confirm"
+              :disabled="!isFilledUp"
+              :class="{ btn_disabled: !isFilledUp }"
               class="card-car__button-item"
+              @click="createCarItem"
             >
               Сохранить
             </v-button>
             <v-button 
               type="button" 
-              theme="cancel" 
+              theme="cancel"
+              :disabled="!isFilledUp"
+              :class="{ btn_disabled: !isFilledUp }"
               class="card-car__button-item"
+              @click="resetCarItem"
             >
               Отменить
             </v-button>
@@ -127,6 +138,9 @@
             type="button" 
             theme="delete" 
             class="card-car__button-item"
+            :disabled="!carId"
+            :class="{ btn_disabled: !carId }"
+            @click="deleteCarItem"
           >
             Удалить
           </v-button>
@@ -137,12 +151,16 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { useStore } from "vuex";
+import { computed, ref } from "vue";
 import VUploadFile from "../components/VUploadFile.vue";
 import VInput from "../components/VInput.vue";
 import VCheckboxBlue from "../components/VCheckboxBlue.vue";
 import VButton from "../components/VButton.vue";
 import VTextArea from "../components/VTextArea.vue";
+import VDropdown from "../components/VDropdown.vue";
+
+import { entityAPI } from "@/api/entityAPI";
 
 export default {
   name: "CardCar",
@@ -152,16 +170,147 @@ export default {
     VCheckboxBlue,
     VButton,
     VTextArea,
+    VDropdown,
   },
   setup() {
-    const carModel = ref("");
-    const carCategory = ref("");
-    const carDescription = ref("");
-    const carColor = ref("");
-    const carTank = ref("");
-    const carNumber = ref("");
-    const carPriceMin = ref("");
-    const carPriceMax = ref("");
+    const store = useStore();
+
+    const carId = ref(null);
+    const carModel = ref(null);
+    const carCategory = ref(null);
+    const carDescription = ref(null);
+    const carColor = ref(null);
+    const carTank = ref(null);
+    const carNumber = ref(null);
+    const carPriceMin = ref(null);
+    const carPriceMax = ref(null);
+    const colorList = ref([]);
+
+    const categoryList = computed(() => store.state.categoryModule.categoryList);
+
+    const setSelectedCategory = chosenCategory => carCategory.value = chosenCategory;
+
+    const setCarColor = () => {
+      colorList.value.push(carColor.value);
+      carColor.value = "";
+    };
+
+    const resetCarColor = color => {
+      colorList.value.forEach( (item, index) => {
+        if (item === color) {
+          colorList.value.splice(index, 1);
+        }
+      })
+    };
+
+    const getGategoryListFromApi = () => store.dispatch("categoryModule/GET_GATEGORYLIST_FROM_API");
+
+    getGategoryListFromApi();
+
+    const createCarItem = async () => {
+      const newCarItem = await entityAPI.postCarCreateItem(
+        {
+          priceMax: carPriceMax.value,
+          priceMin: carPriceMin.value,
+          name: carModel.value,
+          thumbnail: {
+            mimetype: imageData.value.type,
+            originalname: imageData.value.name,
+            path: imageUrl.value
+          },
+          description: carDescription.value,
+          categoryId: {
+            name: carCategory.value.name,
+            description: carCategory.value.description,
+            id: carCategory.value.id
+          },
+          colors: colorList.value   
+        }
+      );
+      
+      carId.value = newCarItem.data.data.id;
+    };
+
+    const deleteCarItem = async () => {
+      await entityAPI.deleteCarCreateItem(carId.value);
+      carId.value = null;
+    };
+
+    const resetCarItem = () => {
+      carModel.value = null;
+      carCategory.value = null;
+      carDescription.value = null;
+      carColor.value = null;
+      carTank.value = null;
+      carNumber.value = null;
+      carPriceMin.value = null;
+      carPriceMax.value = null;
+      colorList.value = [];
+      imageUrl.value = null;
+      imageData.value = null;
+    };
+
+    const progressBar = computed(() => {
+      let value = 0;
+      if (carModel.value) {
+        value += 11.11;
+      }
+      if (carModel.value && carCategory.value) {
+        value += 11.11;
+      }
+      if (carModel.value && carCategory.value && carDescription.value) {
+        value += 11.11;
+      }
+      if (carModel.value && carCategory.value && 
+          carDescription.value && carNumber.value) {
+        value += 11.11;
+      }
+      if (carModel.value && carCategory.value && carDescription.value && 
+          carNumber.value && carTank.value) {
+        value += 11.11;
+      }
+      if (carModel.value && carCategory.value && carDescription.value && 
+          carNumber.value && carTank.value && carPriceMin.value) {
+        value += 11.11;
+      }
+      if (carModel.value && carCategory.value && carDescription.value && carNumber.value && 
+          carTank.value && carPriceMin.value && carPriceMax.value && colorList.value) {
+        value += 11.11;
+      }
+      if (carModel.value && carCategory.value && carDescription.value && 
+          carNumber.value && carTank.value && carPriceMin.value && carPriceMax.value) {
+        value += 11.11;
+      }
+      if (carModel.value && carCategory.value && carDescription.value && 
+          carNumber.value && carTank.value && carPriceMin.value && carPriceMax.value && imageUrl.value) {
+        value += 11.11;
+      }
+
+      return Math.ceil(value);
+    });
+
+    const isFilledUp = computed(() => progressBar.value === 100);
+
+    //image
+    const imageData = ref(null);
+    const imageUrl = ref(null);
+
+    const onloadFile = file => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        imageUrl.value = reader.result;
+      };
+      imageData.value = file;
+    };
+
+    const thumbnailPath = computed(() => {
+      return imageUrl.value ? imageUrl.value : "https://imgholder.ru/600x300/eeeeee/adb9ca&text=Изображение";
+    });
+
+    const thumbnailOriginalName = computed(() => {
+      return imageData.value ? imageData.value.name : "car";
+    });
 
     return {
       carModel,
@@ -172,6 +321,22 @@ export default {
       carPriceMin,
       carNumber,
       carTank,
+      categoryList,
+      progressBar,
+      setSelectedCategory,
+      setCarColor,
+      resetCarColor,
+      colorList,
+      createCarItem,
+      carId,
+      deleteCarItem,
+      resetCarItem,
+      isFilledUp,
+      onloadFile,
+      imageUrl,
+      imageData,
+      thumbnailPath,
+      thumbnailOriginalName,
     };
   },
 };
@@ -438,6 +603,10 @@ export default {
     }
   }
 
+  &__color-item {
+    cursor: pointer;
+  }
+
   &__button-bar {
     display: flex;
     flex-direction: row;
@@ -507,4 +676,9 @@ export default {
     }
   }
 }
+
+.input__car-category .dropdown__input {
+      width: 100%;
+      box-sizing: border-box;
+    }
 </style>

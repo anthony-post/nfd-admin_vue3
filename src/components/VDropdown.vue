@@ -1,11 +1,12 @@
 <template>
-  <div class="dropdown-wrp">
-    <label :for="name" class="dropdown__label"></label>
+  <div class="dropdown-wrp dropdown">
+    <label :for="name" class="dropdown__label">{{ label }}</label>
     <input
       v-model.trim="inputValue"
       :id="id"
       :name="name"
       :placeholder="placeholder"
+      :label="label"
       type="text"
       autocomplete="off"
       class="dropdown__input"
@@ -136,32 +137,42 @@ export default {
 <style lang="scss">
 @import "@/assets/variables.scss";
 
-.dropdown-wrp {
+.dropdown {
   position: relative;
-}
 
-.dropdown__input {
-  width: 110px;
-  background: $color-white;
-  border: 0.5px solid #becad6;
-  border-radius: 4px;
+  &__label {
+    font-family: $ff;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 10.5px;
+    line-height: 12px;
+    color: $color-label;
+    margin: 0 0 5px 0;
+  }
 
-  font-family: $ff;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 11px;
-  line-height: 13px;
-  color: $color-dropdown-placeholder;
+  &__input {
+    width: 110px;
+    background: $color-white;
+    border: 0.5px solid #becad6;
+    border-radius: 4px;
 
-  padding: 8px 0 8px 14px;
+    font-family: $ff;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 11px;
+    line-height: 13px;
+    color: $color-dropdown-placeholder;
 
-  background-image: url("../assets/icon_dropdown.svg");
-  background-repeat: no-repeat no-repeat;
-  background-position: 95%;
-  background-size: 8px 11px;
+    padding: 8px 0 8px 11px;
 
-  &:focus {
-    outline: 0.5px ridge $color-blue;
+    background-image: url("../assets/icon_dropdown.svg");
+    background-repeat: no-repeat no-repeat;
+    background-position: 95%;
+    background-size: 8px 11px;
+
+    &:focus {
+      outline: 0.5px ridge $color-blue;
+    }
   }
 }
 
