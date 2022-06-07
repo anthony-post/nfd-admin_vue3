@@ -1,5 +1,5 @@
 <template>
-  <ul class="pagination">
+  <ul class="pagination" v-if="!isNaN(totalPages)">
     <li v-if="!isInFirstPage" class="pagination-item">
       <button
         type="button"
@@ -26,8 +26,6 @@
       ...
     </li>
 
-    <!-- Visible Buttons Start -->
-
     <li v-for="page in pages" :key="page.name" class="pagination-item">
       <button
         type="button"
@@ -39,8 +37,6 @@
         {{ page.name }}
       </button>
     </li>
-
-    <!-- Visible Buttons End -->
 
     <li v-if="!isInLastPage" class="pagination-item pagination-item__button">
       ...
@@ -92,30 +88,24 @@ export default {
   },
   setup(props, context) {
     const startPage = computed(() => {
-      // When on the first page
       if (props.currentPage === 1) {
         return 1;
       }
-      // When on the last page
       if (props.currentPage === props.totalPages) {
         return props.totalPages - props.maxVisibleButtons;
       }
-      // When in between
       return props.currentPage - 1;
     });
+
+    const minPages = computed(() => Math.min(
+          startPage.value + props.maxVisibleButtons - 1,
+          props.totalPages
+        ));
 
     const pages = computed(() => {
       const range = [];
 
-      for (
-        let i = startPage.value;
-        i <=
-        Math.min(
-          startPage.value + props.maxVisibleButtons - 1,
-          props.totalPages
-        );
-        i++
-      ) {
+      for (let i = startPage.value; i <= minPages.value; i++) {
         range.push({
           name: i,
           isDisabled: i === props.currentPage,
@@ -148,6 +138,7 @@ export default {
     const isPageActive = (page) => props.currentPage === page;
 
     return {
+      minPages,
       startPage,
       pages,
       isInFirstPage,

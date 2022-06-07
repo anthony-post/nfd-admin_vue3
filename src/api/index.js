@@ -20,9 +20,9 @@ const instanceConfig = {
   },
 };
 
-const APIInstance = axios.create(instanceConfig);
+const ApiInstance = axios.create(instanceConfig);
 
-APIInstance.interceptors.request.use(config => {
+ApiInstance.interceptors.request.use(config => {
   const tokenType = localStorage.getItem("token_type");
   const authType = tokenType[1].toUpperCase() + tokenType.slice(2, 7);
   const accessToken = localStorage.getItem("access_token");
@@ -30,4 +30,4 @@ APIInstance.interceptors.request.use(config => {
   return config;
 });
 
-export const entityAPIInstance = APIInstance;
+export const entityAPIInstance = ApiInstance;

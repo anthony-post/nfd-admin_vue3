@@ -74,7 +74,7 @@
         ></pop-up>
       </table>
       <div class="entity__pagination">
-        <v-pagination v-if="!isNaN(totalPages)"
+        <v-pagination 
           :totalPages="totalPages"
           :currentPage="currentPage"
           @pagechanged="onPageChange"
@@ -135,13 +135,11 @@ export default {
       return store.state.carsModule.cars.data || []
     });
 
-    // const carItem = ref(null);
     const carItem = computed(() => store.state.carsModule.selectedCar);
 
     const popUpIsActive = ref(false);
 
     const togglePopUp = (car) => {
-      // carItem.value = car;
       store.dispatch("carsModule/GET_SELECTEDCAR_FROM_API", car);
       popUpIsActive.value = !popUpIsActive.value;
     };

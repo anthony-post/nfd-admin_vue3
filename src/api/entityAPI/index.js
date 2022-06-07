@@ -1,51 +1,51 @@
 import { entityAPIInstance } from "@/api";
 
-const url = {
-  ORDERSTATUS: "db/orderStatus",
-  CITY: "db/city",
-  CATEGORY: "db/category",
-  ORDER: "db/order",
-  CAR: "db/car",
+const UrlEntity = {
+  orderstatus: "db/orderStatus",
+  city: "db/city",
+  category: "db/category",
+  order: "db/order",
+  car: "db/car",
 };
 
 export const entityAPI = {
 
   getOrderStatusList() {
-    return entityAPIInstance.get(url.ORDERSTATUS);
+    return entityAPIInstance.get(UrlEntity.orderstatus);
   },
 
   getCityList() {
-    return entityAPIInstance.get(url.CITY);
+    return entityAPIInstance.get(UrlEntity.city);
   },
 
   getCategoryList() {
-    return entityAPIInstance.get(url.CATEGORY);
+    return entityAPIInstance.get(UrlEntity.category);
   },
 
   postCreateCarItem(data = {}) {
-    return entityAPIInstance.post(url.CAR, {
+    return entityAPIInstance.post(UrlEntity.car, {
       ...data,
     });
   },
 
   putChangeCarItem(carId, data = {}) {
-    return entityAPIInstance.put(url.CAR + '/' + carId, {
+    return entityAPIInstance.put(UrlEntity.car + '/' + carId, {
       ...data,
     });
   },
 
   deleteCarItem(carId) {
-    return entityAPIInstance.delete(url.CAR + '/' + carId);
+    return entityAPIInstance.delete(UrlEntity.car + '/' + carId);
   },
 
   getOrders(params = {}) {
-    return entityAPIInstance.get(url.ORDER, {
+    return entityAPIInstance.get(UrlEntity.order, {
       params,
     });
   },
 
   getCars(params = {}) {
-    return entityAPIInstance.get(url.CAR, {
+    return entityAPIInstance.get(UrlEntity.car, {
       params,
     });
   },

@@ -116,7 +116,7 @@
         </ul>
       </div>
       <div class="orders__pagination">
-        <v-pagination v-if="!isNaN(totalPages)"
+        <v-pagination 
           :totalPages="totalPages"
           :currentPage="currentPage"
           @pagechanged="onPageChange"
