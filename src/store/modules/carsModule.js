@@ -70,7 +70,7 @@ export const carsModule = {
       state.selectedCar["colors"] = state.colors;
     },
     RESET_COLOR_TO_STATE: (state, color) => {
-      state.colors.forEach( (item, index) => {
+      state.colors.forEach((item, index) => {
         if (item === color) {
           state.colors.splice(index, 1);
         }
@@ -88,13 +88,13 @@ export const carsModule = {
       const categoryList = await entityAPI.getCategoryList();
       commit("SET_CATEGORYLIST_TO_STATE", categoryList.data.data);
     },
-    
+
     async GET_CARLIST_FROM_API({ commit }, { chosenCarCategoryId, selectedPage, limitPage }) {
       try {
 
         const categoryId = chosenCarCategoryId;
         const page = selectedPage;
-        let limit = limitPage;
+        const limit = limitPage;
 
         if (categoryId !== "no-filter") {
           const carsData = await entityAPI.getCars({ categoryId, page, limit });
