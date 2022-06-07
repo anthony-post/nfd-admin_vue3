@@ -6,6 +6,8 @@ export const carsModule = {
   state: {
     cars: {},
     categoryList: [],
+    selectedCar: {},
+    colors: [],
   },
 
   mutations: {
@@ -13,15 +15,71 @@ export const carsModule = {
       state.categoryList = categoryList;
     },
 
-    // SET_CITYLIST_TO_STATE: (state, cityList) => {
-    //   state.cityList = cityList;
-    // },
-
     SET_CARS_TO_STATE: (state, carsData) => {
       state.cars = carsData.data;
     },
     RESET_CARS_TO_STATE: (state) => {
       state.cars = {};
+    },
+
+    SET_SELECTEDCAR_TO_STATE: (state, chosenCar) => {
+      state.selectedCar = chosenCar;
+    },
+    RESET_SELECTEDCAR_TO_STATE: (state) => {
+      state.selectedCar = {};
+    },
+
+    SET_CARID_TO_STATE: (state, newCarId) => {
+      state.selectedCar.id = newCarId;
+    },
+
+    SET_CARNAME_TO_STATE: (state, carName) => {
+      state.selectedCar.name = carName;
+    },
+
+    SET_CARCATEGORY_TO_STATE: (state, carCategory) => {
+      state.selectedCar.categoryId = carCategory;
+    },
+
+    SET_CARDESCRIPTION_TO_STATE: (state, carDescription) => {
+      state.selectedCar.description = carDescription;
+    },
+
+    SET_CARPRICEMIN_TO_STATE: (state, carPriceMin) => {
+      state.selectedCar.priceMin = carPriceMin;
+    },
+
+    SET_CARPRICEMAX_TO_STATE: (state, carPriceMax) => {
+      state.selectedCar.priceMax = carPriceMax;
+    },
+
+    SET_CARTANK_TO_STATE: (state, carTank) => {
+      state.selectedCar.tank = carTank;
+    },
+
+    SET_CARNUMBER_TO_STATE: (state, carNumber) => {
+      state.selectedCar.number = carNumber;
+    },
+
+    SET_CARCOLORS_TO_STATE: (state, colorList) => {
+      state.selectedCar.colors = colorList;
+    },
+
+    SET_COLOR_TO_STATE: (state, carColor) => {
+      state.colors.push(carColor);
+      state.selectedCar["colors"] = state.colors;
+    },
+    RESET_COLOR_TO_STATE: (state, color) => {
+      state.colors.forEach( (item, index) => {
+        if (item === color) {
+          state.colors.splice(index, 1);
+        }
+      });
+      state.selectedCar["colors"] = state.colors;
+    },
+
+    SET_CARIMAGE_TO_STATE: (state, carThumbnail) => {
+      state.selectedCar["thumbnail"] = carThumbnail;
     },
   },
 
@@ -30,16 +88,10 @@ export const carsModule = {
       const categoryList = await entityAPI.getCategoryList();
       commit("SET_CATEGORYLIST_TO_STATE", categoryList.data.data);
     },
-
-  //   async GET_CITYLIST_FROM_API({ commit }) {
-  //     const cityList = await entityAPI.getCityList();
-  //     commit("SET_CITYLIST_TO_STATE", cityList.data.data);
-  //   },
     
     async GET_CARLIST_FROM_API({ commit }, { chosenCarCategoryId, selectedPage, limitPage }) {
       try {
 
-        // const cityId = chosenCityId;
         const categoryId = chosenCarCategoryId;
         const page = selectedPage;
         const limit = limitPage;
@@ -52,51 +104,17 @@ export const carsModule = {
           commit("SET_CARS_TO_STATE", carsData);
         }
 
-
-        // if (orderStatusId !== "no-filter" && cityId !== "no-filter") {
-        //   const ordersData = await entityAPI.getOrders({ orderStatusId, cityId, page, limit });
-        //   commit("SET_ORDERS_TO_STATE", ordersData);
-        // } else if (orderStatusId !== "no-filter") {
-        //   const ordersData = await entityAPI.getOrders({ orderStatusId, page, limit });
-        //   commit("SET_ORDERS_TO_STATE", ordersData);
-        // } else if (cityId !== "no-filter") {
-        //   const ordersData = await entityAPI.getOrders({ cityId, page, limit });
-        //   commit("SET_ORDERS_TO_STATE", ordersData);
-        // } else {
-        //   const ordersData = await entityAPI.getOrders({ page, limit });
-        //   commit("SET_ORDERS_TO_STATE", ordersData);
-        // }
-
       } catch (error) {
         throw new Error(error);
       }
     },
 
-    // async GET_ORDERLIST_FROM_API({ commit }, { chosenOrdersStatusId, chosenCityId, chosenPage, limitPerPage }) {
-    //   try {
-
-    //     const cityId = chosenCityId;
-    //     const orderStatusId = chosenOrdersStatusId;
-    //     const page = chosenPage;
-    //     const limit = limitPerPage;
-
-    //     if (orderStatusId !== "no-filter" && cityId !== "no-filter") {
-    //       const ordersData = await entityAPI.getOrders({ orderStatusId, cityId, page, limit });
-    //       commit("SET_ORDERS_TO_STATE", ordersData);
-    //     } else if (orderStatusId !== "no-filter") {
-    //       const ordersData = await entityAPI.getOrders({ orderStatusId, page, limit });
-    //       commit("SET_ORDERS_TO_STATE", ordersData);
-    //     } else if (cityId !== "no-filter") {
-    //       const ordersData = await entityAPI.getOrders({ cityId, page, limit });
-    //       commit("SET_ORDERS_TO_STATE", ordersData);
-    //     } else {
-    //       const ordersData = await entityAPI.getOrders({ page, limit });
-    //       commit("SET_ORDERS_TO_STATE", ordersData);
-    //     }
-
-    //   } catch (error) {
-    //     throw new Error(error);
-    //   }
-    // },
+    GET_SELECTEDCAR_FROM_API({ commit }, chosenCar) {
+      if (chosenCar) {
+        commit("SET_SELECTEDCAR_TO_STATE", chosenCar);
+      } else {
+        commit("RESET_SELECTEDCAR_TO_STATE");
+      }
+    }
   },
 };

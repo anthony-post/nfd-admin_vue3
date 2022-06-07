@@ -104,6 +104,12 @@ export default {
 
     onMounted(() => {
       document.addEventListener("click", hideDropDown);
+
+      if (props.selectedItem) {
+        inputValue.value = props.selectedItem;
+      } else {
+        inputValue.value = "";
+      }
     });
 
     onBeforeUnmount(() => {

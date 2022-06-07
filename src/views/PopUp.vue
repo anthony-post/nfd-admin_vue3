@@ -38,7 +38,8 @@
             <dd class="popup__title-value">{{ carItem?.description }}</dd>
           </dl>
           <div class="popup__title">
-            <router-link to="/admin-panel/card-car" class="popup__title-link">
+            <router-link :to="{ name: '/admin-panel/card-car_id', params: { id: carItem?.id } }" class="popup__title-link">
+            <!-- <router-link to="/admin-panel/card-car" class="popup__title-link"> -->
               <button type="button" class="popup__title-btn">
                 <v-icon
                   icon-id="icon-edit"

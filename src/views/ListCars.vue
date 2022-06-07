@@ -135,11 +135,14 @@ export default {
       return store.state.carsModule.cars.data || []
     });
 
-    const carItem = ref(null);
+    // const carItem = ref(null);
+    const carItem = computed(() => store.state.carsModule.selectedCar);
 
     const popUpIsActive = ref(false);
+
     const togglePopUp = (car) => {
-      carItem.value = car;
+      // carItem.value = car;
+      store.dispatch("carsModule/GET_SELECTEDCAR_FROM_API", car);
       popUpIsActive.value = !popUpIsActive.value;
     };
 

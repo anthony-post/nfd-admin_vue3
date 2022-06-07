@@ -38,10 +38,7 @@ export default {
       type: String,
       default: "",
     },
-    inputValue: {
-      type: String,
-      default: "",
-    },
+    inputValue: [String, Number],
   },
 };
 </script>

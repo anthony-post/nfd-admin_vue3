@@ -22,9 +22,10 @@ const routes = [
     component: () => import("@/views/AdminPanel.vue"),
     meta: { needAuth: true },
     children: [
-      { path: "card-car", component: CardCar },
+      { path: "card-car_:id", name: "/admin-panel/card-car_id", component: CardCar },
+      { path: "card-car", name: "/admin-panel/card-car", component: CardCar },
       { path: "orders", component: ListOrders },
-      { path: "cars", component: ListCars },
+      { path: "cars", name: "cars", component: ListCars },
       { path: "cities", component: ListCities },
       { path: "pickUpPoints", component: ListPickUpPoints },
       { path: "ListRates", component: ListRates },

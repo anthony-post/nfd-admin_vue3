@@ -10,6 +10,7 @@
             class="card-car__pic"
           />
           <p class="card-car__model">{{ carModel }}</p>
+          <!-- <p class="card-car__model">{{ carModel }}</p> -->
           <p class="card-car__category">{{ carCategory?.name }}</p>
           <v-upload-file name="carimg" @onload-file="onloadFile"></v-upload-file>
         </div>
@@ -38,6 +39,13 @@
               placeholder="Введите модель автомобиля"
               class="input input__car-model"
             ></v-input>
+            <!-- <v-input
+              v-model:inputValue="carModel"
+              label="Модель автомобиля"
+              name="model-car"
+              placeholder="Введите модель автомобиля"
+              class="input input__car-model"
+            ></v-input> -->
             <v-dropdown
               id="dropdownCategory"
               :itemList="categoryList"
@@ -113,7 +121,19 @@
         </div>
         <div class="card-car__button-bar">
           <div class="card-car__button">
+            <v-button 
+              v-if="carId"
+              type="button" 
+              theme="confirm"
+              :disabled="!isFilledUp"
+              :class="{ btn_disabled: !isFilledUp }"
+              class="card-car__button-item"
+              @click="changeCarItem"
+            >
+              Изменить
+            </v-button>
             <v-button
+              v-else
               type="button"
               theme="confirm"
               :disabled="!isFilledUp"
@@ -124,6 +144,7 @@
               Сохранить
             </v-button>
             <v-button 
+             
               type="button" 
               theme="cancel"
               :disabled="!isFilledUp"
@@ -152,6 +173,7 @@
 
 <script>
 import { useStore } from "vuex";
+import { useRouter } from "vue-router";
 import { computed, ref } from "vue";
 import VUploadFile from "../components/VUploadFile.vue";
 import VInput from "../components/VInput.vue";
@@ -174,57 +196,118 @@ export default {
   },
   setup() {
     const store = useStore();
+    const router = useRouter();
 
-    const carId = ref(null);
-    const carModel = ref(null);
-    const carCategory = ref(null);
-    const carDescription = ref(null);
+    const selectedCar = computed(() => store.state.carsModule.selectedCar);
+
+    const carId = computed({
+      get: () => {
+        return Object.keys(selectedCar.value).length !== 0 ? selectedCar.value?.id : null;
+      },
+      set: newCarId => store.commit("carsModule/SET_CARID_TO_STATE", newCarId),
+    });
+
+    const carModel = computed({
+      get: () => {
+        return Object.keys(selectedCar.value).length !== 0 ? selectedCar.value?.name : null;
+      },
+      set: carName => store.commit("carsModule/SET_CARNAME_TO_STATE", carName),
+    });
+
+    const carDescription = computed({
+      get: () => {
+        return Object.keys(selectedCar.value).length !== 0 ? selectedCar.value?.description : null;
+      },
+      set: carDescription => store.commit("carsModule/SET_CARDESCRIPTION_TO_STATE", carDescription),
+    });
+
+    const carPriceMin = computed({
+      get: () => {
+        return Object.keys(selectedCar.value).length !== 0 ? selectedCar.value?.priceMin : null;
+      },
+      set: carPriceMin => store.commit("carsModule/SET_CARPRICEMIN_TO_STATE", carPriceMin),
+    });
+
+    const carPriceMax = computed({
+      get: () => {
+        return Object.keys(selectedCar.value).length !== 0 ? selectedCar.value?.priceMax : null;
+      },
+      set: carPriceMax => store.commit("carsModule/SET_CARPRICEMAX_TO_STATE", carPriceMax),
+    });
+
+    const carTank = computed({
+      get: () => {
+        return Object.keys(selectedCar.value).length !== 0 ? selectedCar.value?.tank : null;
+      },
+      set: carTank => store.commit("carsModule/SET_CARTANK_TO_STATE", carTank),
+    });
+
+    const carNumber = computed({
+      get: () => {
+        return Object.keys(selectedCar.value).length !== 0 ? selectedCar.value?.number : null;
+      },
+      set: carNumber => store.commit("carsModule/SET_CARNUMBER_TO_STATE", carNumber),
+    });
+
+    const colorList = computed(() => {
+      if (Object.keys(selectedCar.value).length !== 0) {
+        if (selectedCar.value.colors) {
+          if (selectedCar.value.colors.length !== 0)
+          return selectedCar.value.colors;
+        }
+        return [];
+      }
+      return [];
+    });
+
     const carColor = ref(null);
-    const carTank = ref(null);
-    const carNumber = ref(null);
-    const carPriceMin = ref(null);
-    const carPriceMax = ref(null);
-    const colorList = ref([]);
-
-    const categoryList = computed(() => store.state.categoryModule.categoryList);
-
-    const setSelectedCategory = chosenCategory => carCategory.value = chosenCategory;
 
     const setCarColor = () => {
-      colorList.value.push(carColor.value);
-      carColor.value = "";
+      store.commit("carsModule/SET_COLOR_TO_STATE", carColor.value)
+      carColor.value = null;
     };
 
     const resetCarColor = color => {
-      colorList.value.forEach( (item, index) => {
-        if (item === color) {
-          colorList.value.splice(index, 1);
-        }
-      })
+      store.commit("carsModule/RESET_COLOR_TO_STATE", color);
     };
 
     const getGategoryListFromApi = () => store.dispatch("categoryModule/GET_GATEGORYLIST_FROM_API");
 
     getGategoryListFromApi();
 
+    const carCategory = computed({
+      get: () => {
+        if (Object.keys(selectedCar.value).length !== 0) {
+        if (selectedCar.value.categoryId) {
+          return selectedCar.value.categoryId;
+        }
+        return {};
+      }
+      return {};
+      },
+      set: carCategory => store.commit("carsModule/SET_CARCATEGORY_TO_STATE", carCategory),
+    });
+
+    const categoryList = computed(() => store.state.categoryModule.categoryList);
+
+    const setSelectedCategory = chosenCategory => carCategory.value = chosenCategory;
+
     const createCarItem = async () => {
-      const newCarItem = await entityAPI.postCarCreateItem(
+      const newCarItem = await entityAPI.postCreateCarItem(
         {
           priceMax: carPriceMax.value,
           priceMin: carPriceMin.value,
           name: carModel.value,
-          thumbnail: {
-            mimetype: imageData.value.type,
-            originalname: imageData.value.name,
-            path: imageUrl.value
-          },
+          thumbnail: carThumbnail.value,
           description: carDescription.value,
           categoryId: {
             name: carCategory.value.name,
             description: carCategory.value.description,
             id: carCategory.value.id
           },
-          colors: colorList.value   
+          colors: colorList.value,
+          number: carNumber.value,
+          tank: carTank.value
         }
       );
       
@@ -232,58 +315,67 @@ export default {
     };
 
     const deleteCarItem = async () => {
-      await entityAPI.deleteCarCreateItem(carId.value);
-      carId.value = null;
+      await entityAPI.deleteCarItem(carId.value);
+      store.commit("carsModule/RESET_SELECTEDCAR_TO_STATE");
+      //редирект на страницу создания карточки авто
+      router.push({ name: "/admin-panel/card-car" });
     };
 
     const resetCarItem = () => {
-      carModel.value = null;
-      carCategory.value = null;
-      carDescription.value = null;
-      carColor.value = null;
-      carTank.value = null;
-      carNumber.value = null;
-      carPriceMin.value = null;
-      carPriceMax.value = null;
-      colorList.value = [];
-      imageUrl.value = null;
-      imageData.value = null;
+      store.commit("carsModule/RESET_SELECTEDCAR_TO_STATE");
+      //редирект на страницу списка авто
+      router.push({ name: "cars" });
+    };
+
+    const changeCarItem = async () => {
+      await entityAPI.putChangeCarItem(carId.value, 
+        {
+          priceMax: carPriceMax.value,
+          priceMin: carPriceMin.value,
+          name: carModel.value,
+          thumbnail: carThumbnail.value,
+          description: carDescription.value,
+          categoryId: {
+            name: carCategory.value.name,
+            description: carCategory.value.description,
+            id: carCategory.value.id
+          },
+          colors: colorList.value,
+          number: carNumber.value,
+          tank: carTank.value
+        });
     };
 
     const progressBar = computed(() => {
+      const stepProgress = 11.11;
       let value = 0;
+
+      if (Object.keys(carThumbnail.value).length !== 0) {
+        value += stepProgress;
+      }
       if (carModel.value) {
-        value += 11.11;
+        value += stepProgress;
       }
-      if (carModel.value && carCategory.value) {
-        value += 11.11;
+      if (Object.keys(carCategory.value).length !== 0) {
+        value += stepProgress;
       }
-      if (carModel.value && carCategory.value && carDescription.value) {
-        value += 11.11;
+      if (carDescription.value) {
+        value += stepProgress;
       }
-      if (carModel.value && carCategory.value && 
-          carDescription.value && carNumber.value) {
-        value += 11.11;
+      if (carNumber.value) {
+        value += stepProgress;
       }
-      if (carModel.value && carCategory.value && carDescription.value && 
-          carNumber.value && carTank.value) {
-        value += 11.11;
+      if (carTank.value) {
+        value += stepProgress;
       }
-      if (carModel.value && carCategory.value && carDescription.value && 
-          carNumber.value && carTank.value && carPriceMin.value) {
-        value += 11.11;
+      if (carPriceMin.value) {
+        value += stepProgress;
       }
-      if (carModel.value && carCategory.value && carDescription.value && carNumber.value && 
-          carTank.value && carPriceMin.value && carPriceMax.value && colorList.value) {
-        value += 11.11;
+      if (carPriceMax.value) {
+        value += stepProgress;
       }
-      if (carModel.value && carCategory.value && carDescription.value && 
-          carNumber.value && carTank.value && carPriceMin.value && carPriceMax.value) {
-        value += 11.11;
-      }
-      if (carModel.value && carCategory.value && carDescription.value && 
-          carNumber.value && carTank.value && carPriceMin.value && carPriceMax.value && imageUrl.value) {
-        value += 11.11;
+      if (colorList.value?.length !== 0) {
+        value += stepProgress;
       }
 
       return Math.ceil(value);
@@ -292,27 +384,51 @@ export default {
     const isFilledUp = computed(() => progressBar.value === 100);
 
     //image
-    const imageData = ref(null);
-    const imageUrl = ref(null);
+    const carThumbnail = computed({
+      get: () => {
+        if (Object.keys(selectedCar.value).length !== 0) {
+        if (selectedCar.value.thumbnail) {
+          return selectedCar.value.thumbnail;
+        }
+        return {};
+      }
+      return {};
+      },
+      set: carThumbnail => store.commit("carsModule/SET_CARIMAGE_TO_STATE", carThumbnail),
+    });
+
+    const image = ref({});
 
     const onloadFile = file => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = () => {
-        imageUrl.value = reader.result;
+        image.value["path"] = reader.result;
       };
-      imageData.value = file;
+      image.value = { ...image.value, "mimetype": file.type, "originalname": file.name }
+
+      carThumbnail.value = image.value;
     };
 
     const thumbnailPath = computed(() => {
-      return imageUrl.value ? imageUrl.value : "https://imgholder.ru/600x300/eeeeee/adb9ca&text=Изображение";
+      const defaultPath = "https://imgholder.ru/600x300/eeeeee/adb9ca&text=Изображение";
+      if (Object.keys(selectedCar.value).length !== 0) {
+        if (selectedCar.value.thumbnail) {
+          if (selectedCar.value.thumbnail.path)
+          return selectedCar.value.thumbnail.path;
+        }
+        return defaultPath;
+      }
+      return defaultPath;
     });
 
     const thumbnailOriginalName = computed(() => {
-      return imageData.value ? imageData.value.name : "car";
+      return Object.keys(selectedCar.value).length !== 0 ? carThumbnail.value?.originalname : "car";
     });
 
     return {
+      carId,
+      selectedCar,
       carModel,
       carCategory,
       carDescription,
@@ -321,6 +437,7 @@ export default {
       carPriceMin,
       carNumber,
       carTank,
+      carThumbnail,
       categoryList,
       progressBar,
       setSelectedCategory,
@@ -328,13 +445,12 @@ export default {
       resetCarColor,
       colorList,
       createCarItem,
-      carId,
       deleteCarItem,
       resetCarItem,
+      changeCarItem,
       isFilledUp,
       onloadFile,
-      imageUrl,
-      imageData,
+      image,
       thumbnailPath,
       thumbnailOriginalName,
     };

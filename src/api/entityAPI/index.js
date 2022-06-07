@@ -10,12 +10,6 @@ const url = {
 
 export const entityAPI = {
 
-  getOrders(params = {}) {
-    return entityAPIInstance.get(url.ORDER, {
-      params,
-    });
-  },
-
   getOrderStatusList() {
     return entityAPIInstance.get(url.ORDERSTATUS);
   },
@@ -28,13 +22,19 @@ export const entityAPI = {
     return entityAPIInstance.get(url.CATEGORY);
   },
 
-  postCarCreateItem(data = {}) {
+  postCreateCarItem(data = {}) {
     return entityAPIInstance.post(url.CAR, {
       ...data,
     });
   },
 
-  deleteCarCreateItem(carId) {
+  putChangeCarItem(carId, data = {}) {
+    return entityAPIInstance.put(url.CAR + '/' + carId, {
+      ...data,
+    });
+  },
+
+  deleteCarItem(carId) {
     return entityAPIInstance.delete(url.CAR + '/' + carId);
   },
 
