@@ -94,10 +94,10 @@ export const carsModule = {
 
         const categoryId = chosenCarCategoryId;
         const page = selectedPage;
-        const limit = limitPage;
+        let limit = limitPage;
 
         if (categoryId !== "no-filter") {
-         const carsData = await entityAPI.getCars({ categoryId, page, limit });
+          const carsData = await entityAPI.getCars({ categoryId, page, limit });
           commit("SET_CARS_TO_STATE", carsData);
         } else {
           const carsData = await entityAPI.getCars({ page, limit });

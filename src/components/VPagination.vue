@@ -1,9 +1,9 @@
 <template>
   <ul class="pagination" v-if="!isNaN(totalPages)">
-    <li v-if="!isInFirstPage" class="pagination-item">
+    <li v-if="!isOnFirstPage" class="pagination-item">
       <button
         type="button"
-        :disabled="isInFirstPage"
+        :disabled="isOnFirstPage"
         class="pagination-item__button"
         @click="onClickPreviousPage"
       >
@@ -11,10 +11,10 @@
       </button>
     </li>
 
-    <li v-if="!isInFirstPage" class="pagination-item">
+    <li v-if="!isOnFirstPage" class="pagination-item">
       <button
         type="button"
-        :disabled="isInFirstPage"
+        :disabled="isOnFirstPage"
         class="pagination-item__button"
         @click="onClickFirstPage"
       >
@@ -22,7 +22,7 @@
       </button>
     </li>
 
-    <li v-if="!isInFirstPage" class="pagination-item pagination-item__button">
+    <li v-if="!isOnFirstPage" class="pagination-item pagination-item__button">
       ...
     </li>
 
@@ -38,14 +38,14 @@
       </button>
     </li>
 
-    <li v-if="!isInLastPage" class="pagination-item pagination-item__button">
+    <li v-if="!isOnLastPage" class="pagination-item pagination-item__button">
       ...
     </li>
 
-    <li class="pagination-item">
+    <li v-if="!isOnLastPage" class="pagination-item">
       <button
         type="button"
-        :disabled="isInLastPage"
+        :disabled="isOnLastPage"
         class="pagination-item__button"
         @click="onClickLastPage"
       >
@@ -53,10 +53,10 @@
       </button>
     </li>
 
-    <li v-if="!isInLastPage" class="pagination-item">
+    <li v-if="!isOnLastPage" class="pagination-item">
       <button
         type="button"
-        :disabled="isInLastPage"
+        :disabled="isOnLastPage"
         class="pagination-item__button"
         @click="onClickNextPage"
       >
@@ -88,24 +88,29 @@ export default {
   },
   setup(props, context) {
     const startPage = computed(() => {
-      if (props.currentPage === 1) {
+      if (isOnFirstPage.value) {
         return 1;
       }
-      if (props.currentPage === props.totalPages) {
-        return props.totalPages - props.maxVisibleButtons;
+      if (isOnLastPage.value) {
+        const page = props.totalPages - props.maxVisibleButtons;
+        if (page > 0) {
+          return page + 1;
+        } else {
+          return props.totalPages;
+        }
       }
       return props.currentPage - 1;
     });
 
-    const minPages = computed(() => Math.min(
-          startPage.value + props.maxVisibleButtons - 1,
-          props.totalPages
-        ));
+    const lastNumber = computed(() => Math.min(
+      startPage.value + props.maxVisibleButtons - 1,
+      props.totalPages
+    ));
 
     const pages = computed(() => {
       const range = [];
 
-      for (let i = startPage.value; i <= minPages.value; i++) {
+      for (let i = startPage.value; i <= lastNumber.value; i++) {
         range.push({
           name: i,
           isDisabled: i === props.currentPage,
@@ -115,11 +120,11 @@ export default {
       return range;
     });
 
-    const isInFirstPage = computed(() => {
+    const isOnFirstPage = computed(() => {
       return props.currentPage === 1;
     });
 
-    const isInLastPage = computed(() => {
+    const isOnLastPage = computed(() => {
       return props.currentPage === props.totalPages;
     });
 
@@ -138,11 +143,11 @@ export default {
     const isPageActive = (page) => props.currentPage === page;
 
     return {
-      minPages,
+      lastNumber,
       startPage,
       pages,
-      isInFirstPage,
-      isInLastPage,
+      isOnFirstPage,
+      isOnLastPage,
       onClickFirstPage,
       onClickPreviousPage,
       onClickPage,

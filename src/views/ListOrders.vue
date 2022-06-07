@@ -181,7 +181,8 @@ export default {
       store.dispatch("ordersModule/GET_CITYLIST_FROM_API");
 
     const getPaginateOrderListFromApi = (chosenOrdersStatusId, chosenCityId) => {
-      const chosenPage = currentPage.value;
+      // const chosenPage = currentPage.value;
+      const chosenPage = currentPage.value - 1;
       store.dispatch("ordersModule/GET_ORDERLIST_FROM_API", { chosenOrdersStatusId, chosenCityId, chosenPage, limitPerPage });
     };
 

@@ -148,7 +148,8 @@ export default {
       store.dispatch("carsModule/GET_CATEGORYLIST_FROM_API");
 
     const getPaginateCarListFromApi = async (chosenCarCategoryId) => {
-      const selectedPage = currentPage.value;
+      //на бэке первая страница начинается с 0
+      const selectedPage = currentPage.value - 1;
       const limitPage = limitPerPage.value;
       await store.dispatch("carsModule/GET_CARLIST_FROM_API", { chosenCarCategoryId, selectedPage, limitPage });
     };
@@ -167,7 +168,8 @@ export default {
 
     const totalItems = computed(() => store.state.carsModule.cars.count);
 
-    const totalPages = computed(() => Math.round(totalItems.value / limitPerPage.value));
+    const totalPages = computed(() => 
+      Math.ceil(totalItems.value / limitPerPage.value) > 0 ? Math.ceil(totalItems.value / limitPerPage.value) : 1);
 
     const onPageChange = page => {
       store.commit("carsModule/RESET_CARS_TO_STATE");
