@@ -1,24 +1,29 @@
 import { createStore } from "vuex";
 import { authModule } from "./modules/authModule.js";
+import { carsModule } from "./modules/carsModule.js";
+import { ordersModule } from "./modules/ordersModule.js";
+import { categoryModule } from "./modules/categoryModule.js";
 
 export default createStore({
-  // state: {
-  //   isDropDownVisible: false,
-  // },
-
-  // mutations: {
-  //   SET_ISDROPDOWNVISIBLE_TO_STATE: (state) => {
-  //     state.isDropDownVisible = true;
-  //   },
-  //   RESET_ISDROPDOWNVISIBLE_TO_STATE: (state) => {
-  //     state.isDropDownVisible = false;
-  //   }
-  // },
-
   modules: {
     authModule: {
       namespaced: true,
       ...authModule,
+    },
+
+    ordersModule: {
+      namespaced: true,
+      ...ordersModule,
+    },
+
+    categoryModule: {
+      namespaced: true,
+      ...categoryModule,
+    },
+
+    carsModule: {
+      namespaced: true,
+      ...carsModule,
     },
   },
 });

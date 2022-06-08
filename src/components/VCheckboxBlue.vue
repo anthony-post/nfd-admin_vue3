@@ -1,36 +1,30 @@
 <template>
   <label class="checkbox checkbox__item">
     <slot></slot>
-    <input class="checkbox__input" type="checkbox" :checked="isOption" />
+    <input type="checkbox" checked class="checkbox__input" />
     <span class="checkmark-box"></span>
   </label>
 </template>
 
 <script>
 export default {
-  name: "VCheckbox",
-  props: {
-    isOption: {
-      type: Boolean,
-    },
-  },
+  name: "VCheckboxBlue",
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import "@/assets/variables.scss";
 
 .checkbox {
   display: block;
   position: relative;
-  font-family: $ff;
+
+  font-family: $font2;
   font-style: normal;
   font-weight: 400;
   font-size: 10px;
   line-height: 12px;
-  color: $color-grey;
-
-  pointer-events: none; //block switching checkbox
+  color: $color-label;
 
   &__item {
     padding-left: 25px;
@@ -51,14 +45,15 @@ export default {
   left: 0;
   height: 13px;
   width: 13px;
-  border: 0.5px solid #becad6;
-  border-radius: 1px;
+
+  background: $color-blue;
+  border-radius: 2px;
 }
 .checkbox:hover input ~ .checkmark-box {
-  border: 1px solid $color-green;
+  border: 1px solid $color-blue;
 }
 .checkbox__input:checked ~ .checkmark-box {
-  border: 1px solid $color-green;
+  border: 1px solid $color-blue;
 }
 .checkmark-box:after {
   content: "";
@@ -73,8 +68,10 @@ export default {
   top: -1px;
   width: 3px;
   height: 8px;
-  border: solid $color-black;
+
+  border: solid $color-white;
   border-width: 0 2px 2px 0;
+  border-radius: 1px;
   -webkit-transform: rotate(45deg);
   -ms-transform: rotate(45deg);
   transform: rotate(45deg);

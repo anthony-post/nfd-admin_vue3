@@ -47,6 +47,10 @@ export default {
   position: relative;
   display: none;
 
+  @media #{$media} and (min-width: $tablet-min) and (max-width: $tablet-max) {
+    display: block;
+  }
+
   @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
     display: block;
   }
@@ -75,6 +79,18 @@ export default {
   height: 100%;
   background-color: $color-background;
   z-index: 99;
+
+  @media #{$media} and (min-width: $tablet-min) and (max-width: $tablet-max) {
+    background-color: transparent;
+  }
+}
+
+.menu-wrp {
+  @media #{$media} and (min-width: $tablet-min) and (max-width: $tablet-max) {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+  }
 }
 
 //animation
