@@ -51,7 +51,9 @@
           <td class="table__data-item">{{ car?.name }}</td>
           <td class="table__data-item">{{ car?.categoryId?.name }}</td>
           <td class="table__data-item">
-            <div v-for="(item, index) in car?.colors" :key="index">{{ item }}</div>
+            <div v-for="(item, index) in car?.colors" :key="index">
+              {{ item }}
+            </div>
           </td>
           <td class="table__data-item">
             {{ car?.priceMin }} - {{ car?.priceMax }}
@@ -68,13 +70,13 @@
         </tr>
         <pop-up
           v-if="popUpIsActive"
-          :carItem = carItem
+          :carItem="carItem"
           class="table__item-popup"
           @close-popup="togglePopUp()"
         ></pop-up>
       </table>
       <div class="entity__pagination">
-        <v-pagination 
+        <v-pagination
           :totalPages="totalPages"
           :currentPage="currentPage"
           @pagechanged="onPageChange"
@@ -112,7 +114,7 @@ export default {
 
     const noFilter = computed(() => !selectedCarCategory.value);
 
-    const setSelectedCarCategory = chosenCarCategory => {
+    const setSelectedCarCategory = (chosenCarCategory) => {
       selectedCarCategory.value = chosenCarCategory.id;
     };
 
@@ -132,7 +134,7 @@ export default {
     };
 
     const filteredCarList = computed(() => {
-      return store.state.carsModule.cars.data || []
+      return store.state.carsModule.cars.data || [];
     });
 
     const carItem = computed(() => store.state.carsModule.selectedCar);
@@ -151,7 +153,11 @@ export default {
       //на бэке первая страница начинается с 0
       const selectedPage = currentPage.value - 1;
       const limitPage = limitPerPage.value;
-      await store.dispatch("carsModule/GET_CARLIST_FROM_API", { chosenCarCategoryId, selectedPage, limitPage });
+      await store.dispatch("carsModule/GET_CARLIST_FROM_API", {
+        chosenCarCategoryId,
+        selectedPage,
+        limitPage,
+      });
     };
 
     //API call
@@ -168,10 +174,13 @@ export default {
 
     const totalItems = computed(() => store.state.carsModule.cars.count);
 
-    const totalPages = computed(() => 
-      Math.ceil(totalItems.value / limitPerPage.value) > 0 ? Math.ceil(totalItems.value / limitPerPage.value) : 1);
+    const totalPages = computed(() =>
+      Math.ceil(totalItems.value / limitPerPage.value) > 0
+        ? Math.ceil(totalItems.value / limitPerPage.value)
+        : 1
+    );
 
-    const onPageChange = page => {
+    const onPageChange = (page) => {
       store.commit("carsModule/RESET_CARS_TO_STATE");
       currentPage.value = page;
       getPaginateCarListFromApi(filterCarCategory.value);

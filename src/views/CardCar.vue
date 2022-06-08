@@ -12,14 +12,21 @@
           <p class="card-car__model">{{ carModel }}</p>
           <!-- <p class="card-car__model">{{ carModel }}</p> -->
           <p class="card-car__category">{{ carCategory?.name }}</p>
-          <v-upload-file name="carimg" @onload-file="onloadFile"></v-upload-file>
+          <v-upload-file
+            name="carimg"
+            @onload-file="onloadFile"
+          ></v-upload-file>
         </div>
         <div class="card-car__progress-bar">
           <div class="card-car__progress-bar-wrp">
             <p class="card-car__progress-bar-title">Заполнено</p>
             <p class="card-car__progress-bar-data">{{ progressBar }}%</p>
           </div>
-          <progress :value="progressBar" max="100" class="progress-bar"></progress>
+          <progress
+            :value="progressBar"
+            max="100"
+            class="progress-bar"
+          ></progress>
         </div>
         <div class="card-car__description">
           <h4 class="card-car__description-title">Описание</h4>
@@ -102,13 +109,13 @@
                 placeholder="Введите цвет автомобиля"
                 class="input input__car-color"
               ></v-input>
-              <button 
+              <button
                 class="card-car__plus-button"
                 @click="setCarColor"
               ></button>
             </div>
             <ul class="card-car__color-list">
-              <li 
+              <li
                 v-for="(color, index) in colorList"
                 :key="index"
                 class="card-car__color-item"
@@ -121,9 +128,9 @@
         </div>
         <div class="card-car__button-bar">
           <div class="card-car__button">
-            <v-button 
+            <v-button
               v-if="carId"
-              type="button" 
+              type="button"
               theme="confirm"
               :disabled="!isFilledUp"
               :class="{ btn_disabled: !isFilledUp }"
@@ -143,9 +150,8 @@
             >
               Сохранить
             </v-button>
-            <v-button 
-             
-              type="button" 
+            <v-button
+              type="button"
               theme="cancel"
               :disabled="!isFilledUp"
               :class="{ btn_disabled: !isFilledUp }"
@@ -155,9 +161,9 @@
               Отменить
             </v-button>
           </div>
-          <v-button 
-            type="button" 
-            theme="delete" 
+          <v-button
+            type="button"
+            theme="delete"
             class="card-car__button-item"
             :disabled="!carId"
             :class="{ btn_disabled: !carId }"
@@ -202,58 +208,79 @@ export default {
 
     const carId = computed({
       get: () => {
-        return Object.keys(selectedCar.value).length !== 0 ? selectedCar.value?.id : null;
+        return Object.keys(selectedCar.value).length !== 0
+          ? selectedCar.value?.id
+          : null;
       },
-      set: newCarId => store.commit("carsModule/SET_CARID_TO_STATE", newCarId),
+      set: (newCarId) =>
+        store.commit("carsModule/SET_CARID_TO_STATE", newCarId),
     });
 
     const carModel = computed({
       get: () => {
-        return Object.keys(selectedCar.value).length !== 0 ? selectedCar.value?.name : null;
+        return Object.keys(selectedCar.value).length !== 0
+          ? selectedCar.value?.name
+          : null;
       },
-      set: carName => store.commit("carsModule/SET_CARNAME_TO_STATE", carName),
+      set: (carName) =>
+        store.commit("carsModule/SET_CARNAME_TO_STATE", carName),
     });
 
     const carDescription = computed({
       get: () => {
-        return Object.keys(selectedCar.value).length !== 0 ? selectedCar.value?.description : null;
+        return Object.keys(selectedCar.value).length !== 0
+          ? selectedCar.value?.description
+          : null;
       },
-      set: carDescription => store.commit("carsModule/SET_CARDESCRIPTION_TO_STATE", carDescription),
+      set: (carDescription) =>
+        store.commit("carsModule/SET_CARDESCRIPTION_TO_STATE", carDescription),
     });
 
     const carPriceMin = computed({
       get: () => {
-        return Object.keys(selectedCar.value).length !== 0 ? selectedCar.value?.priceMin : null;
+        return Object.keys(selectedCar.value).length !== 0
+          ? selectedCar.value?.priceMin
+          : null;
       },
-      set: carPriceMin => store.commit("carsModule/SET_CARPRICEMIN_TO_STATE", carPriceMin),
+      set: (carPriceMin) =>
+        store.commit("carsModule/SET_CARPRICEMIN_TO_STATE", carPriceMin),
     });
 
     const carPriceMax = computed({
       get: () => {
-        return Object.keys(selectedCar.value).length !== 0 ? selectedCar.value?.priceMax : null;
+        return Object.keys(selectedCar.value).length !== 0
+          ? selectedCar.value?.priceMax
+          : null;
       },
-      set: carPriceMax => store.commit("carsModule/SET_CARPRICEMAX_TO_STATE", carPriceMax),
+      set: (carPriceMax) =>
+        store.commit("carsModule/SET_CARPRICEMAX_TO_STATE", carPriceMax),
     });
 
     const carTank = computed({
       get: () => {
-        return Object.keys(selectedCar.value).length !== 0 ? selectedCar.value?.tank : null;
+        return Object.keys(selectedCar.value).length !== 0
+          ? selectedCar.value?.tank
+          : null;
       },
-      set: carTank => store.commit("carsModule/SET_CARTANK_TO_STATE", carTank),
+      set: (carTank) =>
+        store.commit("carsModule/SET_CARTANK_TO_STATE", carTank),
     });
 
     const carNumber = computed({
       get: () => {
-        return Object.keys(selectedCar.value).length !== 0 ? selectedCar.value?.number : null;
+        return Object.keys(selectedCar.value).length !== 0
+          ? selectedCar.value?.number
+          : null;
       },
-      set: carNumber => store.commit("carsModule/SET_CARNUMBER_TO_STATE", carNumber),
+      set: (carNumber) =>
+        store.commit("carsModule/SET_CARNUMBER_TO_STATE", carNumber),
     });
 
     const colorList = computed(() => {
       if (Object.keys(selectedCar.value).length !== 0) {
         if (selectedCar.value.colors) {
           if (selectedCar.value.colors.length !== 0)
-          return selectedCar.value.colors;
+            return selectedCar.value.colors;
         }
         return [];
       }
@@ -263,54 +290,57 @@ export default {
     const carColor = ref(null);
 
     const setCarColor = () => {
-      store.commit("carsModule/SET_COLOR_TO_STATE", carColor.value)
+      store.commit("carsModule/SET_COLOR_TO_STATE", carColor.value);
       carColor.value = null;
     };
 
-    const resetCarColor = color => {
+    const resetCarColor = (color) => {
       store.commit("carsModule/RESET_COLOR_TO_STATE", color);
     };
 
-    const getGategoryListFromApi = () => store.dispatch("categoryModule/GET_GATEGORYLIST_FROM_API");
+    const getGategoryListFromApi = () =>
+      store.dispatch("categoryModule/GET_GATEGORYLIST_FROM_API");
 
     getGategoryListFromApi();
 
     const carCategory = computed({
       get: () => {
         if (Object.keys(selectedCar.value).length !== 0) {
-        if (selectedCar.value.categoryId) {
-          return selectedCar.value.categoryId;
+          if (selectedCar.value.categoryId) {
+            return selectedCar.value.categoryId;
+          }
+          return {};
         }
         return {};
-      }
-      return {};
       },
-      set: carCategory => store.commit("carsModule/SET_CARCATEGORY_TO_STATE", carCategory),
+      set: (carCategory) =>
+        store.commit("carsModule/SET_CARCATEGORY_TO_STATE", carCategory),
     });
 
-    const categoryList = computed(() => store.state.categoryModule.categoryList);
+    const categoryList = computed(
+      () => store.state.categoryModule.categoryList
+    );
 
-    const setSelectedCategory = chosenCategory => carCategory.value = chosenCategory;
+    const setSelectedCategory = (chosenCategory) =>
+      (carCategory.value = chosenCategory);
 
     const createCarItem = async () => {
-      const newCarItem = await entityAPI.postCreateCarItem(
-        {
-          priceMax: carPriceMax.value,
-          priceMin: carPriceMin.value,
-          name: carModel.value,
-          thumbnail: carThumbnail.value,
-          description: carDescription.value,
-          categoryId: {
-            name: carCategory.value.name,
-            description: carCategory.value.description,
-            id: carCategory.value.id
-          },
-          colors: colorList.value,
-          number: carNumber.value,
-          tank: carTank.value
-        }
-      );
-      
+      const newCarItem = await entityAPI.postCreateCarItem({
+        priceMax: carPriceMax.value,
+        priceMin: carPriceMin.value,
+        name: carModel.value,
+        thumbnail: carThumbnail.value,
+        description: carDescription.value,
+        categoryId: {
+          name: carCategory.value.name,
+          description: carCategory.value.description,
+          id: carCategory.value.id,
+        },
+        colors: colorList.value,
+        number: carNumber.value,
+        tank: carTank.value,
+      });
+
       carId.value = newCarItem.data.data.id;
     };
 
@@ -328,22 +358,21 @@ export default {
     };
 
     const changeCarItem = async () => {
-      await entityAPI.putChangeCarItem(carId.value, 
-        {
-          priceMax: carPriceMax.value,
-          priceMin: carPriceMin.value,
-          name: carModel.value,
-          thumbnail: carThumbnail.value,
-          description: carDescription.value,
-          categoryId: {
-            name: carCategory.value.name,
-            description: carCategory.value.description,
-            id: carCategory.value.id
-          },
-          colors: colorList.value,
-          number: carNumber.value,
-          tank: carTank.value
-        });
+      await entityAPI.putChangeCarItem(carId.value, {
+        priceMax: carPriceMax.value,
+        priceMin: carPriceMin.value,
+        name: carModel.value,
+        thumbnail: carThumbnail.value,
+        description: carDescription.value,
+        categoryId: {
+          name: carCategory.value.name,
+          description: carCategory.value.description,
+          id: carCategory.value.id,
+        },
+        colors: colorList.value,
+        number: carNumber.value,
+        tank: carTank.value,
+      });
     };
 
     const progressBar = computed(() => {
@@ -387,35 +416,41 @@ export default {
     const carThumbnail = computed({
       get: () => {
         if (Object.keys(selectedCar.value).length !== 0) {
-        if (selectedCar.value.thumbnail) {
-          return selectedCar.value.thumbnail;
+          if (selectedCar.value.thumbnail) {
+            return selectedCar.value.thumbnail;
+          }
+          return {};
         }
         return {};
-      }
-      return {};
       },
-      set: carThumbnail => store.commit("carsModule/SET_CARIMAGE_TO_STATE", carThumbnail),
+      set: (carThumbnail) =>
+        store.commit("carsModule/SET_CARIMAGE_TO_STATE", carThumbnail),
     });
 
     const image = ref({});
 
-    const onloadFile = file => {
+    const onloadFile = (file) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = () => {
         image.value["path"] = reader.result;
       };
-      image.value = { ...image.value, "mimetype": file.type, "originalname": file.name }
+      image.value = {
+        ...image.value,
+        mimetype: file.type,
+        originalname: file.name,
+      };
 
       carThumbnail.value = image.value;
     };
 
     const thumbnailPath = computed(() => {
-      const defaultPath = "https://imgholder.ru/600x300/eeeeee/adb9ca&text=Изображение";
+      const defaultPath =
+        "https://imgholder.ru/600x300/eeeeee/adb9ca&text=Изображение";
       if (Object.keys(selectedCar.value).length !== 0) {
         if (selectedCar.value.thumbnail) {
           if (selectedCar.value.thumbnail.path)
-          return selectedCar.value.thumbnail.path;
+            return selectedCar.value.thumbnail.path;
         }
         return defaultPath;
       }
@@ -423,7 +458,9 @@ export default {
     });
 
     const thumbnailOriginalName = computed(() => {
-      return Object.keys(selectedCar.value).length !== 0 ? carThumbnail.value?.originalname : "car";
+      return Object.keys(selectedCar.value).length !== 0
+        ? carThumbnail.value?.originalname
+        : "car";
     });
 
     return {
@@ -794,7 +831,7 @@ export default {
 }
 
 .input__car-category .dropdown__input {
-      width: 100%;
-      box-sizing: border-box;
-    }
+  width: 100%;
+  box-sizing: border-box;
+}
 </style>

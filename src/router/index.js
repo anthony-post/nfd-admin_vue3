@@ -9,6 +9,7 @@ import ListTypeRates from "../views/ListTypeRates.vue";
 import ListCategories from "../views/ListCategories.vue";
 import ListOrderStatus from "../views/ListOrderStatus.vue";
 import CardCar from "../views/CardCar.vue";
+import ErrorPage from "../views/ErrorPage.vue";
 
 const routes = [
   {
@@ -22,16 +23,21 @@ const routes = [
     component: () => import("@/views/AdminPanel.vue"),
     meta: { needAuth: true },
     children: [
-      { path: "card-car_:id", name: "/admin-panel/card-car_id", component: CardCar },
+      {
+        path: "card-car_:id",
+        name: "/admin-panel/card-car_id",
+        component: CardCar,
+      },
       { path: "card-car", name: "/admin-panel/card-car", component: CardCar },
       { path: "orders", component: ListOrders },
       { path: "cars", name: "cars", component: ListCars },
       { path: "cities", component: ListCities },
-      { path: "pickUpPoints", component: ListPickUpPoints },
-      { path: "ListRates", component: ListRates },
-      { path: "ListTypeRates", component: ListTypeRates },
-      { path: "ListCategories", component: ListCategories },
-      { path: "ListOrderStatus", component: ListOrderStatus },
+      { path: "pickup-points", component: ListPickUpPoints },
+      { path: "list-rates", component: ListRates },
+      { path: "list-typerates", component: ListTypeRates },
+      { path: "list-categories", component: ListCategories },
+      { path: "list-orderstatus", component: ListOrderStatus },
+      { path: "error-page", component: ErrorPage },
     ],
   },
 ];

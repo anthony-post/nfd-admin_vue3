@@ -118,7 +118,7 @@ export default {
 
     watch(
       //необходимо чтобы при нажатии на кнопку Сбросить сбрасывался inputValue
-      // watch работает только с ref объектами, а пропс reactive, 
+      // watch работает только с ref объектами, а пропс reactive,
       // поэтому с помощью toRef пропс преобразуется в ref
       toRef(props, "selectedItem"),
       () => {

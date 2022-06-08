@@ -49,7 +49,7 @@ export default {
       {
         id: "icon-categories",
         name: "Категории авто",
-        path: "/admin-panel/ListCategories",
+        path: "/admin-panel/list-categories",
       },
       {
         id: "icon-cities",
@@ -59,18 +59,18 @@ export default {
       {
         id: "icon-pickuppoints",
         name: "Пункты выдачи",
-        path: "/admin-panel/pickUpPoints",
+        path: "/admin-panel/pickup-points",
       },
-      { id: "icon-rates", name: "Тарифы", path: "/admin-panel/ListRates" },
+      { id: "icon-rates", name: "Тарифы", path: "/admin-panel/list-rates" },
       {
         id: "icon-typerates",
         name: "Типы тарифов",
-        path: "/admin-panel/ListTypeRates",
+        path: "/admin-panel/list-typerates",
       },
       {
         id: "icon-orderstatus",
         name: "Статусы заказов",
-        path: "/admin-panel/ListOrderStatus",
+        path: "/admin-panel/list-orderstatus",
       },
     ];
 

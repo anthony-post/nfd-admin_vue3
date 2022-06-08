@@ -102,10 +102,9 @@ export default {
       return props.currentPage - 1;
     });
 
-    const lastNumber = computed(() => Math.min(
-      startPage.value + props.maxVisibleButtons - 1,
-      props.totalPages
-    ));
+    const lastNumber = computed(() =>
+      Math.min(startPage.value + props.maxVisibleButtons - 1, props.totalPages)
+    );
 
     const pages = computed(() => {
       const range = [];
@@ -181,7 +180,7 @@ export default {
     border: none;
     cursor: pointer;
 
-     @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
+    @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
       font-size: 12px;
     }
   }

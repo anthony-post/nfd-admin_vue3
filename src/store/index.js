@@ -6,7 +6,6 @@ import { categoryModule } from "./modules/categoryModule.js";
 
 export default createStore({
   modules: {
-
     authModule: {
       namespaced: true,
       ...authModule,
@@ -21,7 +20,7 @@ export default createStore({
       namespaced: true,
       ...categoryModule,
     },
-    
+
     carsModule: {
       namespaced: true,
       ...carsModule,

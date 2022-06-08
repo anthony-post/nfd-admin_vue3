@@ -37,19 +37,30 @@ export const ordersModule = {
       commit("SET_CITYLIST_TO_STATE", cityList.data.data);
     },
 
-    async GET_ORDERLIST_FROM_API({ commit }, { chosenOrdersStatusId, chosenCityId, chosenPage, limitPerPage }) {
+    async GET_ORDERLIST_FROM_API(
+      { commit },
+      { chosenOrdersStatusId, chosenCityId, chosenPage, limitPerPage }
+    ) {
       try {
-
         const cityId = chosenCityId;
         const orderStatusId = chosenOrdersStatusId;
         const page = chosenPage;
         const limit = limitPerPage;
 
         if (orderStatusId !== "no-filter" && cityId !== "no-filter") {
-          const ordersData = await entityAPI.getOrders({ orderStatusId, cityId, page, limit });
+          const ordersData = await entityAPI.getOrders({
+            orderStatusId,
+            cityId,
+            page,
+            limit,
+          });
           commit("SET_ORDERS_TO_STATE", ordersData);
         } else if (orderStatusId !== "no-filter") {
-          const ordersData = await entityAPI.getOrders({ orderStatusId, page, limit });
+          const ordersData = await entityAPI.getOrders({
+            orderStatusId,
+            page,
+            limit,
+          });
           commit("SET_ORDERS_TO_STATE", ordersData);
         } else if (cityId !== "no-filter") {
           const ordersData = await entityAPI.getOrders({ cityId, page, limit });
@@ -58,7 +69,6 @@ export const ordersModule = {
           const ordersData = await entityAPI.getOrders({ page, limit });
           commit("SET_ORDERS_TO_STATE", ordersData);
         }
-
       } catch (error) {
         throw new Error(error);
       }

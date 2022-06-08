@@ -49,14 +49,15 @@
       <div class="orders__content">
         <ul class="orders__list">
           <VPreloader v-show="togglePreloader" />
-          <li 
+          <li
             v-for="order in filteredOrderList"
             :key="order.id"
-            class="orders__item">
+            class="orders__item"
+          >
             <div class="orders__car">
-              <img 
-                :src="order.carId?.thumbnail?.path" 
-                :alt="order.carId?.thumbnail?.originalname" 
+              <img
+                :src="order.carId?.thumbnail?.path"
+                :alt="order.carId?.thumbnail?.originalname"
                 class="orders__car-img"
               />
             </div>
@@ -67,8 +68,12 @@
                 <span class="data__item">{{ order.pointId?.address }}</span>
               </div>
               <div class="data-wrp">
-                <span class="data__period">{{ convertToDate(order.dateFrom) }}</span>
-                <span class="data__period">- {{ convertToDate(order.dateTo) }}</span>
+                <span class="data__period">{{
+                  convertToDate(order.dateFrom)
+                }}</span>
+                <span class="data__period"
+                  >- {{ convertToDate(order.dateTo) }}</span
+                >
               </div>
               <div class="data__period">
                 Цвет:<span class="data__item">{{ order.color }}</span>
@@ -76,8 +81,12 @@
             </div>
             <div class="orders__additional">
               <v-checkbox :isOption="order.isFullTank">Полный бак</v-checkbox>
-              <v-checkbox :isOption="order.isNeedChildChair">Детское кресло</v-checkbox>
-              <v-checkbox :isOption="order.isRightWheel">Правый руль</v-checkbox>
+              <v-checkbox :isOption="order.isNeedChildChair"
+                >Детское кресло</v-checkbox
+              >
+              <v-checkbox :isOption="order.isRightWheel"
+                >Правый руль</v-checkbox
+              >
             </div>
             <div class="orders__price">{{ order.price }} &#8381;</div>
             <div class="orders__buttons-container">
@@ -116,7 +125,7 @@
         </ul>
       </div>
       <div class="orders__pagination">
-        <v-pagination 
+        <v-pagination
           :totalPages="totalPages"
           :currentPage="currentPage"
           @pagechanged="onPageChange"
@@ -154,11 +163,17 @@ export default {
     const selectedCity = ref(null);
     const filterCityId = ref("no-filter");
 
-    const noFilter = computed(() => !selectedOrderStatus.value && !selectedCity.value);
+    const noFilter = computed(
+      () => !selectedOrderStatus.value && !selectedCity.value
+    );
 
-    const togglePreloader = computed(() => filteredOrderList.value?.length === 0);
+    const togglePreloader = computed(
+      () => filteredOrderList.value?.length === 0
+    );
 
-    const orderStatusList = computed(() => store.state.ordersModule.orderStatusList);
+    const orderStatusList = computed(
+      () => store.state.ordersModule.orderStatusList
+    );
 
     const cityList = computed(() => store.state.ordersModule.cityList);
 
@@ -166,24 +181,32 @@ export default {
       return store.state.ordersModule.orders.data || [];
     });
 
-    const setSelectedOrderStatus = chosenOrderStatus => {
+    const setSelectedOrderStatus = (chosenOrderStatus) => {
       selectedOrderStatus.value = chosenOrderStatus.id;
     };
 
-    const setSelectedCity = chosenCity => {
+    const setSelectedCity = (chosenCity) => {
       selectedCity.value = chosenCity.id;
     };
 
     const getOrderStatusListFromApi = () =>
       store.dispatch("ordersModule/GET_ORDERSTATUSLIST_FROM_API");
-    
+
     const getCityListFromApi = () =>
       store.dispatch("ordersModule/GET_CITYLIST_FROM_API");
 
-    const getPaginateOrderListFromApi = (chosenOrdersStatusId, chosenCityId) => {
+    const getPaginateOrderListFromApi = (
+      chosenOrdersStatusId,
+      chosenCityId
+    ) => {
       // const chosenPage = currentPage.value;
       const chosenPage = currentPage.value - 1;
-      store.dispatch("ordersModule/GET_ORDERLIST_FROM_API", { chosenOrdersStatusId, chosenCityId, chosenPage, limitPerPage });
+      store.dispatch("ordersModule/GET_ORDERLIST_FROM_API", {
+        chosenOrdersStatusId,
+        chosenCityId,
+        chosenPage,
+        limitPerPage,
+      });
     };
 
     const applyFilter = () => {
@@ -191,7 +214,10 @@ export default {
       filterOrderStatusId.value = selectedOrderStatus.value;
       filterCityId.value = selectedCity.value;
       currentPage.value = 1;
-      getPaginateOrderListFromApi(filterOrderStatusId.value, filterCityId.value);
+      getPaginateOrderListFromApi(
+        filterOrderStatusId.value,
+        filterCityId.value
+      );
     };
 
     const rejectFilter = () => {
@@ -201,10 +227,13 @@ export default {
       selectedCity.value = null;
       filterCityId.value = "no-filter";
       currentPage.value = 1;
-      getPaginateOrderListFromApi(filterOrderStatusId.value, filterCityId.value);
+      getPaginateOrderListFromApi(
+        filterOrderStatusId.value,
+        filterCityId.value
+      );
     };
 
-    const convertToDate = mlsDate => {
+    const convertToDate = (mlsDate) => {
       const dateObj = new Date(mlsDate);
 
       let dd = dateObj.getDate();
@@ -229,7 +258,10 @@ export default {
     const getData = async () => {
       await getOrderStatusListFromApi();
       await getCityListFromApi();
-      await getPaginateOrderListFromApi(filterOrderStatusId.value, filterCityId.value);
+      await getPaginateOrderListFromApi(
+        filterOrderStatusId.value,
+        filterCityId.value
+      );
     };
     getData();
 
@@ -240,12 +272,17 @@ export default {
 
     const totalItems = computed(() => store.state.ordersModule.orders.count);
 
-    const totalPages = computed(() => Math.round(totalItems.value / limitPerPage));
+    const totalPages = computed(() =>
+      Math.round(totalItems.value / limitPerPage)
+    );
 
-    const onPageChange = page => {
+    const onPageChange = (page) => {
       store.commit("ordersModule/RESET_ORDERS_TO_STATE");
       currentPage.value = page;
-      getPaginateOrderListFromApi(filterOrderStatusId.value, filterCityId.value);
+      getPaginateOrderListFromApi(
+        filterOrderStatusId.value,
+        filterCityId.value
+      );
     };
 
     return {

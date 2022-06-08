@@ -22,11 +22,14 @@ const instanceConfig = {
 
 const ApiInstance = axios.create(instanceConfig);
 
-ApiInstance.interceptors.request.use(config => {
+ApiInstance.interceptors.request.use((config) => {
   const tokenType = localStorage.getItem("token_type");
   const authType = tokenType[1].toUpperCase() + tokenType.slice(2, 7);
   const accessToken = localStorage.getItem("access_token");
-  config.headers.authorization = `${authType} ${accessToken}`.replace(/['"]+/g, "");
+  config.headers.authorization = `${authType} ${accessToken}`.replace(
+    /['"]+/g,
+    ""
+  );
   return config;
 });
 

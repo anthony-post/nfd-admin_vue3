@@ -89,9 +89,11 @@ export const carsModule = {
       commit("SET_CATEGORYLIST_TO_STATE", categoryList.data.data);
     },
 
-    async GET_CARLIST_FROM_API({ commit }, { chosenCarCategoryId, selectedPage, limitPage }) {
+    async GET_CARLIST_FROM_API(
+      { commit },
+      { chosenCarCategoryId, selectedPage, limitPage }
+    ) {
       try {
-
         const categoryId = chosenCarCategoryId;
         const page = selectedPage;
         const limit = limitPage;
@@ -103,7 +105,6 @@ export const carsModule = {
           const carsData = await entityAPI.getCars({ page, limit });
           commit("SET_CARS_TO_STATE", carsData);
         }
-
       } catch (error) {
         throw new Error(error);
       }
@@ -115,6 +116,6 @@ export const carsModule = {
       } else {
         commit("RESET_SELECTEDCAR_TO_STATE");
       }
-    }
+    },
   },
 };

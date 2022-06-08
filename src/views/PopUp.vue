@@ -6,9 +6,9 @@
           <v-icon icon-id="icon-x" width="32" height="32" @click="closePopUp" />
         </div>
         <div class="popup-body">
-          <img 
-            :src="carItem?.thumbnail?.path" 
-            :alt="carItem?.thumbnail?.originalname" 
+          <img
+            :src="carItem?.thumbnail?.path"
+            :alt="carItem?.thumbnail?.originalname"
             class="popup__img"
           />
           <dl class="popup__title">
@@ -38,8 +38,14 @@
             <dd class="popup__title-value">{{ carItem?.description }}</dd>
           </dl>
           <div class="popup__title">
-            <router-link :to="{ name: '/admin-panel/card-car_id', params: { id: carItem?.id } }" class="popup__title-link">
-            <!-- <router-link to="/admin-panel/card-car" class="popup__title-link"> -->
+            <router-link
+              :to="{
+                name: '/admin-panel/card-car_id',
+                params: { id: carItem?.id },
+              }"
+              class="popup__title-link"
+            >
+              <!-- <router-link to="/admin-panel/card-car" class="popup__title-link"> -->
               <button type="button" class="popup__title-btn">
                 <v-icon
                   icon-id="icon-edit"
@@ -72,7 +78,6 @@ export default {
     },
   },
   setup(_, context) {
-
     const closePopUp = () => {
       context.emit("close-popup");
     };
@@ -113,7 +118,7 @@ export default {
     // max-width: 100%;
     width: 300px;
 
-     @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
+    @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
       width: 200px;
     }
   }
