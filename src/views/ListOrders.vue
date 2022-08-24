@@ -68,11 +68,11 @@
                 <span class="data__item">{{ order.pointId?.address }}</span>
               </div>
               <div class="data-wrp">
-                <span class="data__period">{{
-                  convertToDate(order.dateFrom)
+                <span v-if="date" class="data__period">{{
+                  date(order.dateFrom)
                 }}</span>
-                <span class="data__period"
-                  >- {{ convertToDate(order.dateTo) }}</span
+                <span v-if="date" class="data__period"
+                  >- {{ date(order.dateTo) }}</span
                 >
               </div>
               <div class="data__period">
@@ -80,17 +80,25 @@
               </div>
             </div>
             <div class="orders__additional">
-              <v-checkbox :isOption="order.isFullTank">Полный бак</v-checkbox>
-              <v-checkbox :isOption="order.isNeedChildChair"
+              <v-checkbox v-model="order.isFullTank" label="Полный бак"
+                >Полный бак</v-checkbox
+              >
+              <v-checkbox
+                v-model="order.isNeedChildChair"
+                label="Детское кресло"
                 >Детское кресло</v-checkbox
               >
-              <v-checkbox :isOption="order.isRightWheel"
+              <v-checkbox v-model="order.isRightWheel" label="Правый руль"
                 >Правый руль</v-checkbox
               >
             </div>
             <div class="orders__price">{{ order.price }} &#8381;</div>
             <div class="orders__buttons-container">
-              <button type="button" class="orders__button orders__button_left">
+              <button
+                type="button"
+                class="orders__button orders__button_left"
+                @click="completeOrder(order)"
+              >
                 <v-icon
                   icon-id="icon-approve"
                   width="12"
@@ -102,6 +110,7 @@
               <button
                 type="button"
                 class="orders__button orders__button_middle"
+                @click="cancelOrder(order)"
               >
                 <v-icon
                   icon-id="icon-reject"
@@ -111,15 +120,26 @@
                 ></v-icon>
                 Отмена
               </button>
-              <button type="button" class="orders__button orders__button_right">
-                <v-icon
-                  icon-id="icon-edit"
-                  width="12"
-                  height="11"
-                  class="orders__button-icon_edit"
-                ></v-icon>
-                <span>Изменить</span>
-              </button>
+              <router-link
+                :to="{
+                  name: 'card-order_id',
+                  params: { id: order?.id },
+                }"
+              >
+                <button
+                  type="button"
+                  class="orders__button orders__button_right"
+                  @click="setOrderCard(order)"
+                >
+                  <v-icon
+                    icon-id="icon-edit"
+                    width="12"
+                    height="11"
+                    class="orders__button-icon_edit"
+                  ></v-icon>
+                  <span>Изменить</span>
+                </button>
+              </router-link>
             </div>
           </li>
         </ul>
@@ -144,6 +164,9 @@ import VIcon from "../components/VIcon.vue";
 import VPagination from "../components/VPagination.vue";
 import VPreloader from "@/components/VPreloader.vue";
 import VButton from "../components/VButton.vue";
+
+import { entityAPI } from "@/api/entityAPI";
+import { convertToDate } from "@/services/convertDate.js";
 
 export default {
   name: "ListOrders",
@@ -171,11 +194,20 @@ export default {
       () => filteredOrderList.value?.length === 0
     );
 
+    //выбранное значение даты и время в мс конвертируется в строку
+    const date = (mls) => {
+      if (mls) {
+        return convertToDate(mls);
+      } else {
+        return "Нет данных";
+      }
+    };
+
     const orderStatusList = computed(
-      () => store.state.ordersModule.orderStatusList
+      () => store.state.orderStatusModule.orderStatusList
     );
 
-    const cityList = computed(() => store.state.ordersModule.cityList);
+    const cityList = computed(() => store.state.cityModule.cityList);
 
     const filteredOrderList = computed(() => {
       return store.state.ordersModule.orders.data || [];
@@ -190,16 +222,15 @@ export default {
     };
 
     const getOrderStatusListFromApi = () =>
-      store.dispatch("ordersModule/GET_ORDERSTATUSLIST_FROM_API");
+      store.dispatch("orderStatusModule/GET_ORDERSTATUSES_FROM_API");
 
     const getCityListFromApi = () =>
-      store.dispatch("ordersModule/GET_CITYLIST_FROM_API");
+      store.dispatch("cityModule/GET_CITIES_FROM_API");
 
     const getPaginateOrderListFromApi = (
       chosenOrdersStatusId,
       chosenCityId
     ) => {
-      // const chosenPage = currentPage.value;
       const chosenPage = currentPage.value - 1;
       store.dispatch("ordersModule/GET_ORDERLIST_FROM_API", {
         chosenOrdersStatusId,
@@ -233,25 +264,32 @@ export default {
       );
     };
 
-    const convertToDate = (mlsDate) => {
-      const dateObj = new Date(mlsDate);
+    const completeOrder = async (order) => {
+      const orderId = order.id;
+      const completeOrdersStatusId = {
+        id: "9",
+        name: "Завершенный",
+      };
 
-      let dd = dateObj.getDate();
-      if (dd < 10) dd = "0" + dd;
+      await entityAPI.putOrderStatusId(orderId, {
+        orderStatusId: completeOrdersStatusId,
+      });
+    };
 
-      let mm = dateObj.getMonth() + 1;
-      if (mm < 10) mm = "0" + mm;
+    const cancelOrder = async (order) => {
+      const orderId = order.id;
+      const canceledOrdersStatusId = {
+        id: "7",
+        name: "Отмененный",
+      };
 
-      let yy = dateObj.getFullYear();
-      if (yy < 10) yy = "0" + yy;
+      await entityAPI.putOrderStatusId(orderId, {
+        orderStatusId: canceledOrdersStatusId,
+      });
+    };
 
-      let hh = dateObj.getHours();
-      if (hh < 10) hh = "0" + hh;
-
-      let min = dateObj.getMinutes();
-      if (min < 10) min = "0" + min;
-
-      return dd + "." + mm + "." + yy + " " + hh + ":" + min;
+    const setOrderCard = (order) => {
+      store.commit("ordersModule/SET_SELECTEDORDER_TO_STATE", order);
     };
 
     //API call
@@ -273,7 +311,9 @@ export default {
     const totalItems = computed(() => store.state.ordersModule.orders.count);
 
     const totalPages = computed(() =>
-      Math.round(totalItems.value / limitPerPage)
+      Math.ceil(totalItems.value / limitPerPage) > 0
+        ? Math.ceil(totalItems.value / limitPerPage)
+        : 1
     );
 
     const onPageChange = (page) => {
@@ -298,12 +338,15 @@ export default {
       noFilter,
       applyFilter,
       rejectFilter,
+      completeOrder,
+      cancelOrder,
+      setOrderCard,
       getData,
       totalPages,
       currentPage,
       onPageChange,
-      convertToDate,
       togglePreloader,
+      date,
     };
   },
 };
@@ -473,6 +516,8 @@ export default {
 }
 
 .orders__additional {
+  pointer-events: none;
+
   @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
     padding: 10px 0;
   }
@@ -536,6 +581,14 @@ export default {
   border: 0.5px solid #becad6;
   display: flex;
   margin: 0;
+  cursor: pointer;
+
+  &:hover {
+    background: $color-green;
+  }
+  &:active {
+    background: linear-gradient(90deg, $color-white 2.61%, $color-green 112.6%);
+  }
 }
 
 .orders__button_left {

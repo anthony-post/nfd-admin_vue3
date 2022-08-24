@@ -1,6 +1,13 @@
 <template>
   <div class="entity-wrp entity">
-    <h2 class="entity__title">Автомобили</h2>
+    <div class="entity__title-wrp">
+      <h2 class="entity__title">Автомобили</h2>
+      <router-link to="card-car">
+        <v-button type="button" theme="confirm" class="card-car__button-item">
+          Добавить
+        </v-button>
+      </router-link>
+    </div>
     <section class="entity-container">
       <div class="entity__header">
         <div class="header-dropdown">
@@ -115,14 +122,12 @@ export default {
     const noFilter = computed(() => !selectedCarCategory.value);
 
     const setSelectedCarCategory = (chosenCarCategory) => {
-      selectedCarCategory.value = chosenCarCategory.id;
+      selectedCarCategory.value = chosenCarCategory.name;
     };
 
     const applyFilter = () => {
-      store.commit("carsModule/RESET_CARS_TO_STATE");
       filterCarCategory.value = selectedCarCategory.value;
       currentPage.value = 1;
-      getPaginateCarListFromApi(filterCarCategory.value);
     };
 
     const rejectFilter = () => {
@@ -133,8 +138,20 @@ export default {
       getPaginateCarListFromApi(filterCarCategory.value);
     };
 
-    const filteredCarList = computed(() => {
+    const paginatedCarList = computed(() => {
       return store.state.carsModule.cars.data || [];
+    });
+
+    const filteredCarList = computed(() => {
+      if (filterCarCategory.value !== "no-filter") {
+        return paginatedCarList.value.filter((car) => {
+          if (car?.categoryId?.name) {
+            return car.categoryId.name.includes(filterCarCategory.value);
+          }
+        });
+      } else {
+        return paginatedCarList.value;
+      }
     });
 
     const carItem = computed(() => store.state.carsModule.selectedCar);
@@ -198,6 +215,7 @@ export default {
       popUpIsActive,
       togglePopUp,
       filteredCarList,
+      paginatedCarList,
       limitPerPage,
       currentPage,
       totalItems,
@@ -213,6 +231,11 @@ export default {
 @import "@/assets/variables.scss";
 
 .entity {
+  &__title-wrp {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
   &__title {
     margin: 0;
     font-family: $ff;
@@ -340,6 +363,7 @@ export default {
 
   &__data-item {
     padding: 5px 0;
+    vertical-align: baseline;
   }
 
   &__button-item_car {

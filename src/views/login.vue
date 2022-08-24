@@ -10,12 +10,14 @@
         <form class="form" @submit.prevent="onSubmit">
           <v-input
             v-model:inputValue="login"
+            :error="loginError"
             label="Почта"
             type="text"
             name="login"
           />
           <v-input
             v-model:inputValue="password"
+            :error="passwordError"
             label="Пароль"
             type="password"
             name="password"
@@ -50,6 +52,8 @@ import { useRouter } from "vue-router";
 import { ref } from "vue";
 import VInput from "../components/VInput.vue";
 
+import { useField, useForm } from "vee-validate";
+
 export default {
   name: "Login",
   components: {
@@ -59,8 +63,6 @@ export default {
     const store = useStore();
     const router = useRouter();
 
-    const login = ref("");
-    const password = ref("");
     const isError = ref(false);
 
     const onSubmit = async () => {
@@ -88,9 +90,33 @@ export default {
       password.value = "";
     };
 
+    //валидация
+    const validations = {
+      login: (value) => {
+        if (!value) return "Это обязательное поле";
+        return true;
+      },
+      password: (value) => {
+        const requiredMessage = "Это обязательное поле";
+        if (value === undefined || value === null) return requiredMessage;
+        if (!String(value).length) return requiredMessage;
+        return true;
+      },
+    };
+
+    useForm({
+      validationSchema: validations,
+    });
+
+    const { value: login, errorMessage: loginError } = useField("login");
+    const { value: password, errorMessage: passwordError } =
+      useField("password");
+
     return {
       login,
+      loginError,
       password,
+      passwordError,
       isError,
       onSubmit,
       resetInputs,

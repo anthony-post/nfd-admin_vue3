@@ -4,7 +4,7 @@
     <p class="error-page__description">Что-то пошло не так</p>
     <p class="error-page__text">Попробуйте перезагрузить страницу</p>
     <router-link to="/admin-panel" class="footer__link">
-        <v-button type="button" theme="confirm">Назад </v-button>
+      <v-button type="button" theme="confirm">Назад </v-button>
     </router-link>
   </div>
 </template>
@@ -17,13 +17,20 @@ export default {
   components: {
     VButton,
   },
+  props: {
+    resource: {
+      type: String,
+      required: true,
+      default: "page",
+    },
+  },
   setup() {
     const errorNumber = "404";
 
     return {
-        errorNumber,
-    }
-  }
+      errorNumber,
+    };
+  },
 };
 </script>
 
@@ -60,5 +67,9 @@ export default {
     line-height: 23px;
     color: $color-grey-middle;
   }
+}
+
+.checkbox_blocked {
+  pointer-events: none; //block switching checkbox
 }
 </style>

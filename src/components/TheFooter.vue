@@ -2,10 +2,14 @@
   <footer class="footer-wrp">
     <ul class="footer-list">
       <li>
-        <router-link to="/admin-panel" class="footer__link">Главная страница</router-link>
+        <router-link to="/admin-panel" class="footer__link"
+          >Главная страница</router-link
+        >
       </li>
       <li>
-        <router-link to="/admin-panel/error-page" class="footer__link">Error</router-link>
+        <router-link to="/admin-panel/error-page" class="footer__link"
+          >Error</router-link
+        >
       </li>
     </ul>
     <p class="footer__copyright">Copyright © 2020 Simbirsoft</p>

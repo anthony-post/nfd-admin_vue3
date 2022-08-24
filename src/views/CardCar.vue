@@ -10,7 +10,6 @@
             class="card-car__pic"
           />
           <p class="card-car__model">{{ carModel }}</p>
-          <!-- <p class="card-car__model">{{ carModel }}</p> -->
           <p class="card-car__category">{{ carCategory?.name }}</p>
           <v-upload-file
             name="carimg"
@@ -46,13 +45,6 @@
               placeholder="Введите модель автомобиля"
               class="input input__car-model"
             ></v-input>
-            <!-- <v-input
-              v-model:inputValue="carModel"
-              label="Модель автомобиля"
-              name="model-car"
-              placeholder="Введите модель автомобиля"
-              class="input input__car-model"
-            ></v-input> -->
             <v-dropdown
               id="dropdownCategory"
               :itemList="categoryList"
@@ -181,6 +173,7 @@
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { computed, ref } from "vue";
+
 import VUploadFile from "../components/VUploadFile.vue";
 import VInput from "../components/VInput.vue";
 import VCheckboxBlue from "../components/VCheckboxBlue.vue";
@@ -499,10 +492,6 @@ export default {
 @import "@/assets/variables.scss";
 
 .card {
-  // width: 100%;
-  // height: 100%;
-  // background-color: $color-background;
-
   &__title {
     margin: 0;
     font-family: $ff;

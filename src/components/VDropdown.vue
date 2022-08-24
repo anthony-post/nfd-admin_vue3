@@ -39,7 +39,7 @@ export default {
       required: true,
     },
     selectedItem: {
-      type: String,
+      type: [String, Number],
       required: false,
     },
     placeholder: {
@@ -64,7 +64,7 @@ export default {
     const inputRef = ref(null);
 
     const filteredList = computed(() => {
-      const currentInput = inputValue.value.toLowerCase();
+      const currentInput = inputValue.value?.toLowerCase();
       if (currentInput) {
         return props.itemList.filter((item) => {
           if (item?.name) {
@@ -94,6 +94,8 @@ export default {
 
     const toggleDropDown = () => {
       isDropDownVisible.value = !isDropDownVisible.value;
+
+      resetSelection();
     };
 
     const hideDropDown = (event) => {

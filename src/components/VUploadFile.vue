@@ -33,25 +33,8 @@ export default {
     const onFilePicked = (event) => {
       const files = event.target.files;
       fileName.value = files[0].name;
-
-      // const fileReader = new FileReader();
-      // fileReader.addEventListener('load', () => {
-      //   // this.imageUrl = fileReader.result
-      //    const imageUrl = fileReader.result;
-      //    console.log(imageUrl);
-      // });
-      // fileReader.readAsDataURL(files[0]);
-      // image.value = files[0];
-
       const file = files[0];
       context.emit("onload-file", file);
-
-      // const file = files[0];
-      // const reader = new FileReader();
-      // reader.readAsDataURL(file);
-      // reader.onload = () => {
-      //   image.value = reader.result;
-      // };
     };
 
     return {

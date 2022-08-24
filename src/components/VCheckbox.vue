@@ -1,23 +1,69 @@
 <template>
-  <label class="checkbox checkbox__item">
-    <slot></slot>
-    <input class="checkbox__input" type="checkbox" :checked="isOption" />
+  <label class="checkbox checkbox__item" :class="{ item_active: isChecked }">
+    {{ label }}
+    <input
+      class="checkbox__input"
+      type="checkbox"
+      :checked="isChecked"
+      @change="updateInput"
+    />
     <span class="checkmark-box"></span>
   </label>
 </template>
 
 <script>
+import { computed } from "vue";
+
 export default {
   name: "VCheckbox",
   props: {
-    isOption: {
-      type: Boolean,
+    modelValue: null,
+    label: {
+      type: String,
+      required: true,
     },
+    trueValue: {
+      default: true,
+    },
+    falseValue: {
+      default: false,
+    },
+  },
+  setup(props, context) {
+    const isChecked = computed(() => {
+      if (props.modelValue instanceof Array) {
+        return props.modelValue.includes(props.value);
+      }
+      return props.modelValue === props.trueValue;
+    });
+
+    const updateInput = (event) => {
+      const isChecked = event.target.checked;
+      if (props.modelValue instanceof Array) {
+        const newValue = [...props.modelValue];
+        if (isChecked) {
+          newValue.push(props.value);
+        } else {
+          newValue.splice(newValue.indexOf(props.value), 1);
+        }
+        context.emit("update:modelValue", newValue);
+      } else {
+        context.emit(
+          "update:modelValue",
+          isChecked ? props.trueValue : props.falseValue
+        );
+      }
+    };
+
+    return {
+      isChecked,
+      updateInput,
+    };
   },
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import "@/assets/variables.scss";
 
 .checkbox {
@@ -29,8 +75,6 @@ export default {
   font-size: 10px;
   line-height: 12px;
   color: $color-grey;
-
-  pointer-events: none; //block switching checkbox
 
   &__item {
     padding-left: 25px;
@@ -78,5 +122,9 @@ export default {
   -webkit-transform: rotate(45deg);
   -ms-transform: rotate(45deg);
   transform: rotate(45deg);
+}
+
+.item_active {
+  color: $color-black;
 }
 </style>
