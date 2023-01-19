@@ -27,11 +27,6 @@
             Логин и/или пароль не найдены
           </p>
           <div class="form-footer">
-            <router-link
-              class="form-footer__link link"
-              :to="{ name: 'admin-panel' }"
-              >Запросить доступ</router-link
-            >
             <button
               type="submit"
               name="button"
@@ -68,7 +63,7 @@ export default {
     const onSubmit = async () => {
       try {
         //вызов action с POST запросом
-        await store.dispatch("authModule/onLogin", {
+        await store.dispatch("authModule/ON_LOGIN", {
           username: login.value,
           password: password.value,
         });
@@ -193,7 +188,7 @@ export default {
 .form-footer {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
 }
 

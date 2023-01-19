@@ -235,31 +235,50 @@ export default {
     const cancelOrder = async () => {
       const orderId = selectedOrder.value.id;
       const canceledOrdersStatusId = {
-        id: "7",
+        id: 7,
         name: "Отмененный",
       };
 
-      await entityAPI.putOrderStatusId(orderId, {
-        orderStatusId: canceledOrdersStatusId,
-      });
+      try {
+        await entityAPI.putOrderStatusId(orderId, {
+          orderStatusId: canceledOrdersStatusId,
+          cityId: selectedOrder.value.cityId,
+          pointId: selectedOrder.value.pointId,
+          carId: selectedOrder.value.carId,
+          rateId: selectedOrder.value.rateId,
+          color: selectedOrder.value.color,
+          dateFrom: selectedOrder.value.dateFrom,
+          dateTo: selectedOrder.value.dateTo,
+          price: selectedOrder.value.price,
+          isFullTank: selectedOrder.value.isFullTank,
+          isNeedChildChair: selectedOrder.value.isNeedChildChair,
+          isRightWheel: selectedOrder.value.isRightWheel,
+        });
+      } catch (error) {
+        throw new Error(error);
+      }
     };
 
     const changeOrder = async () => {
       const orderId = selectedOrder.value.id;
-      await entityAPI.putChangeOrder(orderId, {
-        orderStatusId: selectedOrder.value.orderStatusId,
-        cityId: selectedOrder.value.cityId,
-        pointId: selectedOrder.value.pointId,
-        carId: selectedOrder.value.carId,
-        rateId: selectedOrder.value.rateId,
-        color: selectedOrder.value.color,
-        dateFrom: selectedOrder.value.dateFrom,
-        dateTo: selectedOrder.value.dateTo,
-        price: selectedOrder.value.price,
-        isFullTank: selectedOrder.value.isFullTank,
-        isNeedChildChair: selectedOrder.value.isNeedChildChair,
-        isRightWheel: selectedOrder.value.isRightWheel,
-      });
+      try {
+        await entityAPI.putChangeOrder(orderId, {
+          orderStatusId: selectedOrder.value.orderStatusId,
+          cityId: selectedOrder.value.cityId,
+          pointId: selectedOrder.value.pointId,
+          carId: selectedOrder.value.carId,
+          rateId: selectedOrder.value.rateId,
+          color: selectedOrder.value.color,
+          dateFrom: selectedOrder.value.dateFrom,
+          dateTo: selectedOrder.value.dateTo,
+          price: selectedOrder.value.price,
+          isFullTank: selectedOrder.value.isFullTank,
+          isNeedChildChair: selectedOrder.value.isNeedChildChair,
+          isRightWheel: selectedOrder.value.isRightWheel,
+        });
+      } catch (error) {
+        throw new Error(error);
+      }
     };
 
     //dropdown cars

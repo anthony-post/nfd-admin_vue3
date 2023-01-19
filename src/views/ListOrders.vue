@@ -266,26 +266,56 @@ export default {
 
     const completeOrder = async (order) => {
       const orderId = order.id;
-      const completeOrdersStatusId = {
-        id: "9",
+      const completedOrdersStatusId = {
+        id: 9,
         name: "Завершенный",
       };
 
-      await entityAPI.putOrderStatusId(orderId, {
-        orderStatusId: completeOrdersStatusId,
-      });
+      try {
+        await entityAPI.putOrderStatusId(orderId, {
+          orderStatusId: completedOrdersStatusId,
+          cityId: order.cityId,
+          pointId: order.pointId,
+          carId: order.carId,
+          rateId: order.rateId,
+          color: order.color,
+          dateFrom: order.dateFrom,
+          dateTo: order.dateTo,
+          price: order.price,
+          isFullTank: order.isFullTank,
+          isNeedChildChair: order.isNeedChildChair,
+          isRightWheel: order.isRightWheel,
+        });
+      } catch (error) {
+        throw new Error(error);
+      }
     };
 
     const cancelOrder = async (order) => {
       const orderId = order.id;
       const canceledOrdersStatusId = {
-        id: "7",
+        id: 7,
         name: "Отмененный",
       };
 
-      await entityAPI.putOrderStatusId(orderId, {
-        orderStatusId: canceledOrdersStatusId,
-      });
+      try {
+        await entityAPI.putOrderStatusId(orderId, {
+          orderStatusId: canceledOrdersStatusId,
+          cityId: order.cityId,
+          pointId: order.pointId,
+          carId: order.carId,
+          rateId: order.rateId,
+          color: order.color,
+          dateFrom: order.dateFrom,
+          dateTo: order.dateTo,
+          price: order.price,
+          isFullTank: order.isFullTank,
+          isNeedChildChair: order.isNeedChildChair,
+          isRightWheel: order.isRightWheel,
+        });
+      } catch (error) {
+        throw new Error(error);
+      }
     };
 
     const setOrderCard = (order) => {
