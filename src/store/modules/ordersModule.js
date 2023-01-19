@@ -4,6 +4,7 @@ export const ordersModule = {
   namespaced: true,
 
   state: {
+    ordersAll: [],
     orders: {},
     selectedOrder: {},
 
@@ -14,6 +15,9 @@ export const ordersModule = {
   },
 
   mutations: {
+    SET_ALLORDERLIST_TO_STATE: (state, orderList) => {
+      state.ordersAll = orderList;
+    },
 
     SET_ORDERS_TO_STATE: (state, ordersData) => {
       state.orders = ordersData.data;
@@ -128,6 +132,10 @@ export const ordersModule = {
   },
 
   actions: {
+    async GET_ALLORDERLIST_FROM_API({ commit }) {
+      const orderList = await entityAPI.getAllOrders();
+      commit("SET_ALLORDERLIST_TO_STATE", orderList.data.data);
+    },
 
     async GET_ORDERLIST_FROM_API(
       { commit },

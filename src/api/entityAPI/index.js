@@ -72,6 +72,10 @@ export const entityAPI = {
     });
   },
 
+  getAllOrders() {
+    return entityAPIInstance.get(UrlEntity.order);
+  },
+
   getCars(params = {}) {
     return entityAPIInstance.get(UrlEntity.car, {
       params,
