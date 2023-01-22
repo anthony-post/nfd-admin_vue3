@@ -39,11 +39,6 @@ export default {
   },
   setup(_, context) {
     const menuList = [
-      // {
-      //   id: "icon-autocard",
-      //   name: "Карточка автомобиля",
-      //   path: "/admin-panel/card-car",
-      // },
       { id: "icon-orders", name: "Заказы", path: "/admin-panel/orders" },
       { id: "icon-cars", name: "Список авто", path: "/admin-panel/cars" },
       {
@@ -59,7 +54,7 @@ export default {
       {
         id: "icon-pickuppoints",
         name: "Пункты выдачи",
-        path: "/admin-panel/pickup-points",
+        path: "/admin-panel/pickuppoints",
       },
       { id: "icon-rates", name: "Тарифы", path: "/admin-panel/list-rates" },
       {

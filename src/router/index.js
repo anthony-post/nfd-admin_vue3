@@ -85,8 +85,10 @@ const routes = [
       { path: "cars", name: "cars", component: ListCars },
       { path: "cities", name: "cities", component: ListCities },
       {
-        path: "pickup-points",
-        name: "pickup-points",
+        // path: "pickup-points",
+        // name: "pickup-points",
+        path: "pickuppoints",
+        name: "pickuppoints",
         component: ListPickUpPoints,
       },
       { path: "list-rates", name: "rates", component: ListRates },
