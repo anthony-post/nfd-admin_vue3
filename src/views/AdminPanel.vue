@@ -38,6 +38,10 @@ export default {
 }
 
 .panel-sidebar {
+  @media #{$media} and (min-width: $tablet-min) and (max-width: $tablet-max) {
+    display: none;
+  }
+
   @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
     display: none;
   }
@@ -48,6 +52,10 @@ export default {
   flex-direction: column;
   justify-content: space-between;
 
+  @media #{$media} and (min-width: $tablet-min) and (max-width: $tablet-max) {
+    height: calc(100vh - 80px);
+  }
+
   @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
     height: calc(100vh - 80px);
   }
@@ -56,5 +64,9 @@ export default {
 .section-content {
   width: 100%;
   height: 100%;
+
+  @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
+    overflow-x: scroll;
+  }
 }
 </style>

@@ -56,6 +56,10 @@ export default {
   border: none;
   padding: 0 0 0 30px;
 
+  @media #{$media} and (min-width: $tablet-min) and (max-width: $tablet-max) {
+    padding: 0 0 0 35px;
+  }
+
   @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
     padding: 0 0 0 35px;
   }
@@ -69,6 +73,11 @@ export default {
   position: absolute;
   left: 5px;
   top: 3px;
+
+  @media #{$media} and (min-width: $tablet-min) and (max-width: $tablet-max) {
+    left: 25px;
+    top: 13px;
+  }
 
   @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
     left: 25px;
