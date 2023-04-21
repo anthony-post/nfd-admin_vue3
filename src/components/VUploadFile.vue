@@ -20,7 +20,7 @@ import { ref } from "vue";
 
 export default {
   name: "VUploadFile",
-  setup() {
+  setup(_, context) {
     const image = ref(null);
     const fileInput = ref(null);
     const fileName = ref(null);
@@ -33,6 +33,8 @@ export default {
     const onFilePicked = (event) => {
       const files = event.target.files;
       fileName.value = files[0].name;
+      const file = files[0];
+      context.emit("onload-file", file);
     };
 
     return {

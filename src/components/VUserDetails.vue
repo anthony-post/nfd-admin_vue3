@@ -4,22 +4,58 @@
       <img :src="user.avatar" alt="avatar" class="user__avatar" />
       <p class="user__role">{{ user.role }}</p>
     </div>
-    <div class="dropdown-icon"></div>
+    <div class="dropdown-icon" @click="toggleDropDown"></div>
+    <div v-show="isDropDownVisible" class="user-menu user-button">
+      <v-button type="button" theme="cancel" @click="onLogout">Выйти </v-button>
+    </div>
   </div>
 </template>
 
 <script>
+import { useStore } from "vuex";
+import { useRouter } from "vue-router";
+import { ref } from "vue";
+
+import VButton from "../components/VButton.vue";
+
 export default {
   name: "VUserDetails",
+  components: {
+    VButton,
+  },
   setup() {
+    const store = useStore();
+    const router = useRouter();
+
     const user = {
       id: 1,
-      name: "Имя",
+      name: "User1",
       role: "Admin",
-      avatar: `${require("../assets/img/user-avatar.jpg")}`,
+      avatar: `${require("../assets/img/avatar.jpeg")}`,
     };
+
+    const isDropDownVisible = ref(false);
+
+    const toggleDropDown = () => {
+      isDropDownVisible.value = !isDropDownVisible.value;
+    };
+
+    const onLogout = async () => {
+      try {
+        //вызов action с POST запросом
+        await store.dispatch("authModule/ON_LOGOUT");
+        //редирект на страницу
+        router.push({ name: "login" });
+      } catch (error) {
+        throw new Error(error);
+      }
+    };
+
     return {
       user,
+      isDropDownVisible,
+      toggleDropDown,
+      onLogout,
     };
   },
 };
@@ -34,6 +70,8 @@ export default {
   justify-content: space-between;
   align-items: center;
   padding: 0 25px;
+
+  position: relative;
 }
 
 .user-container {
@@ -59,5 +97,15 @@ export default {
   border-right: 4px solid transparent;
   border-top: 4px solid $color-dropdown-icon;
   margin: 1px 0 0 0;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.user-menu {
+  position: absolute;
+  top: 50px;
+  right: 20px;
 }
 </style>

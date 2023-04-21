@@ -1,7 +1,7 @@
 <template>
   <label class="checkbox checkbox__item">
     <slot></slot>
-    <input class="checkbox__input" type="checkbox" checked />
+    <input type="checkbox" checked class="checkbox__input" />
     <span class="checkmark-box"></span>
   </label>
 </template>
@@ -12,7 +12,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import "@/assets/variables.scss";
 
 .checkbox {
@@ -25,8 +25,6 @@ export default {
   font-size: 10px;
   line-height: 12px;
   color: $color-label;
-
-  pointer-events: none; //block switching checkbox
 
   &__item {
     padding-left: 25px;

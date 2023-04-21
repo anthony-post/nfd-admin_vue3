@@ -1,6 +1,9 @@
 <template>
   <div class="input-wrp">
     <label class="input__label" :for="name">{{ label }}</label>
+    <span v-show="error" class="error-msg">
+      {{ error }}
+    </span>
     <input
       class="input__field input__text"
       autocomplete="off"
@@ -38,7 +41,8 @@ export default {
       type: String,
       default: "",
     },
-    inputValue: {
+    inputValue: [String, Number],
+    error: {
       type: String,
       default: "",
     },

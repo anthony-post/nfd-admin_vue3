@@ -6,11 +6,16 @@
       height="21"
       class="notification__bell"
     ></v-icon>
-    <div class="notification__circle">{{ notificationCounter }}</div>
+    <div v-if="notificationCounter" class="notification__circle">
+      {{ notificationCounter }}
+    </div>
   </div>
 </template>
 
 <script>
+import { useStore } from "vuex";
+import { computed } from "vue";
+
 import VIcon from "../components/VIcon.vue";
 
 export default {
@@ -19,9 +24,38 @@ export default {
     VIcon,
   },
   setup() {
-    const notificationCounter = 2;
+    const store = useStore();
+
+    const orderList = computed(() => {
+      return store.state.ordersModule.ordersAll || [];
+    });
+
+    const getOrderListFromApi = () => {
+      store.dispatch("ordersModule/GET_ALLORDERLIST_FROM_API");
+    };
+
+    const newOrderStatusId = {
+      id: 1,
+      name: "Новый",
+    };
+
+    const notificationCounter = computed(() =>
+      orderList.value.reduce((acc, order) => {
+        if (
+          order?.orderStatusId?.id === newOrderStatusId.id ||
+          order?.orderStatusId === null
+        ) {
+          return (acc += 1);
+        }
+        return acc;
+      }, 0)
+    );
+
+    getOrderListFromApi();
+
     return {
       notificationCounter,
+      orderList,
     };
   },
 };

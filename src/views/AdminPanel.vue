@@ -52,8 +52,12 @@ export default {
   flex-direction: column;
   justify-content: space-between;
 
+  @media #{$media} and (min-width: $desktop-min) and (max-width: $desktop-max) {
+    height: 100vh;
+  }
+
   @media #{$media} and (min-width: $tablet-min) and (max-width: $tablet-max) {
-    height: calc(100vh - 80px);
+    height: 100vh;
   }
 
   @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
@@ -64,9 +68,6 @@ export default {
 .section-content {
   width: 100%;
   height: 100%;
-
-  @media #{$media} and (min-width: $mobile-min) and (max-width: $mobile-max) {
-    overflow-x: scroll;
-  }
+  overflow-x: scroll;
 }
 </style>
